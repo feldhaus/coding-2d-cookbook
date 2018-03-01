@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Regular Polygon</title>
+    <style>
+        * {padding: 0; margin: 0}
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.7.0/pixi.min.js"></script>
+</head>
+<body>
+    <script type="text/javascript">
+        
+        // create application
+        let app = new PIXI.Application({backgroundColor: 0x334970, antialias: true});
+        document.body.appendChild(app.view);
+        
+        // create shape (graphics)
+        let shapes = new PIXI.Graphics();
+        app.stage.addChild(shapes);
+        shapes.lineStyle(2, 0xe94e77);
+        
+        // triangles
+        drawPolygon(shapes, 100, 110, 3, 80, 80, 0);
+        drawPolygon(shapes, 100, 250, 3, 80, 15, 0);
+        drawPolygon(shapes, 100, 390, 3, 80, 0, 0);
+        drawPolygon(shapes, 100, 490, 3, 80, 80, Math.PI);
+
+        // squares
+        drawPolygon(shapes, 250, 90, 4, 60, 60, 0);
+        drawPolygon(shapes, 250, 230, 4, 60, 20, 0);
+        drawPolygon(shapes, 250, 370, 4, 60, 0, 0);
+        drawPolygon(shapes, 250, 510, 4, 80, 80, Math.PI / 4);
+
+        // pentagons
+        drawPolygon(shapes, 400, 95, 5, 65, 65, 0);
+        drawPolygon(shapes, 400, 237, 5, 65, 25, 0);
+        drawPolygon(shapes, 400, 377, 5, 65, 0, 0);
+        drawPolygon(shapes, 400, 505, 5, 65, 65, Math.PI);
+        
+        // hexagons
+        drawPolygon(shapes, 550, 90, 6, 60, 60, 0);
+        drawPolygon(shapes, 550, 230, 6, 60, 40, 0);
+        drawPolygon(shapes, 550, 370, 6, 60, 0, 0);
+        drawPolygon(shapes, 550, 510, 6, 60, 60, Math.PI / 2);
+        
+        // heptagons
+        drawPolygon(shapes, 700, 90, 7, 60, 60, 0);
+        drawPolygon(shapes, 700, 234, 7, 60, 40, 0);
+        drawPolygon(shapes, 700, 374, 7, 60, 0, 0);
+        drawPolygon(shapes, 700, 510, 7, 60, 60, Math.PI);
+        
+        /**
+        * @param {PIXI.Graphics} graphics     A PIXI graphics reference
+        * @param {number}        x            Position x
+        * @param {number}        y            Position y
+        * @param {number}        sides        Number of points (or number of sides for polygons)
+        * @param {number}        radius1      Outer radius of the star
+        * @param {number}        radius2      Inner radius of the star (if equal to radius1, a polygon is drawn)
+        * @param {number}        initialAngle Initial angle (clockwise), by default, stars and polygons are 'pointing' up
+        */
+        function drawPolygon (graphics, x, y, sides, radius1, radius2, initialAngle) {
+            var angle, radius;
+
+            // if they are different doubles the number of sides (star)
+            if (radius2 !== radius1) {
+                sides = 2 * sides;
+            }
+
+            // get all points
+            for (let i = 0; i <= sides; i++) {
+                angle = i * 2 * Math.PI / sides - Math.PI / 2 + initialAngle;
+                radius = i % 2 === 0 ? radius1 : radius2;
+                if (i === 0) {
+                    graphics.moveTo(x + radius * Math.cos(angle), y + radius * Math.sin(angle));
+                } else {
+                    graphics.lineTo(x + radius * Math.cos(angle), y + radius * Math.sin(angle));
+                }
+            }
+        }
+    </script>
+</body>
+</html>
