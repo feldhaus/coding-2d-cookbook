@@ -1,0 +1,153 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Maze Generator</title>
+    <style>
+        * {padding: 0; margin: 0}
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.7.0/pixi.min.js"></script>
+</head>
+<body>
+    <script type="text/javascript">
+        
+        // game constants
+        const COLS = 26;
+        const ROWS = 18;
+        const SIZE = 30;
+        const MARGIN_TOP = 40;
+        const MARGIN_LEFT = 10;
+
+        // create application
+        let app = new PIXI.Application({backgroundColor: 0xd75b66, antialias: true});
+        document.body.appendChild(app.view);
+        
+        // add tip
+        let tip = new PIXI.Text('Click to generate a new maze:', {
+            fontSize: 12, fill: 0xffffff
+        });
+        app.stage.addChild(tip);
+        tip.position.set(5, 5);
+        
+        // create a graphics
+        let graphics = new PIXI.Graphics();
+        app.stage.addChild(graphics);
+        
+        // tiles matrix
+        let tiles = [];
+
+        // get availables neighbours
+        function getAvailable (i, j) {
+            let available = [];
+            let len = tiles[i][j].neighbours.length;
+            for (let ix = 0; ix < len; ix++) {
+                let tile = tiles[i][j].neighbours[ix];
+                if (!tile.visited) {
+                    available.push(tile);
+                }
+            }
+            return available;
+        }
+
+        // maze creation
+        function maze (i, j) {
+            // set tile as visited
+            tiles[i][j].visited = true;
+            
+            // get availables neighbours
+            let available = getAvailable(i, j);
+            
+            // while have available
+            while (available.length > 0) {
+                // get a random neighbor
+                let neighbor = available[Math.floor(Math.random() * available.length)];
+                
+                // removes the neighbor of the current element
+                tiles[i][j].neighbours.splice(tiles[i][j].neighbours.indexOf(neighbor), 1);
+                
+                // removes the current element of neighbor
+                neighbor.neighbours.splice(neighbor.neighbours.indexOf(tiles[i][j]), 1);
+                
+                // execute the process in the neighbor
+                maze(neighbor.col, neighbor.row);
+                
+                // get availables neighbours
+                available = getAvailable(i, j);
+            }
+        }
+        
+        // maze generation
+        function generate () {
+            // create tiles
+            for (let i = 0; i < COLS; i++) {
+                tiles[i] = [];
+                for (let j = 0; j < ROWS; j++) {
+                    tiles[i][j] = {row:j, col:i, visited:false, neighbours:[]};
+                }
+            }
+            
+            // define neighbours
+            for (let i = 0; i < COLS; i++) {
+                for (let j = 0; j < ROWS; j++) {
+                    if (i > 0) tiles[i][j].neighbours.push(tiles[i-1][j]); // west
+                    if (j > 0) tiles[i][j].neighbours.push(tiles[i][j-1]); // north
+                    if (i < COLS - 1) tiles[i][j].neighbours.push(tiles[i+1][j]); // east
+                    if (j < ROWS - 1) tiles[i][j].neighbours.push(tiles[i][j+1]); // south
+                }
+            }
+            
+            // start maze creation
+            maze(0, 0);
+            
+            // clear and set the color
+            graphics.clear();
+            graphics.lineStyle(2, 0x23345c);
+            
+            // drawing
+            for (let i = 0; i < COLS; i++) {
+                for (let j = 0; j < ROWS; j++) {
+                    let px = i * SIZE + MARGIN_LEFT;
+                    let py = j * SIZE + MARGIN_TOP;
+                    let tile = tiles[i][j];
+
+                    graphics.moveTo(px, py);
+                    
+                    // north
+                    if (j > 0 && tile.neighbours.indexOf(tiles[i][j-1]) < 0) {
+                        graphics.moveTo(px + SIZE, py);
+                    } else {
+                        graphics.lineTo(px + SIZE, py);
+                    }
+                    
+                    // east
+                    if (i < COLS - 1 && tile.neighbours.indexOf(tiles[i+1][j]) < 0) {
+                        graphics.moveTo(px + SIZE, py + SIZE);
+                    } else {
+                        graphics.lineTo(px + SIZE, py + SIZE);
+                    }
+                    
+                    // south
+                    if (j < ROWS - 1 && tile.neighbours.indexOf(tiles[i][j+1]) < 0) {
+                        graphics.moveTo(px, py + SIZE);
+                    } else {
+                        graphics.lineTo(px, py + SIZE);
+                    }
+                    
+                    // west
+                    if (i > 0 && tile.neighbours.indexOf(tiles[i-1][j]) < 0) {
+                        graphics.moveTo(px, py);
+                    } else {
+                        graphics.lineTo(px, py);
+                    }
+                }
+            }
+        }
+        
+        // generate the first
+        generate();
+        
+        // generate a new when click
+        app.renderer.plugins.interaction.on('mousedown', generate);
+    </script>
+</body>
+</html>
