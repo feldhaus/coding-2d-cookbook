@@ -11,14 +11,16 @@
 <body>
     <script type="text/javascript">
         
+        const PI_2 = Math.PI / 2;
+        
         // create application
-        let app = new PIXI.Application({backgroundColor: 0x334970, antialias: true});
+        let app = new PIXI.Application({backgroundColor: 0x333333, antialias: true});
         document.body.appendChild(app.view);
         
         // create shape (graphics)
         let shapes = new PIXI.Graphics();
         app.stage.addChild(shapes);
-        shapes.lineStyle(2, 0xe94e77);
+        shapes.lineStyle(2, 0xaaaaaa);
         
         // triangles
         drawPolygon(shapes, 100, 110, 3, 80, 80, 0);
@@ -60,7 +62,7 @@
         * @param {number}        initialAngle Initial angle (clockwise), by default, stars and polygons are 'pointing' up
         */
         function drawPolygon (graphics, x, y, sides, radius1, radius2, initialAngle) {
-            var angle, radius;
+            let angle, radius;
 
             // if they are different doubles the number of sides (star)
             if (radius2 !== radius1) {
@@ -68,8 +70,9 @@
             }
 
             // get all points
+            let slice = Math.PI / sides;
             for (let i = 0; i <= sides; i++) {
-                angle = i * 2 * Math.PI / sides - Math.PI / 2 + initialAngle;
+                angle = i * 2 * slice - PI_2 + initialAngle;
                 radius = i % 2 === 0 ? radius1 : radius2;
                 if (i === 0) {
                     graphics.moveTo(x + radius * Math.cos(angle), y + radius * Math.sin(angle));
