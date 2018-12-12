@@ -14,11 +14,14 @@
         const PI_2 = Math.PI / 2;
         
         // create application
-        let app = new PIXI.Application({backgroundColor: 0x333333, antialias: true});
+        const app = new PIXI.Application({
+            backgroundColor: 0x333333,
+            antialias: true
+        });
         document.body.appendChild(app.view);
         
         // create shape (graphics)
-        let shapes = new PIXI.Graphics();
+        const shapes = new PIXI.Graphics();
         app.stage.addChild(shapes);
         shapes.lineStyle(2, 0xaaaaaa);
         
@@ -53,31 +56,29 @@
         drawPolygon(shapes, 700, 510, 7, 60, 60, Math.PI);
         
         /**
-        * @param {PIXI.Graphics} graphics     A PIXI graphics reference
-        * @param {number}        x            Position x
-        * @param {number}        y            Position y
-        * @param {number}        sides        Number of points (or number of sides for polygons)
-        * @param {number}        radius1      Outer radius of the star
-        * @param {number}        radius2      Inner radius of the star (if equal to radius1, a polygon is drawn)
-        * @param {number}        initialAngle Initial angle (clockwise), by default, stars and polygons are 'pointing' up
+        * @param {PIXI.Graphics} graphics   A PIXI graphics reference
+        * @param {number}        x          Position x
+        * @param {number}        y          Position y
+        * @param {number}        sides      Number of points
+        * @param {number}        radius1    Outer radius of the star
+        * @param {number}        radius2    Inner radius of the star (if equal to radius1, a polygon is drawn)
+        * @param {number}        angle      Initial angle (clockwise), by default, stars and polygons are 'pointing' up
         */
-        function drawPolygon (graphics, x, y, sides, radius1, radius2, initialAngle) {
-            let angle, radius;
-
+        function drawPolygon (graphics, x, y, sides, radius1, radius2, angle) {
             // if they are different doubles the number of sides (star)
             if (radius2 !== radius1) {
                 sides = 2 * sides;
             }
 
             // get all points
-            let slice = Math.PI / sides;
+            const slice = Math.PI / sides;
             for (let i = 0; i <= sides; i++) {
-                angle = i * 2 * slice - PI_2 + initialAngle;
-                radius = i % 2 === 0 ? radius1 : radius2;
+                const a = i * 2 * slice - PI_2 + angle;
+                const r = i % 2 === 0 ? radius1 : radius2;
                 if (i === 0) {
-                    graphics.moveTo(x + radius * Math.cos(angle), y + radius * Math.sin(angle));
+                    graphics.moveTo(x + r * Math.cos(a), y + r * Math.sin(a));
                 } else {
-                    graphics.lineTo(x + radius * Math.cos(angle), y + radius * Math.sin(angle));
+                    graphics.lineTo(x + r * Math.cos(a), y + r * Math.sin(a));
                 }
             }
         }
