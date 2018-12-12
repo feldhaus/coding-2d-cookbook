@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Dashed lines</title>
+    <title>Dashed Lines</title>
     <style>
         * {padding: 0; margin: 0}
     </style>
@@ -11,10 +11,6 @@
 <body>
     <script type="text/javascript">
 
-        // create application
-        let app = new PIXI.Application(800, 600, {backgroundColor: 0x1e023f, antialias: true});
-        document.body.appendChild(app.view);
-        
         // constants
         const PI_2 = Math.PI * 2;
         const RADIUS = 150;
@@ -31,33 +27,61 @@
             {x:   38, y:  -52},
             {x:    0, y: -150}
         ];
+
+        // create application
+        const app = new PIXI.Application({
+            backgroundColor: 0x1e023f,
+            antialias: true
+        });
+        document.body.appendChild(app.view);
         
         // add tip
-        let tip = new PIXI.Text('Use arrows to change dash and gap size:', {fontSize: 12, fill: 0xdcd9c6});
+        const tip = new PIXI.Text(
+            'Use arrows to change dash and gap size:',
+            {
+                fontSize: 12,
+                fill: 0xdcd9c6
+            }
+        );
         app.stage.addChild(tip);
         tip.position.set(5, 5);
         
-        let textDash = new PIXI.Text('- Dash: 10', {fontSize: 10, fill: 0xdcd9c6});
+        const textDash = new PIXI.Text(
+            '- Dash: 10',
+            {
+                fontSize: 12,
+                fill: 0xdcd9c6
+            }
+        );
         app.stage.addChild(textDash);
         textDash.position.set(5, 25);
         
-        let textGap = new PIXI.Text('- Gap: 5', {fontSize: 10, fill: 0xdcd9c6});
+        const textGap = new PIXI.Text(
+            '- Gap: 5',
+            {
+                fontSize: 12,
+                fill: 0xdcd9c6
+            }
+        );
         app.stage.addChild(textGap);
         textGap.position.set(5, 40);
         
         // add circle graphcis
-        let circle = new PIXI.Graphics();
+        const circle = new PIXI.Graphics();
         app.stage.addChild(circle);
         circle.position.set(200, 300);
         
         // add polygon graphcis
-        let polygon = new PIXI.Graphics();
+        const polygon = new PIXI.Graphics();
         app.stage.addChild(polygon);
         polygon.position.set(600, 300);
         
+        // variables
         let elapsedTime = 0;
         let dash = 10;
         let gap = 5;
+
+        // ticker for doing render updates
         app.ticker.add(function(delta) {
             elapsedTime += delta;
             let offset = elapsedTime * 0.01;
@@ -92,13 +116,14 @@
             }
         }
         
-        function drawDashedCircle (graphics, radius, dash, gap, offsetPercentage) {
-            let circum = radius * PI_2;
-            let stepSize = dash + gap;
-            let chunks = Math.ceil(circum / stepSize);
-            let chunkAngle = PI_2 / chunks;
-            let dashAngle = (dash / stepSize) * chunkAngle;
-            let offsetAngle = offsetPercentage * chunkAngle;
+        function drawDashedCircle (graphics, radius, dash, gap, offset) {
+            const circum = radius * PI_2;
+            const stepSize = dash + gap;
+            const chunks = Math.ceil(circum / stepSize);
+            const chunkAngle = PI_2 / chunks;
+            const dashAngle = (dash / stepSize) * chunkAngle;
+            const offsetAngle = offset * chunkAngle;
+
             let theta = offsetAngle;
             
             graphics.moveTo(
@@ -115,15 +140,18 @@
             }
         }
         
-        function drawDashedPolygon (graphics, polygons, dash, gap, offsetPercentage) {
-            let p1;
-            let p2;
+        function drawDashedPolygon (graphics, polygons, dash, gap, offset) {
+            let p1, p2;
             let dashLeft = 0;
             let gapLeft = 0;
+            let dx, dy;
+            let len;
+            let normal;
+            let progressOnLine;
 
-            offsetPercentage %= 1;
-            if (offsetPercentage > 0) {
-                let progressOffset = (dash + gap) * offsetPercentage;
+            offset %= 1;
+            if (offset > 0) {
+                let progressOffset = (dash + gap) * offset;
                 if (progressOffset < dash) {
                     dashLeft = dash - progressOffset;
                 } else {
@@ -138,12 +166,17 @@
                 } else {
                     p2 = polygons[i + 1];
                 }
-                let dx = p2.x - p1.x;
-                let dy = p2.y - p1.y;
-                let len = Math.sqrt(dx * dx + dy * dy);
-                let normal = {x: dx / len, y: dy / len};
-                let progressOnLine = 0;
-                graphics.moveTo(p1.x + gapLeft * normal.x, p1.y + gapLeft * normal.y);
+
+                dx = p2.x - p1.x;
+                dy = p2.y - p1.y;
+                len = Math.sqrt(dx * dx + dy * dy);
+                normal = {x: dx / len, y: dy / len};
+                progressOnLine = 0;
+
+                graphics.moveTo(
+                    p1.x + gapLeft * normal.x,
+                    p1.y + gapLeft * normal.y
+                );
                 while (progressOnLine <= len){
                     progressOnLine += gapLeft;
                     if (dashLeft > 0) {
