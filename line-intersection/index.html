@@ -12,29 +12,38 @@
     <script type="text/javascript">
         
         // create application
-        let app = new PIXI.Application({backgroundColor: 0x334970, antialias: true});
+        const app = new PIXI.Application({
+            backgroundColor: 0x282726,
+            antialias: true
+        });
         document.body.appendChild(app.view);
         
         // add tip
-        let tip = new PIXI.Text('Drag and drop the dots:', {fontSize: 12, fill: 0xffffff});
+        let tip = new PIXI.Text(
+            'Drag and drop the dots:',
+            {
+                fontSize: 12,
+                fill: 0xaaaaaa
+            }
+        );
         app.stage.addChild(tip);
         tip.position.set(5, 5);
         
         // draw the feedback
-        let feedback = new PIXI.Graphics();
+        const feedback = new PIXI.Graphics();
         app.stage.addChild(feedback);
         
         // add interactive dots
-        let dot1 = createDot(100, 100);
+        const dot1 = createDot(100, 100);
         app.stage.addChild(dot1);
         
-        let dot2 = createDot(500, 280);
+        const dot2 = createDot(500, 280);
         app.stage.addChild(dot2);
         
-        let dot3 = createDot(200, 400);
+        const dot3 = createDot(200, 400);
         app.stage.addChild(dot3);
         
-        let dot4 = createDot(300, 120);
+        const dot4 = createDot(300, 120);
         app.stage.addChild(dot4);
         
         // ticker for doing render updates
@@ -43,7 +52,7 @@
             feedback.clear();
             
             // set line style
-            feedback.lineStyle(1, 0xf9f5fA);
+            feedback.lineStyle(1, 0xaaaaaa);
             
             // draw a line between dot1 and dot2
             feedback.moveTo(dot1.x, dot1.y);
@@ -54,12 +63,12 @@
             feedback.lineTo(dot4.x, dot4.y);
             
             // get intersection
-            let intersection = checkLineIntersection(dot1, dot2, dot3, dot4);
+            const intersection = checkLineIntersection(dot1, dot2, dot3, dot4);
             if (intersection.onLine1 || intersection.onLine2) {
                 if (intersection.onLine1 && intersection.onLine2) {
-                    feedback.beginFill(0xa594aa);
+                    feedback.beginFill(0xaaaaaa);
                 } else {
-                    feedback.beginFill(0x5b1977);
+                     feedback.beginFill(0x333333);
                 }
                 feedback.drawCircle(intersection.x, intersection.y, 5);
             } else {
@@ -69,7 +78,7 @@
         
         function createDot (x, y) {
             // create a PIXI graphics object
-            let dot = new PIXI.Graphics();
+            const dot = new PIXI.Graphics();
             dot.beginFill(0xe94e77);
             dot.drawCircle(0, 0, 10);
             dot.position.set(x, y);
@@ -105,19 +114,21 @@
 
         function onDragMove () {
             if (this.dragging) {
-                let newPosition = this.data.getLocalPosition(this.parent);
+                const newPosition = this.data.getLocalPosition(this.parent);
                 this.x = newPosition.x;
                 this.y = newPosition.y;
             }
         }
         
         function checkLineIntersection (line1Start, line1End, line2Start, line2End) {
-	       let result = {x: null, y: null, onLine1: false, onLine2: false};
+            const result = {x: null, y: null, onLine1: false, onLine2: false};
 
             // if the feedback intersect, the result contains the x and y
             // of the intersection (treating the feedback as infinite) and
             // booleans for whether line segment 1 or line segment 2 contain the point
-            let denominator = ((line2End.y - line2Start.y) * (line1End.x - line1Start.x)) - ((line2End.x - line2Start.x) * (line1End.y - line1Start.y));
+            const denominator =
+                ((line2End.y - line2Start.y) * (line1End.x - line1Start.x)) -
+                ((line2End.x - line2Start.x) * (line1End.y - line1Start.y));
 
             if (denominator === 0) {
                 return result;
@@ -125,8 +136,12 @@
             
             let a = line1Start.y - line2Start.y;
             let b = line1Start.x - line2Start.x;
-            let numerator1 = ((line2End.x - line2Start.x) * a) - ((line2End.y - line2Start.y) * b);
-            let numerator2 = ((line1End.x - line1Start.x) * a) - ((line1End.y - line1Start.y) * b);
+            const numerator1 = 
+                ((line2End.x - line2Start.x) * a) -
+                ((line2End.y - line2Start.y) * b);
+            const numerator2 = 
+                ((line1End.x - line1Start.x) * a) -
+                ((line1End.y - line1Start.y) * b);
             a = numerator1 / denominator;
             b = numerator2 / denominator;
 
@@ -144,7 +159,7 @@
             }
             // if line1 and line2 are segments, they intersect if both of the above are true
             return result;
-        };
+        }
     </script>
 </body>
 </html>
