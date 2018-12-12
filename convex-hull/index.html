@@ -18,11 +18,20 @@ https://en.wikipedia.org/wiki/Graham_scan
     <script type="text/javascript">
         
         // create application
-        let app = new PIXI.Application({backgroundColor: 0x282726, antialias: true});
+        const app = new PIXI.Application({
+            backgroundColor: 0x282726,
+            antialias: true
+        });
         document.body.appendChild(app.view);
         
         // add tip
-        let tip = new PIXI.Text('Drag and drop the dots:', {fontSize: 10, fill: 0xaaaaaa});
+        const tip = new PIXI.Text(
+            'Drag and drop the dots:',
+            {
+                fontSize: 12,
+                fill: 0xaaaaaa
+            }
+        );
         app.stage.addChild(tip);
         tip.position.set(5, 5);
         
@@ -31,17 +40,17 @@ https://en.wikipedia.org/wiki/Graham_scan
         const COLOR2 = 0x5faf00;
         
         // draw the feedback
-        let feedback = new PIXI.Graphics();
+        const feedback = new PIXI.Graphics();
         app.stage.addChild(feedback);
         
         // create dots
+        const width = app.renderer.width;
+        const height = app.renderer.height;
         let dotsInner = [];
         let dotsOuter = [];
-        let width = app.renderer.width;
-        let height = app.renderer.height;
         let px, py;
         let dot;
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 5; i++) { // inner
             px = 100 + Math.random() * (width - 200);
             py = 100 + Math.random() * (height - 200);
             dot = createDot(px, py, COLOR1);
@@ -49,7 +58,7 @@ https://en.wikipedia.org/wiki/Graham_scan
             dotsOuter.push(dot);
             app.stage.addChild(dot);
         }
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 10; i++) { // outer
             px = 20 + Math.random() * (width - 40);
             py = 20 + Math.random() * (height - 40);
             dot = createDot(px, py, COLOR2);
@@ -62,12 +71,18 @@ https://en.wikipedia.org/wiki/Graham_scan
 
         function createDot (x, y, color) {
             // create a PIXI graphic object
-            let dot = new PIXI.Graphics();
+            const dot = new PIXI.Graphics();
             dot.beginFill(color);
             dot.drawCircle(0, 0, 5);
             dot.position.set(x, y);
             
-            let txt = new PIXI.Text(x.toFixed(0) + ',' + y.toFixed(0), {fontSize: 12, fill: 0xffffff});
+            const txt = new PIXI.Text(
+                x.toFixed(0) + ',' + y.toFixed(0),
+                {
+                    fontSize: 12,
+                    fill: 0xffffff
+                }
+            );
             dot.addChild(txt);
             
             // enable the dot to be interactive
@@ -116,7 +131,7 @@ https://en.wikipedia.org/wiki/Graham_scan
         }
         
         function drawLine (dots, color) {
-            let points = computeConvexHull(dots);
+            const points = computeConvexHull(dots);
             
             if (points && points.length > 0) {
                 feedback.lineStyle(2, color);
@@ -134,8 +149,8 @@ https://en.wikipedia.org/wiki/Graham_scan
                 return;
             }
             
-            let points = dots.concat();
-            let len = points.length;
+            const points = dots.concat();
+            const len = points.length;
 
             // the first step is to find the point with the lowest y-coordinate,
             // if the lowest y-coordinate exists in more than one point in the set, 
@@ -152,7 +167,7 @@ https://en.wikipedia.org/wiki/Graham_scan
             }
             
             // set the min as the first
-            let tmp = points[0];
+            const tmp = points[0];
             points[0] = points[min];
             points[min] = tmp;
             
@@ -170,7 +185,7 @@ https://en.wikipedia.org/wiki/Graham_scan
             
             // create a stack
             let n = 2;
-            let stack = [points[0], points[1], points[2]];
+            const stack = [points[0], points[1], points[2]];
             for (let i = 3; i < points.length; i++) {
                 while (ccw(stack[n - 1], stack[n], points[i]) <= 0) {
                     stack.pop();
@@ -184,7 +199,8 @@ https://en.wikipedia.org/wiki/Graham_scan
         }
         
         function getDistance (p1, p2) {
-            return ((p2.x - p1.x) * (p2.x - p1.x) + (p2.y - p1.y) * (p2.y - p1.y));
+            return
+                (p2.x - p1.x) * (p2.x - p1.x) + (p2.y - p1.y) * (p2.y - p1.y);
         }
         
         function getAngle (p1, p2) {
