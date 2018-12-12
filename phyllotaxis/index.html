@@ -11,52 +11,59 @@
 <body>
     <script type="text/javascript">
 
+        // convert degrees to radians
+        const DEG2RAD = Math.PI / 180;
+
         // create application
-        let app = new PIXI.Application({backgroundColor: 0x333333, antialias: true});
+        const app = new PIXI.Application({
+            backgroundColor: 0x999999,
+            antialias: true
+        });
         document.body.appendChild(app.view);
         
         // create shape (graphics)
-        let graphics = new PIXI.Graphics();
+        const graphics = new PIXI.Graphics();
         app.stage.addChild(graphics);
         graphics.position.set(400, 300);
         
-        // convert degrees to radians
-        const deg2rad = Math.PI / 180;
-        
         // convert the golden angle to radians
-        const goldenAngle = 137.5 * deg2rad;
+        const goldenAngle = 137.5 * DEG2RAD;
         
         // scaling parameter
         const c = 8;
         
         // is the ordering number of a floret, counting outward from the center
         let n = 0;
+        let color = 0;
         
         app.ticker.add(function(delta) {
-            // is the angle between a reference direction and the position vector
-            // of the nth floret in a polar coordinate system originating at
-            // the center of the capitulum. It follows that the divergence angle
-            // between the position vectors of any two successive florets is
-            // constant, α = 137.5◦
-            let a = n * goldenAngle;
+            // is the angle between a reference direction and the position
+            // vector of the nth floret in a polar coordinate system originating
+            // at the center of the capitulum. It follows that the divergence
+            // angle between the position vectors of any two successive florets
+            // is constant, α = 137.5◦
+            const a = n * goldenAngle;
             
             // is the distance between the center of the capitulum and the
             // center of the nth floret, given a constant scaling parameter c
-            let r = c * Math.sqrt(n);
+            const r = c * Math.sqrt(n);
             
             // x and y position
-            let x = r * Math.cos(a);
-            let y = r * Math.sin(a);
+            const x = r * Math.cos(a);
+            const y = r * Math.sin(a);
             
-            // get the color
-            let color = getColor(n);
-            
-            // draw a circle
-            graphics.beginFill(color);
-            graphics.drawCircle(x, y, 4);
-            
-            // increase n
-            n++;
+            const radius = c - n * 0.005;
+            if (radius > 0) {
+                // draw a circle
+                graphics.beginFill(0);
+                graphics.drawCircle(x, y, radius);
+
+                // increase n
+                n++;
+            } else {
+                n = 0;
+                graphics.clear();
+            }            
         });
         
         /**
