@@ -12,11 +12,20 @@
     <script type="text/javascript">
 
         // create application
-        let app = new PIXI.Application({backgroundColor: 0x3f3232, antialias: true});
+        const app = new PIXI.Application({
+            backgroundColor: 0x3f3232,
+            antialias: true
+        });
         document.body.appendChild(app.view);
         
         // add tip
-        let tip = new PIXI.Text('Use arrows UP and DOWN to change the number of slices:', {fontSize: 12, fill: 0xdcd9c6});
+        const tip = new PIXI.Text(
+            'Use arrows UP and DOWN to change the number of slices:',
+            {
+                fontSize: 12,
+                fill: 0xdcd9c6
+            }
+        );
         app.stage.addChild(tip);
         tip.position.set(5, 5);
         
@@ -25,15 +34,15 @@
         const RADIUS = 150;
         
         // add circles (graphcis)
-        let circle = new PIXI.Graphics();
+        const circle = new PIXI.Graphics();
         app.stage.addChild(circle);
         circle.position.set(400, 300);
         
-        let circle1 = new PIXI.Graphics();
+        const circle1 = new PIXI.Graphics();
         app.stage.addChild(circle1);
         circle1.position.set(100, 500);
         
-        let circle2 = new PIXI.Graphics();
+        const circle2 = new PIXI.Graphics();
         app.stage.addChild(circle2);
         circle2.position.set(700, 100);
         
@@ -63,7 +72,7 @@
         });
         
         function addText (txt, position, anchor) {
-            let tip = new PIXI.Text(txt, {fontSize: 24, fill: 0xdcd9c6});
+            const tip = new PIXI.Text(txt, {fontSize: 24, fill: 0xdcd9c6});
             app.stage.addChild(tip);
             tip.anchor.set(anchor.x, anchor.y);
             tip.position.set(position.x, position.y);
@@ -75,8 +84,8 @@
             let hypot = Math.hypot(mouse.x - circle.x, mouse.y - circle.y);
             if (angle < 0) { angle += PI_2; }
 
-            let sliceCirc = PI_2 / slices;
-            let temp = angle / sliceCirc;
+            const sliceCirc = PI_2 / slices;
+            const temp = angle / sliceCirc;
             
             circle.clear();
             circle.lineStyle(2, 0xdcd9c6);
@@ -92,12 +101,12 @@
         }
         
         function updateRunningCircle (shape, radius, direction, speed) {
-            let circum = elapsedTime * speed;
-            let temp = Math.floor(circum / PI_2) % 2 === 0;
+            const circum = elapsedTime * speed;
+            const invert = Math.floor(circum / PI_2) % 2 === 0;
 
             shape.clear();
             shape.lineStyle(20, 0xdcd9c6);
-            if (temp) {
+            if (invert) {
                 shape.arc(0, 0, radius, 0, circum % PI_2 * direction);
             } else {
                 shape.arc(0, 0, radius, circum % PI_2 * direction, 0);
