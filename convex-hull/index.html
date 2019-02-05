@@ -17,27 +17,36 @@ https://en.wikipedia.org/wiki/Graham_scan
 <body>
     <script type="text/javascript">
         
+        // constants
+        const WIDTH = 800;
+        const HEIGHT = 600;
+        const COLOR = {
+            gunmetal: 0x2C363F,
+            darkpink: 0xE75A7C,
+            isabelline: 0xF2F5EA,
+            timberwolf: 0xD6DBD2,
+            darkvanilla: 0xBBC7A4,
+        };
+        const FONTSTYLE = {
+            fontSize: 14,
+            fontFamily: "\"Courier New\", Courier, monospace",
+            fill: COLOR.timberwolf,
+        };
+        
         // create application
-        const app = new PIXI.Application({
-            backgroundColor: 0x282726,
+        const app = new PIXI.Application(WIDTH, HEIGHT, {
+            backgroundColor: COLOR.gunmetal,
             antialias: true
         });
         document.body.appendChild(app.view);
         
         // add tip
         const tip = new PIXI.Text(
-            'Drag and drop the dots:',
-            {
-                fontSize: 12,
-                fill: 0xaaaaaa
-            }
+            'DRAG and DROP the dots:',
+            FONTSTYLE
         );
         app.stage.addChild(tip);
         tip.position.set(5, 5);
-        
-        // constants
-        const COLOR1 = 0xe94e77;
-        const COLOR2 = 0x5faf00;
         
         // draw the feedback
         const feedback = new PIXI.Graphics();
@@ -46,14 +55,14 @@ https://en.wikipedia.org/wiki/Graham_scan
         // create dots
         const width = app.renderer.width;
         const height = app.renderer.height;
-        let dotsInner = [];
-        let dotsOuter = [];
+        const dotsInner = [];
+        const dotsOuter = [];
         let px, py;
         let dot;
         for (let i = 0; i < 5; i++) { // inner
             px = 100 + Math.random() * (width - 200);
             py = 100 + Math.random() * (height - 200);
-            dot = createDot(px, py, COLOR1);
+            dot = createDot(px, py, COLOR.darkpink);
             dotsInner.push(dot);
             dotsOuter.push(dot);
             app.stage.addChild(dot);
@@ -61,7 +70,7 @@ https://en.wikipedia.org/wiki/Graham_scan
         for (let i = 0; i < 10; i++) { // outer
             px = 20 + Math.random() * (width - 40);
             py = 20 + Math.random() * (height - 40);
-            dot = createDot(px, py, COLOR2);
+            dot = createDot(px, py, COLOR.darkvanilla);
             dotsOuter.push(dot);
             app.stage.addChild(dot);
         }
@@ -80,7 +89,7 @@ https://en.wikipedia.org/wiki/Graham_scan
                 x.toFixed(0) + ',' + y.toFixed(0),
                 {
                     fontSize: 12,
-                    fill: 0xffffff
+                    fill: COLOR.isabelline
                 }
             );
             dot.addChild(txt);
@@ -116,18 +125,17 @@ https://en.wikipedia.org/wiki/Graham_scan
 
         function onDragMove () {
             if (this.dragging) {
-                let newPosition = this.data.getLocalPosition(this.parent);
+                const newPosition = this.data.getLocalPosition(this.parent);
                 this.x = newPosition.x;
                 this.y = newPosition.y;
-                
                 drawConvexHull();
             }
         }
         
         function drawConvexHull () {
             feedback.clear();
-            drawLine(dotsInner, COLOR1);
-            drawLine(dotsOuter, COLOR2);
+            drawLine(dotsInner, COLOR.darkpink);
+            drawLine(dotsOuter, COLOR.darkvanilla);
         }
         
         function drawLine (dots, color) {
@@ -136,7 +144,7 @@ https://en.wikipedia.org/wiki/Graham_scan
             if (points && points.length > 0) {
                 feedback.lineStyle(2, color);
                 feedback.moveTo(points[0].x, points[0].y);
-                for (var i = 1; i < points.length; i++) {
+                for (let i = 1; i < points.length; i++) {
                     feedback.lineTo(points[i].x, points[i].y);
                 }
                 feedback.lineTo(points[0].x, points[0].y);

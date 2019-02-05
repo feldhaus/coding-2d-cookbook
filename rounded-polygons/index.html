@@ -19,20 +19,33 @@ http://jsfiddle.net/MadLittleMods/vqKvM/39/
 <body>
     <script type="text/javascript">
         
+        // constants
+        const WIDTH = 800;
+        const HEIGHT = 600;
+        const COLOR = {
+            gunmetal: 0x2C363F,
+            darkpink: 0xE75A7C,
+            isabelline: 0xF2F5EA,
+            timberwolf: 0xD6DBD2,
+            darkvanilla: 0xBBC7A4,
+        };
+        const FONTSTYLE = {
+            fontSize: 14,
+            fontFamily: "\"Courier New\", Courier, monospace",
+            fill: COLOR.timberwolf,
+        };
+
         // create application
-        const app = new PIXI.Application({
-            backgroundColor: 0x151515,
+        const app = new PIXI.Application(WIDTH, HEIGHT, {
+            backgroundColor: COLOR.gunmetal,
             antialias: true
         });
         document.body.appendChild(app.view);
         
         // add tip
         const tip = new PIXI.Text(
-            'Click to create a new polygon:',
-            {
-                fontSize: 12,
-                fill: 0xe9b872
-            }
+            'CLICK to create a new polygon:',
+            FONTSTYLE
         );
         app.stage.addChild(tip);
         tip.position.set(5, 5);
@@ -48,7 +61,7 @@ http://jsfiddle.net/MadLittleMods/vqKvM/39/
         app.renderer.plugins.interaction.on('pointerdown', addPoint);
         
         // draw a sample shape (star)
-        graphics.lineStyle(5, 0xa63d40);
+        graphics.lineStyle(5, COLOR.darkpink);
         const shape1 = [
             new PIXI.Point(200, 100),
             new PIXI.Point(220, 150),
@@ -82,10 +95,10 @@ http://jsfiddle.net/MadLittleMods/vqKvM/39/
             if (points.length > 2) {
                 graphics.clear();
                 
-                graphics.lineStyle(1, 0xffffff, 0.5);
+                graphics.lineStyle(1, COLOR.isabelline, 0.5);
                 graphics.drawPolygon(points.concat(points[0]));
 
-                graphics.lineStyle(5, 0xa63d40);
+                graphics.lineStyle(5, COLOR.darkpink);
                 drawRoundedPolygon(
                     straightSkeleton(points, 20),
                     20
@@ -93,8 +106,8 @@ http://jsfiddle.net/MadLittleMods/vqKvM/39/
 
                 graphics.endFill();
             }
-            graphics.lineStyle(1, 0xffffff, 1);
-            graphics.beginFill(0xffffff);
+            graphics.lineStyle(1, COLOR.isabelline, 1);
+            graphics.beginFill(COLOR.isabelline);
             graphics.drawCircle(event.data.global.x, event.data.global.y, 2);
             graphics.endFill();
         }

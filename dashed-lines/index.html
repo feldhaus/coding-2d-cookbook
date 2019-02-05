@@ -12,8 +12,21 @@
     <script type="text/javascript">
 
         // constants
+        const WIDTH = 800;
+        const HEIGHT = 600;
+        const COLOR = {
+            gunmetal: 0x2C363F,
+            darkpink: 0xE75A7C,
+            isabelline: 0xF2F5EA,
+            timberwolf: 0xD6DBD2,
+            darkvanilla: 0xBBC7A4,
+        };
+        const FONTSTYLE = {
+            fontSize: 14,
+            fontFamily: "\"Courier New\", Courier, monospace",
+            fill: COLOR.timberwolf,
+        };
         const PI_2 = Math.PI * 2;
-        const RADIUS = 150;
         const POLYGONS = [
             {x:    0, y: -150},
             {x:  -38, y:  -52},
@@ -29,42 +42,19 @@
         ];
 
         // create application
-        const app = new PIXI.Application({
-            backgroundColor: 0x1e023f,
+        const app = new PIXI.Application(WIDTH, HEIGHT, {
+            backgroundColor: COLOR.gunmetal,
             antialias: true
         });
         document.body.appendChild(app.view);
         
         // add tip
         const tip = new PIXI.Text(
-            'Use arrows to change dash and gap size:',
-            {
-                fontSize: 12,
-                fill: 0xdcd9c6
-            }
+            'Use ARROWS to change dash (⇦ ⇨) and gap (⇧ ⇩) size:',
+            FONTSTYLE
         );
         app.stage.addChild(tip);
         tip.position.set(5, 5);
-        
-        const textDash = new PIXI.Text(
-            '- Dash: 10',
-            {
-                fontSize: 12,
-                fill: 0xdcd9c6
-            }
-        );
-        app.stage.addChild(textDash);
-        textDash.position.set(5, 25);
-        
-        const textGap = new PIXI.Text(
-            '- Gap: 5',
-            {
-                fontSize: 12,
-                fill: 0xdcd9c6
-            }
-        );
-        app.stage.addChild(textGap);
-        textGap.position.set(5, 40);
         
         // add circle graphcis
         const circle = new PIXI.Graphics();
@@ -84,14 +74,14 @@
         // ticker for doing render updates
         app.ticker.add(function(delta) {
             elapsedTime += delta;
-            let offset = elapsedTime * 0.01;
+            const offset = elapsedTime * 0.01;
             
             circle.clear();
-            circle.lineStyle(5, 0xfc82c3);
+            circle.lineStyle(5, COLOR.darkpink);
             drawDashedCircle(circle, 150, dash, gap, offset);
             
             polygon.clear();
-            polygon.lineStyle(3, 0x2fb5f3);
+            polygon.lineStyle(3, COLOR.isabelline);
             drawDashedPolygon(polygon, POLYGONS, dash, gap, offset);
             polygon.rotation += delta * 0.01;
         });
@@ -100,19 +90,15 @@
             // dash (min: 1 - max: 50)
             if (event.keyCode === 39) {
                 dash = Math.min(dash + 1, 50);
-                textDash.text = '- Dash: ' + dash;
             } else if (event.keyCode === 37) {
                 dash = Math.max(dash - 1, 1);
-                textDash.text = '- Dash: ' + dash;
             }
 
             // gap (min: 1 - max: 50)
             if (event.keyCode === 38) {
                 gap = Math.min(gap + 1, 50);
-                textGap.text = '- Gap: ' + gap;
             } else if (event.keyCode === 40) {
                 gap = Math.max(gap - 1, 1);
-                textGap.text = '- Gap: ' + gap;
             }
         }
         
@@ -148,10 +134,11 @@
             let len;
             let normal;
             let progressOnLine;
+            let progressOffset;
 
             offset %= 1;
             if (offset > 0) {
-                let progressOffset = (dash + gap) * offset;
+                progressOffset = (dash + gap) * offset;
                 if (progressOffset < dash) {
                     dashLeft = dash - progressOffset;
                 } else {

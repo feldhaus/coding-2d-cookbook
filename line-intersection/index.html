@@ -11,20 +11,33 @@
 <body>
     <script type="text/javascript">
         
+        // constants
+        const WIDTH = 800;
+        const HEIGHT = 600;
+        const COLOR = {
+            gunmetal: 0x2C363F,
+            darkpink: 0xE75A7C,
+            isabelline: 0xF2F5EA,
+            timberwolf: 0xD6DBD2,
+            darkvanilla: 0xBBC7A4,
+        };
+        const FONTSTYLE = {
+            fontSize: 14,
+            fontFamily: "\"Courier New\", Courier, monospace",
+            fill: COLOR.timberwolf,
+        };
+
         // create application
-        const app = new PIXI.Application({
-            backgroundColor: 0x282726,
+        const app = new PIXI.Application(WIDTH, HEIGHT, {
+            backgroundColor: COLOR.gunmetal,
             antialias: true
         });
         document.body.appendChild(app.view);
         
         // add tip
-        let tip = new PIXI.Text(
-            'Drag and drop the dots:',
-            {
-                fontSize: 12,
-                fill: 0xaaaaaa
-            }
+        const tip = new PIXI.Text(
+            'DRAG and DROP the dots:',
+            FONTSTYLE
         );
         app.stage.addChild(tip);
         tip.position.set(5, 5);
@@ -52,7 +65,7 @@
             feedback.clear();
             
             // set line style
-            feedback.lineStyle(1, 0xaaaaaa);
+            feedback.lineStyle(1, COLOR.isabelline);
             
             // draw a line between dot1 and dot2
             feedback.moveTo(dot1.x, dot1.y);
@@ -66,9 +79,9 @@
             const intersection = checkLineIntersection(dot1, dot2, dot3, dot4);
             if (intersection.onLine1 || intersection.onLine2) {
                 if (intersection.onLine1 && intersection.onLine2) {
-                    feedback.beginFill(0xaaaaaa);
+                    feedback.beginFill(COLOR.isabelline);
                 } else {
-                     feedback.beginFill(0x333333);
+                    feedback.beginFill(COLOR.gunmetal);
                 }
                 feedback.drawCircle(intersection.x, intersection.y, 5);
             } else {
@@ -79,7 +92,7 @@
         function createDot (x, y) {
             // create a PIXI graphics object
             const dot = new PIXI.Graphics();
-            dot.beginFill(0xe94e77);
+            dot.beginFill(COLOR.darkpink);
             dot.drawCircle(0, 0, 10);
             dot.position.set(x, y);
             
