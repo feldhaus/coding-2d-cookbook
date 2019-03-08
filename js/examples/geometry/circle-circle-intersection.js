@@ -1,44 +1,25 @@
 // constants
-const WIDTH = 800;
-const HEIGHT = 600;
 const COLOR = {
-    gunmetal: 0x2C363F,
-    darkpink: 0xE75A7C,
-    isabelline: 0xF2F5EA,
-    timberwolf: 0xD6DBD2,
-    darkvanilla: 0xBBC7A4,
+    grey: 0x21252f,
+    pink: 0xec407a,
+    white: 0xf2f5ea
 };
-const FONTSTYLE = {
-    fontSize: 14,
-    fontFamily: "\"Courier New\", Courier, monospace",
-    fill: COLOR.timberwolf,
-};
-const RADIUS1 = 150;
-const RADIUS2 = 100;
 
 // create application
-const app = new PIXI.Application(WIDTH, HEIGHT, {
-    backgroundColor: COLOR.gunmetal,
+const app = new PIXI.Application({
+    backgroundColor: COLOR.grey,
     antialias: true
 });
 document.body.appendChild(app.view);
 
-// add tip
-const tip = new PIXI.Text(
-    'DRAG and DROP the circles:',
-    FONTSTYLE
-);
-app.stage.addChild(tip);
-tip.position.set(5, 5);
-
 // add circle 1
 const circle1 = new PIXI.Graphics();
 app.stage.addChild(circle1);
-circle1.lineStyle(1, COLOR.isabelline);
-circle1.beginFill(0, 0.01)
-circle1.drawCircle(0, 0, RADIUS1);
-circle1.position.set(WIDTH / 2 - 100, HEIGHT / 2);
-circle1.r = RADIUS1; // store radius
+circle1.position.set(app.renderer.width / 2 - 100, app.renderer.height / 2);
+circle1.r = 150;
+circle1.lineStyle(3, COLOR.white);
+circle1.beginFill(0, 0);
+circle1.drawCircle(0, 0, circle1.r);
 circle1.interactive = true;
 circle1.buttonMode = true;
 circle1.dragOffset = new PIXI.Point();
@@ -51,11 +32,11 @@ circle1
 // add circle 2
 const circle2 = new PIXI.Graphics();
 app.stage.addChild(circle2);
-circle2.lineStyle(1, COLOR.isabelline);
-circle2.beginFill(0, 0.01)
-circle2.drawCircle(0, 0, RADIUS2);
-circle2.position.set(WIDTH / 2 + 100, HEIGHT / 2);
-circle2.r = RADIUS2; // store radius
+circle2.position.set(app.renderer.width / 2 + 100, app.renderer.height / 2);
+circle2.r = 100;
+circle2.lineStyle(3, COLOR.white);
+circle2.beginFill(0, 0);
+circle2.drawCircle(0, 0, circle2.r);
 circle2.interactive = true;
 circle2.buttonMode = true;
 circle2.dragOffset = new PIXI.Point();
@@ -69,13 +50,13 @@ circle2
 const rect1 = new PIXI.Sprite(PIXI.Texture.WHITE);
 app.stage.addChild(rect1);
 rect1.anchor.set(0.5, 0.5);
-rect1.tint = COLOR.darkpink;
+rect1.tint = COLOR.pink;
 
 // add rect 2
 const rect2 = new PIXI.Sprite(PIXI.Texture.WHITE);
 app.stage.addChild(rect2);
 rect2.anchor.set(0.5, 0.5);
-rect2.tint = COLOR.darkpink;
+rect2.tint = COLOR.pink;
 
 // drag functions
 function onDragStart (event) {
@@ -89,14 +70,13 @@ function onDragEnd (event) {
 }
 
 function onDragMove (event) {
-    if (this.dragging) {
-        const position = event.data.getLocalPosition(this.parent);
-        this.position.set(
-            position.x - this.dragOffset.x,
-            position.y - this.dragOffset.y
-        );
-        calcCircleIntersection();
-    }
+    if (!this.dragging) return;
+    const position = event.data.getLocalPosition(this.parent);
+    this.position.set(
+        position.x - this.dragOffset.x,
+        position.y - this.dragOffset.y
+    );
+    calcCircleIntersection();
 }
 
 // circle-circle-intersection

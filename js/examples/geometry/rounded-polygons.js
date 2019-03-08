@@ -1,33 +1,16 @@
 // constants
-const WIDTH = 800;
-const HEIGHT = 600;
 const COLOR = {
-    gunmetal: 0x2C363F,
-    darkpink: 0xE75A7C,
-    isabelline: 0xF2F5EA,
-    timberwolf: 0xD6DBD2,
-    darkvanilla: 0xBBC7A4,
-};
-const FONTSTYLE = {
-    fontSize: 14,
-    fontFamily: "\"Courier New\", Courier, monospace",
-    fill: COLOR.timberwolf,
+    grey: 0x21252f,
+    pink: 0xec407a,
+    white: 0xf2f5ea
 };
 
 // create application
-const app = new PIXI.Application(WIDTH, HEIGHT, {
-    backgroundColor: COLOR.gunmetal,
+const app = new PIXI.Application({
+    backgroundColor: COLOR.grey,
     antialias: true
 });
 document.body.appendChild(app.view);
-
-// add tip
-const tip = new PIXI.Text(
-    'CLICK to create a new polygon:',
-    FONTSTYLE
-);
-app.stage.addChild(tip);
-tip.position.set(5, 5);
 
 // add the graphics
 const graphics = new PIXI.Graphics();
@@ -40,7 +23,7 @@ const points = [];
 app.renderer.plugins.interaction.on('pointerdown', addPoint);
 
 // draw a sample shape (star)
-graphics.lineStyle(5, COLOR.darkpink);
+graphics.lineStyle(5, COLOR.pink);
 const shape1 = [
     new PIXI.Point(200, 100),
     new PIXI.Point(220, 150),
@@ -74,10 +57,10 @@ function addPoint (event) {
     if (points.length > 2) {
         graphics.clear();
         
-        graphics.lineStyle(1, COLOR.isabelline, 0.5);
+        graphics.lineStyle(1, COLOR.white, 0.5);
         graphics.drawPolygon(points.concat(points[0]));
 
-        graphics.lineStyle(5, COLOR.darkpink);
+        graphics.lineStyle(5, COLOR.pink);
         drawRoundedPolygon(
             straightSkeleton(points, 20),
             20
@@ -85,8 +68,8 @@ function addPoint (event) {
 
         graphics.endFill();
     }
-    graphics.lineStyle(1, COLOR.isabelline, 1);
-    graphics.beginFill(COLOR.isabelline);
+    graphics.lineStyle(1, COLOR.white, 1);
+    graphics.beginFill(COLOR.white);
     graphics.drawCircle(event.data.global.x, event.data.global.y, 2);
     graphics.endFill();
 }

@@ -1,35 +1,18 @@
 // constants
-const WIDTH = 800;
-const HEIGHT = 600;
 const COLOR = {
-    gunmetal: 0x2C363F,
-    darkpink: 0xE75A7C,
-    isabelline: 0xF2F5EA,
-    timberwolf: 0xD6DBD2,
-    darkvanilla: 0xBBC7A4,
-};
-const FONTSTYLE = {
-    fontSize: 14,
-    fontFamily: "\"Courier New\", Courier, monospace",
-    fill: COLOR.timberwolf,
+    grey: 0x21252f,
+    pink: 0xec407a,
+    white: 0xf2f5ea
 };
 const PI_2 = Math.PI * 2;
 const RADIUS = 150;
 
 // create application
-const app = new PIXI.Application(WIDTH, HEIGHT, {
-    backgroundColor: COLOR.gunmetal,
+const app = new PIXI.Application({
+    backgroundColor: COLOR.grey,
     antialias: true
 });
 document.body.appendChild(app.view);
-
-// add tip
-const tip = new PIXI.Text(
-    'Use ARROWS (⇧ ⇩) to change the number of slices:',
-    FONTSTYLE
-);
-app.stage.addChild(tip);
-tip.position.set(5, 5);
 
 // variables
 let slices = 20;
@@ -38,15 +21,15 @@ let elapsedTime = 0;
 // add circles
 const circle = new PIXI.Graphics();
 app.stage.addChild(circle);
-circle.position.set(WIDTH / 2, HEIGHT / 2);
+circle.position.set(app.renderer.width / 2, app.renderer.height / 2);
 
 const circle1 = new PIXI.Graphics();
 app.stage.addChild(circle1);
-circle1.position.set(100, HEIGHT - 100);
+circle1.position.set(100, app.renderer.height - 100);
 
 const circle2 = new PIXI.Graphics();
 app.stage.addChild(circle2);
-circle2.position.set(WIDTH - 100, 100);
+circle2.position.set(app.renderer.width - 100, 100);
 
 // add labels
 addText(
@@ -90,7 +73,7 @@ document.onkeydown = function (event) {
 function addText (txt, position, anchor) {
     const tip = new PIXI.Text(txt, {
         fontSize: 24,
-        fill: COLOR.darkpink
+        fill: COLOR.pink
     });
     app.stage.addChild(tip);
     tip.anchor.set(anchor.x, anchor.y);
@@ -107,10 +90,10 @@ function updateMainCircle () {
     const temp = angle / sliceCirc;
     
     circle.clear();
-    circle.lineStyle(2, COLOR.isabelline);
+    circle.lineStyle(3, COLOR.white);
     for (let i = 0; i < slices; i++) {
         if (temp > i && RADIUS > hypot) {
-            circle.beginFill(COLOR.darkpink);
+            circle.beginFill(COLOR.white, 0.1);
         }
         circle.moveTo(0, 0);
         circle.arc(0, 0, RADIUS, sliceCirc * i, sliceCirc * (i + 1));
@@ -124,7 +107,7 @@ function updateRunningCircle (shape, radius, direction, speed) {
     const invert = Math.floor(circum / PI_2) % 2 === 0;
 
     shape.clear();
-    shape.lineStyle(20, COLOR.darkvanilla);
+    shape.lineStyle(20, COLOR.white);
     if (invert) {
         shape.arc(0, 0, radius, 0, circum % PI_2 * direction);
     } else {

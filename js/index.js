@@ -16,13 +16,14 @@ jQuery(document).ready(function($) {
         $.getJSON('js/examples/manifest.json', function(data) {
             const sections = Object.keys(data);
             for (let i = 0; i < sections.length; i++) {
-                let html = '<span class="section" data-section="' + sections[i] + '">' + sections[i] + '</span><ul data-section="' + sections[i] + '">',
-                    items = data[sections[i]];
+                let html = '<span class="section" data-section="' + sections[i] + '">' + sections[i] + '</span><ul data-section="' + sections[i] + '">';
+                let items = data[sections[i]];
 
                 for (let j = 0; j < items.length; j++) {
-                    const plugins = typeof items[j].plugins !== 'undefined' ? items[j].plugins.join(',') : '';
-                    const validVersions = typeof items[j].validVersions !== 'undefined' ? items[j].validVersions.join(',') : '';
-                    html += '<li data-src="' + items[j].entry + '" data-plugins="' + plugins  + '" data-validVersions="' + validVersions + '">' + items[j].title + '</li>';
+                    // const plugins = typeof items[j].plugins !== 'undefined' ? items[j].plugins.join(',') : '';
+                    // const validVersions = typeof items[j].validVersions !== 'undefined' ? items[j].validVersions.join(',') : '';
+                    // html += '<li data-src="' + items[j].entry + '" data-plugins="' + plugins  + '" data-validVersions="' + validVersions + '">' + items[j].title + '</li>';
+                    html += '<li data-src="' + items[j].entry + '" data-descr="' + items[j].descr + '">' + items[j].title + '</li>';
                 }
                 html += '</ul>';
 
@@ -41,12 +42,14 @@ jQuery(document).ready(function($) {
 
         $('.main-menu li').on(clickType, function() {
             if (!$(this).hasClass('selected')) {
+                window.location.hash = '/' + $(this).parent().attr('data-section') + '/' + $(this).attr('data-src');
+                document.title = $(this).text();
+
                 $('.main-menu li.selected').removeClass('selected');
                 $(this).addClass('selected');
 
                 $('.main-content h1').text($(this).text());
-                window.location.hash = '/' + $(this).parent().attr('data-section') + '/' + $(this).attr('data-src');
-                document.title = $(this).text();
+                $('.main-content h2').text($(this).attr('data-descr'));
 
                 $.ajax({
                     url: 'js/examples/' + $(this).parent().attr('data-section') + '/' + $(this).attr('data-src'),

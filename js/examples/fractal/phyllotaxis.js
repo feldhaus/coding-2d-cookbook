@@ -1,23 +1,14 @@
 // constants
-const WIDTH = 800;
-const HEIGHT = 600;
 const COLOR = {
-    gunmetal: 0x2C363F,
-    darkpink: 0xE75A7C,
-    isabelline: 0xF2F5EA,
-    timberwolf: 0xD6DBD2,
-    darkvanilla: 0xBBC7A4,
-};
-const FONTSTYLE = {
-    fontSize: 14,
-    fontFamily: "\"Courier New\", Courier, monospace",
-    fill: COLOR.timberwolf,
+    grey: 0x21252f,
+    pink: 0xec407a,
+    white: 0xf2f5ea
 };
 const DEG2RAD = Math.PI / 180;
 
 // create application
-const app = new PIXI.Application(WIDTH, HEIGHT, {
-    backgroundColor: COLOR.gunmetal,
+const app = new PIXI.Application({
+    backgroundColor: COLOR.grey,
     antialias: true
 });
 document.body.appendChild(app.view);
@@ -56,7 +47,7 @@ app.ticker.add(function(delta) {
     const radius = c - n * 0.005;
     if (radius > 0) {
         // draw a circle
-        graphics.beginFill(COLOR.isabelline);
+        graphics.beginFill(COLOR.white);
         graphics.drawCircle(x, y, radius);
 
         // increase n

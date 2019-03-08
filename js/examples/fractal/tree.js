@@ -1,66 +1,41 @@
 // constants
-const WIDTH = 800;
-const HEIGHT = 600;
 const COLOR = {
-    gunmetal: 0x2C363F,
-    darkpink: 0xd81b60,// 0xE75A7C,
-    isabelline: 0xF2F5EA,
-    timberwolf: 0xD6DBD2,
-    darkvanilla: 0xBBC7A4,
-};
-const FONTSTYLE = {
-    fontSize: 14,
-    fontFamily: "\"Courier New\", Courier, monospace",
-    fill: COLOR.timberwolf,
+    grey: 0x21252f,
+    pink: 0xec407a,
+    white: 0xf2f5ea
 };
 const DEG2RAD = Math.PI / 180;
 const DURATION = 100;
 const DEPTH = 10;
 
 // create application
-const app = new PIXI.Application(WIDTH, HEIGHT, {
-    backgroundColor: COLOR.gunmetal,
+const app = new PIXI.Application({
+    backgroundColor: COLOR.grey,
     antialias: true
 });
 document.body.appendChild(app.view);
 
-// add tip
-const tip = new PIXI.Text(
-    '---',
-    FONTSTYLE
-);
-app.stage.addChild(tip);
-tip.position.set(5, 5);
-
 let array = new Array(DEPTH);
 
-// draw the tree
+// add tree graphics
 const tree = new PIXI.Graphics();
 app.stage.addChild(tree);
 tree.lineStyle(2, COLOR.isabelline);
 
-// draw fill animation
+// add tree fill animation graphics
 const animation = new PIXI.Graphics();
 app.stage.addChild(animation);
 
 app.ticker.add(function(deltaTime) { update(deltaTime); });
 
-// drawTree(WIDTH / 2, HEIGHT, -90, DEPTH);
-// array.reverse();
-let elapsedTime = 0;
-abc();
+let elapsedTime = 0;    
+tree.clear();
+tree.lineStyle(2, COLOR.white);
+animation.clear();
 
-function abc () {
-    elapsedTime = 0;
-    
-    tree.clear();
-    tree.lineStyle(2, COLOR.isabelline);
-    animation.clear();
-
-    array = []
-    drawTree(WIDTH / 2, HEIGHT, -90, DEPTH);
-    array.reverse();
-}
+array = []
+drawTree(app.renderer.width / 2, app.renderer.height, -90, DEPTH);
+array.reverse();
 
 function drawTree (x1, y1, angle, depth) {
     if (depth > 0) {
@@ -90,7 +65,7 @@ function update (deltaTime) {
     const ix = Math.floor(elapsedTime / DURATION);
     if (ix < DEPTH) {
         animation.clear();
-        animation.lineStyle(2, COLOR.darkpink, 1);
+        animation.lineStyle(2, COLOR.pink, 1);
         for (let i = 0; i < ix + 1; i++) {
             for (let j = 0; j < array[i].length; j++) {
                 const p1 = array[i][j].p1;

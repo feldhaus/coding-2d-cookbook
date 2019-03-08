@@ -1,46 +1,29 @@
 // constants
-const WIDTH = 800;
-const HEIGHT = 600;
 const COLOR = {
-    gunmetal: 0x2C363F,
-    darkpink: 0xE75A7C,
-    isabelline: 0xF2F5EA,
-    timberwolf: 0xD6DBD2,
-    darkvanilla: 0xBBC7A4,
-};
-const FONTSTYLE = {
-    fontSize: 14,
-    fontFamily: "\"Courier New\", Courier, monospace",
-    fill: COLOR.timberwolf,
+    grey: 0x21252f,
+    pink: 0xec407a,
+    white: 0xf2f5ea
 };
 
 // create application
-const app = new PIXI.Application(WIDTH, HEIGHT, {
-    backgroundColor: COLOR.gunmetal,
+const app = new PIXI.Application({
+    backgroundColor: COLOR.grey,
     antialias: true
 });
 document.body.appendChild(app.view);
 
-// add tip
-const tip = new PIXI.Text(
-    'DRAG and DROP the dots:',
-    FONTSTYLE
-);
-app.stage.addChild(tip);
-tip.position.set(5, 5);
-
-// draw the feedback
-const feedback = new PIXI.Graphics();
-app.stage.addChild(feedback);
+// add graphics
+const graphics = new PIXI.Graphics();
+app.stage.addChild(graphics);
 
 // add interactive dots
 const dot1 = createDot(100, 100);
 app.stage.addChild(dot1);
 
-const dot2 = createDot(500, 280);
+const dot2 = createDot(700, 380);
 app.stage.addChild(dot2);
 
-const dot3 = createDot(200, 400);
+const dot3 = createDot(200, 500);
 app.stage.addChild(dot3);
 
 const dot4 = createDot(300, 120);
@@ -48,29 +31,29 @@ app.stage.addChild(dot4);
 
 // ticker for doing render updates
 app.ticker.add(function() {
-    // clear feedback
-    feedback.clear();
+    // clear graphics
+    graphics.clear();
     
     // set line style
-    feedback.lineStyle(1, COLOR.isabelline);
+    graphics.lineStyle(2, COLOR.white);
     
     // draw a line between dot1 and dot2
-    feedback.moveTo(dot1.x, dot1.y);
-    feedback.lineTo(dot2.x, dot2.y);
+    graphics.moveTo(dot1.x, dot1.y);
+    graphics.lineTo(dot2.x, dot2.y);
     
     // draw a line between dot3 and dot4
-    feedback.moveTo(dot3.x, dot3.y);
-    feedback.lineTo(dot4.x, dot4.y);
+    graphics.moveTo(dot3.x, dot3.y);
+    graphics.lineTo(dot4.x, dot4.y);
     
     // get intersection
     const intersection = checkLineIntersection(dot1, dot2, dot3, dot4);
     if (intersection.onLine1 || intersection.onLine2) {
         if (intersection.onLine1 && intersection.onLine2) {
-            feedback.beginFill(COLOR.isabelline);
+            graphics.beginFill(COLOR.white);
         } else {
-            feedback.beginFill(COLOR.gunmetal);
+            graphics.beginFill(COLOR.grey);
         }
-        feedback.drawCircle(intersection.x, intersection.y, 5);
+        graphics.drawCircle(intersection.x, intersection.y, 5);
     } else {
         // no intersection
     }
@@ -79,8 +62,10 @@ app.ticker.add(function() {
 function createDot (x, y) {
     // create a PIXI graphics object
     const dot = new PIXI.Graphics();
-    dot.beginFill(COLOR.darkpink);
-    dot.drawCircle(0, 0, 10);
+    dot.beginFill(COLOR.pink, 0.05);
+    dot.drawCircle(0, 0, 30);
+    dot.beginFill(COLOR.pink);
+    dot.drawCircle(0, 0, 5);
     dot.position.set(x, y);
     
     // enable the dot to be interactive
@@ -123,8 +108,8 @@ function onDragMove () {
 function checkLineIntersection (line1Start, line1End, line2Start, line2End) {
     const result = {x: null, y: null, onLine1: false, onLine2: false};
 
-    // if the feedback intersect, the result contains the x and y
-    // of the intersection (treating the feedback as infinite) and
+    // if the graphics intersect, the result contains the x and y
+    // of the intersection (treating the graphics as infinite) and
     // booleans for whether line segment 1 or line segment 2 contain the point
     const denominator =
         ((line2End.y - line2Start.y) * (line1End.x - line1Start.x)) -
@@ -145,7 +130,7 @@ function checkLineIntersection (line1Start, line1End, line2Start, line2End) {
     a = numerator1 / denominator;
     b = numerator2 / denominator;
 
-    // if we cast these feedback infinitely in both directions, they intersect here:
+    // if we cast these graphics infinitely in both directions, they intersect here:
     result.x = line1Start.x + (a * (line1End.x - line1Start.x));
     result.y = line1Start.y + (a * (line1End.y - line1Start.y));
 

@@ -1,57 +1,40 @@
 // constants
-const WIDTH = 800;
-const HEIGHT = 600;
 const COLOR = {
-    gunmetal: 0x2C363F,
-    darkpink: 0xd81b60, // 0xE75A7C,
-    isabelline: 0xF2F5EA,
-    timberwolf: 0xD6DBD2,
-    darkvanilla: 0xBBC7A4,
-};
-const FONTSTYLE = {
-    fontSize: 14,
-    fontFamily: "\"Courier New\", Courier, monospace",
-    fill: COLOR.timberwolf,
+    grey: 0x21252f,
+    pink: 0xec407a,
+    white: 0xf2f5ea
 };
 const DURATION = 100;
 const PATH = 50;
 
 // create application
-const app = new PIXI.Application(WIDTH, HEIGHT, {
-    backgroundColor: COLOR.gunmetal,
+const app = new PIXI.Application({
+    backgroundColor: COLOR.grey,
     antialias: true
 });
 document.body.appendChild(app.view);
 
-// add tip
-const tip = new PIXI.Text(
-    'DRAG and DROP the dots to change the curve:',
-    FONTSTYLE
-);
-app.stage.addChild(tip);
-tip.position.set(5, 5);
+// add graphics
+const graphics = new PIXI.Graphics();
+app.stage.addChild(graphics);
 
-// add the feedback
-const feedback = new PIXI.Graphics();
-app.stage.addChild(feedback);
-
-// add interactive dots
-const dot1 = createDot(100, 100, 1);
+// create and add interactive dots
+const dot1 = createDot(100, 500, 1);
 app.stage.addChild(dot1);
 
-const dot2 = createDot(300, 500, 2);
+const dot2 = createDot(200, 200, 2);
 app.stage.addChild(dot2);
 
-const dot3 = createDot(600, 400, 3);
+const dot3 = createDot(600, 100, 3);
 app.stage.addChild(dot3);
 
-const dot4 = createDot(700, 120, 4);
+const dot4 = createDot(700, 450, 4);
 app.stage.addChild(dot4);
 
 // circle that will walk along the path
 const walker = new PIXI.Graphics();
 app.stage.addChild(walker);
-walker.lineStyle(5, COLOR.darkpink);
+walker.lineStyle(5, COLOR.pink);
 walker.drawCircle(0, 0, 20);
 
 // runs an update loop
@@ -61,14 +44,16 @@ app.ticker.add(function(deltaTime) { update(deltaTime); });
 function createDot (x, y, id) {
     // create a PIXI graphics object
     const dot = new PIXI.Graphics();
-    dot.beginFill(COLOR.darkpink);
+    dot.beginFill(COLOR.pink, 0.05);
+    dot.drawCircle(0, 0, 50);
+    dot.beginFill(COLOR.pink);
     dot.drawCircle(0, 0, 20);
     dot.position.set(x, y);
     dot.dragOffset = new PIXI.Point();
 
     const txt = new PIXI.Text(id.toString(), {
-        fill: COLOR.isabelline,
-        fontSize: 16
+        fill: COLOR.white,
+        fontSize: 20
     });
     txt.anchor.set(0.5, 0.5);
     dot.addChild(txt);
@@ -119,19 +104,21 @@ function update (deltaTime) {
 }
 
 function draw () {
-    feedback.clear();
+    graphics.clear();
 
-    feedback.lineStyle(0.5, COLOR.darkpink);
-    feedback.moveTo(dot1.x, dot1.y);
-    feedback.lineTo(dot2.x, dot2.y);
-    feedback.lineTo(dot3.x, dot3.y);
-    feedback.lineTo(dot4.x, dot4.y);
+    // line between dots
+    graphics.lineStyle(5, COLOR.pink, 0.25);
+    graphics.moveTo(dot1.x, dot1.y);
+    graphics.lineTo(dot2.x, dot2.y);
+    graphics.lineTo(dot3.x, dot3.y);
+    graphics.lineTo(dot4.x, dot4.y);
 
-    feedback.lineStyle(0);
-    feedback.beginFill(COLOR.isabelline);
+    // draw path
+    graphics.lineStyle(0);
+    graphics.beginFill(COLOR.white);
     for (let i = 0; i < PATH; i++) {
         const pt = cubicBezier(i / PATH, dot1, dot2, dot3, dot4);
-        feedback.drawCircle(pt.x, pt.y, 2);
+        graphics.drawCircle(pt.x, pt.y, 2);
     }
 }
 

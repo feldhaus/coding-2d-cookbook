@@ -1,34 +1,16 @@
 // constants
-const WIDTH = 800;
-const HEIGHT = 600;
 const COLOR = {
-    gunmetal: 0x2C363F,
-    darkpink: 0xE75A7C,
-    isabelline: 0xF2F5EA,
-    timberwolf: 0xD6DBD2,
-    darkvanilla: 0xBBC7A4,
-};
-const FONTSTYLE = {
-    fontSize: 14,
-    fontFamily: "\"Courier New\", Courier, monospace",
-    fill: COLOR.timberwolf,
+    grey: 0x21252f,
+    pink: 0xec407a,
+    white: 0xf2f5ea
 };
 
 // create application
-const app = new PIXI.Application(WIDTH, HEIGHT, {
-    backgroundColor: COLOR.gunmetal,
+const app = new PIXI.Application({
+    backgroundColor: COLOR.grey,
     antialias: true
 });
 document.body.appendChild(app.view);
-
-// add tip
-const tip = new PIXI.Text(
-    'CLICK to jump (double) and ' +
-    'use ARROWS (⇧ ⇩) to change the number of slices:',
-    FONTSTYLE
-);
-app.stage.addChild(tip);
-tip.position.set(5, 5);
 
 // variables
 let radius1 = 150;
@@ -43,16 +25,15 @@ let jumpForce = 0;
 // add circle 1
 const circle1 = new PIXI.Graphics();
 app.stage.addChild(circle1);
-circle1.beginFill(COLOR.isabelline);
+circle1.beginFill(COLOR.white);
 circle1.drawCircle(0, 0, radius1);
-circle1.position.set(WIDTH / 2, HEIGHT / 2);
+circle1.position.set(app.renderer.width / 2, app.renderer.height / 2);
 
 // add circle 2
 const circle2 = new PIXI.Graphics();
 app.stage.addChild(circle2);
-circle2.beginFill(COLOR.darkpink);
+circle2.beginFill(COLOR.pink);
 circle2.drawCircle(0, 0, radius2);
-circle2.position.set(WIDTH / 2, HEIGHT / 2, - (radius1 + radius2));
 
 // runs an update loop
 app.ticker.add(function(delta) { update(); });
@@ -68,7 +49,7 @@ document.onkeydown = function (event) {
         radius1 = Math.max(radius1 - 1, 80);
     }
     circle1.clear();
-    circle1.beginFill(COLOR.isabelline);
+    circle1.beginFill(COLOR.white);
     circle1.drawCircle(0, 0, radius1);
 }
 
@@ -88,8 +69,8 @@ function update () {
     const distanceFromCenter = (radius1 + radius2) + jumpOffset;
     currentRadians += playerSpeed;
     circle2.position.set(
-        WIDTH / 2 + distanceFromCenter * Math.cos(currentRadians),
-        HEIGHT / 2 + distanceFromCenter * Math.sin(currentRadians)
+        app.renderer.width / 2 + distanceFromCenter * Math.cos(currentRadians),
+        app.renderer.height / 2 + distanceFromCenter * Math.sin(currentRadians)
     );
 }
 

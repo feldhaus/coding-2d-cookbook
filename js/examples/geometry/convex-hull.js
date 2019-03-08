@@ -1,33 +1,16 @@
 // constants
-const WIDTH = 800;
-const HEIGHT = 600;
 const COLOR = {
-    gunmetal: 0x2C363F,
-    darkpink: 0xE75A7C,
-    isabelline: 0xF2F5EA,
-    timberwolf: 0xD6DBD2,
-    darkvanilla: 0xBBC7A4,
-};
-const FONTSTYLE = {
-    fontSize: 14,
-    fontFamily: "\"Courier New\", Courier, monospace",
-    fill: COLOR.timberwolf,
+    grey: 0x21252f,
+    pink: 0xec407a,
+    white: 0xf2f5ea
 };
 
 // create application
-const app = new PIXI.Application(WIDTH, HEIGHT, {
-    backgroundColor: COLOR.gunmetal,
+const app = new PIXI.Application({
+    backgroundColor: COLOR.grey,
     antialias: true
 });
 document.body.appendChild(app.view);
-
-// add tip
-const tip = new PIXI.Text(
-    'DRAG and DROP the dots:',
-    FONTSTYLE
-);
-app.stage.addChild(tip);
-tip.position.set(5, 5);
 
 // draw the feedback
 const feedback = new PIXI.Graphics();
@@ -43,7 +26,7 @@ let dot;
 for (let i = 0; i < 5; i++) { // inner
     px = 100 + Math.random() * (width - 200);
     py = 100 + Math.random() * (height - 200);
-    dot = createDot(px, py, COLOR.darkpink);
+    dot = createDot(px, py, COLOR.pink);
     dotsInner.push(dot);
     dotsOuter.push(dot);
     app.stage.addChild(dot);
@@ -51,7 +34,7 @@ for (let i = 0; i < 5; i++) { // inner
 for (let i = 0; i < 10; i++) { // outer
     px = 20 + Math.random() * (width - 40);
     py = 20 + Math.random() * (height - 40);
-    dot = createDot(px, py, COLOR.darkvanilla);
+    dot = createDot(px, py, COLOR.white);
     dotsOuter.push(dot);
     app.stage.addChild(dot);
 }
@@ -62,18 +45,11 @@ drawConvexHull();
 function createDot (x, y, color) {
     // create a PIXI graphic object
     const dot = new PIXI.Graphics();
+    dot.beginFill(color, 0.05);
+    dot.drawCircle(0, 0, 30);
     dot.beginFill(color);
     dot.drawCircle(0, 0, 5);
     dot.position.set(x, y);
-    
-    const txt = new PIXI.Text(
-        x.toFixed(0) + ',' + y.toFixed(0),
-        {
-            fontSize: 12,
-            fill: COLOR.isabelline
-        }
-    );
-    dot.addChild(txt);
     
     // enable the dot to be interactive
     // this will allow it to respond to mouse and touch events
@@ -115,8 +91,8 @@ function onDragMove () {
 
 function drawConvexHull () {
     feedback.clear();
-    drawLine(dotsInner, COLOR.darkpink);
-    drawLine(dotsOuter, COLOR.darkvanilla);
+    drawLine(dotsInner, COLOR.pink);
+    drawLine(dotsOuter, COLOR.white);
 }
 
 function drawLine (dots, color) {
@@ -188,8 +164,7 @@ function computeConvexHull (dots) {
 }
 
 function getDistance (p1, p2) {
-    return
-        (p2.x - p1.x) * (p2.x - p1.x) + (p2.y - p1.y) * (p2.y - p1.y);
+    return (p2.x - p1.x) * (p2.x - p1.x) + (p2.y - p1.y) * (p2.y - p1.y);
 }
 
 function getAngle (p1, p2) {

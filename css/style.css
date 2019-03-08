@@ -813,6 +813,13 @@ h1 {
   letter-spacing: -0.01 em;
   margin: 20px 0 20px;
 }
+h2 {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 20px;
+  color: #919bac;
+  letter-spacing: -0.01 em;
+}
 .blue50 {
   color: #ecedf1;
 }

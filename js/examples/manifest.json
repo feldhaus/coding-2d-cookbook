@@ -2,49 +2,64 @@
     "math": [
         {
             "title": "Bevier-Curve",
+            "descr": "DRAG and DROP the dots to change the curve",
             "entry": "bezier-curve.js"
-        },
+        }
+    ],
+    "geometry": [
         {
             "title": "Circle-Circle-Intersection",
+            "descr": "DRAG and DROP the circles",
             "entry": "circle-circle-intersection.js"
         },
         {
             "title": "Circle",
+            "descr": "Use ARROWS (⇧ ⇩) to change the number of slices",
             "entry": "circle.js"
         },
         {
-            "title": "Circular-Runner-Double-Jump",
-            "entry": "circular-runner-double-jump.js"
-        },
-        {
             "title": "Convex-Hull",
+            "descr": "DRAG and DROP the dots",
             "entry": "convex-hull.js"
         },
         {
-            "title": "Dashed-Lines",
-            "entry": "dashed-lines.js"
-        },
-        {
             "title": "Line-Intersection",
+            "descr": "DRAG and DROP the dots",
             "entry": "line-intersection.js"
         },
         {
             "title": "Regular-Polygons",
+            "descr": "",
             "entry": "regular-polygons.js"
         },
         {
             "title": "Rounded-Polygons",
+            "descr": "CLICK to create a new polygon",
             "entry": "rounded-polygons.js"
         }
     ],
     "fractal": [
         {
             "title": "Phyllotaxis",
+            "descr": "",
             "entry": "phyllotaxis.js"
         },
         {
             "title": "Tree",
+            "descr": "",
             "entry": "tree.js"
+        }
+    ],
+    "others": [
+        {
+            "title": "Circular-Runner-Double-Jump",
+            "descr": "CLICK to jump (double) and use ARROWS (⇧ ⇩) to change the number of slices",
+            "entry": "circular-runner-double-jump.js"
+        },
+        {
+            "title": "Dashed-Lines",
+            "descr": "Use ARROWS to change dash (⇦ ⇨) and gap (⇧ ⇩) size",
+            "entry": "dashed-lines.js"
         }
     ]
 }
