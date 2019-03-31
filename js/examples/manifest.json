@@ -28,6 +28,11 @@
             "entry": "line-intersection.js"
         },
         {
+            "title": "Point-In-Polygon",
+            "descr": "Move the mouse over the map",
+            "entry": "point-in-polygon.js"
+        },
+        {
             "title": "Regular-Polygons",
             "descr": "",
             "entry": "regular-polygons.js"
