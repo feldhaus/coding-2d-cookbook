@@ -68,6 +68,7 @@ document.onkeydown = function (event) {
     } else if (event.keyCode === 40) {
         slices = Math.max(slices - 1, 2);
     }
+    event.preventDefault();
 }
 
 function addText (txt, position, anchor) {

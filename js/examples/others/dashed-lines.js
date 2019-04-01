@@ -63,12 +63,15 @@ document.onkeydown = function (event) {
     } else if (event.keyCode === 37) {
         dash = Math.max(dash - 1, 1);
     }
+    event.preventDefault();
 
     // gap (min: 1 - max: 50)
     if (event.keyCode === 38) {
         gap = Math.min(gap + 1, 50);
+        event.preventDefault();
     } else if (event.keyCode === 40) {
         gap = Math.max(gap - 1, 1);
+        event.preventDefault();
     }
 }
 

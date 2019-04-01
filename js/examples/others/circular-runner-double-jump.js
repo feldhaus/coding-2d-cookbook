@@ -48,6 +48,8 @@ document.onkeydown = function (event) {
     } else if (event.keyCode === 37) {
         radius1 = Math.max(radius1 - 1, 80);
     }
+    event.preventDefault();
+
     circle1.clear();
     circle1.beginFill(COLOR.white);
     circle1.drawCircle(0, 0, radius1);
