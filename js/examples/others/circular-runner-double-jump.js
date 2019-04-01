@@ -43,9 +43,9 @@ app.renderer.plugins.interaction.on('pointerdown', jump);
 
 // listen keydown event
 document.onkeydown = function (event) {
-    if (event.keyCode === 38) {
+    if (event.keyCode === 39) {
         radius1 = Math.min(radius1 + 1, 150);
-    } else if (event.keyCode === 40) {
+    } else if (event.keyCode === 37) {
         radius1 = Math.max(radius1 - 1, 80);
     }
     circle1.clear();

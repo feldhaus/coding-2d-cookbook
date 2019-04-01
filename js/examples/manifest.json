@@ -58,7 +58,7 @@
     "others": [
         {
             "title": "Circular-Runner-Double-Jump",
-            "descr": "CLICK to jump (double) and use ARROWS (⇧ ⇩) to change the number of slices",
+            "descr": "CLICK to jump (double) and use ARROWS (⇦ ⇨) to change the circle radius",
             "entry": "circular-runner-double-jump.js"
         },
         {
