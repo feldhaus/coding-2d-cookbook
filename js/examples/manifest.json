@@ -29,8 +29,13 @@
         },
         {
             "title": "Point-In-Polygon",
-            "descr": "Move the mouse over the map",
+            "descr": "Move the MOUSE over the map",
             "entry": "point-in-polygon.js"
+        },
+        {
+            "title": "Raycast-Linear",
+            "descr": "",
+            "entry": "raycast-linear.js"
         },
         {
             "title": "Regular-Polygons",
