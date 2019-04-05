@@ -31,7 +31,7 @@ app.stage.addChild(stateName);
 // fetch json map data
 let mapData = {};
 
-fetch("../../assets/json/usa-map.json")
+fetch("./assets/json/usa-map.json")
     .then(res => res.json())
     .then(data => drawMap(data))
 
