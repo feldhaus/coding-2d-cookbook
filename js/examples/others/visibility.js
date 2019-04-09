@@ -101,7 +101,7 @@ function draw() {
     }
     graphics.beginFill(COLOR.pink);
     graphics.drawCircle(center.x, center.y, 10);
-    graphics.beginFill(COLOR.pink, 0.1);
+    graphics.beginFill(COLOR.pink, 0.05);
 
     for (let i = 0; i < intersects.length; i++) {
         graphics.moveTo(center.x, center.y);

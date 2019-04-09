@@ -42,8 +42,8 @@ let dash = 10;
 let gap = 5;
 
 // ticker for doing render updates
-app.ticker.add(function(delta) {
-    elapsedTime += delta;
+app.ticker.add(function(deltaTime) {
+    elapsedTime += deltaTime;
     const offset = elapsedTime * 0.01;
     
     circle.clear();
@@ -53,7 +53,7 @@ app.ticker.add(function(delta) {
     polygon.clear();
     polygon.lineStyle(3, COLOR.white);
     drawDashedPolygon(polygon, POLYGONS, dash, gap, offset);
-    polygon.rotation += delta * 0.01;
+    polygon.rotation += deltaTime * 0.01;
 });
 
 document.onkeydown = function (event) {
@@ -75,7 +75,7 @@ document.onkeydown = function (event) {
     }
 }
 
-function drawDashedCircle (graphics, radius, dash, gap, offset) {
+function drawDashedCircle(graphics, radius, dash, gap, offset) {
     const circum = radius * PI_2;
     const stepSize = dash + gap;
     const chunks = Math.ceil(circum / stepSize);
@@ -99,7 +99,7 @@ function drawDashedCircle (graphics, radius, dash, gap, offset) {
     }
 }
 
-function drawDashedPolygon (graphics, polygons, dash, gap, offset) {
+function drawDashedPolygon(graphics, polygons, dash, gap, offset) {
     let p1, p2;
     let dashLeft = 0;
     let gapLeft = 0;

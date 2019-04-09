@@ -28,7 +28,7 @@ const c = 8;
 let n = 0;
 let color = 0;
 
-app.ticker.add(function(delta) {
+app.ticker.add(function(deltaTime) {
     // is the angle between a reference direction and the position
     // vector of the nth floret in a polar coordinate system originating
     // at the center of the capitulum. It follows that the divergence
@@ -47,7 +47,7 @@ app.ticker.add(function(delta) {
     const radius = c - n * 0.005;
     if (radius > 0) {
         // draw a circle
-        graphics.beginFill(COLOR.white);
+        graphics.beginFill(COLOR.white, (5 + n % 45) / 50);
         graphics.drawCircle(x, y, radius);
 
         // increase n
@@ -63,7 +63,7 @@ app.ticker.add(function(delta) {
  * @param   {number} value A crescent value
  * @returns {number} An integer color value
  */
-function getColor (value) {
+function getColor(value) {
     let r, g, b;
     value %= 1536;
     if (value < 256) {

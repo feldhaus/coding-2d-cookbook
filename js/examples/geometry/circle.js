@@ -54,11 +54,11 @@ addText(
 );
 
 // runs an update loop
-app.ticker.add(function(delta) {
+app.ticker.add(function(deltaTime) {
     updateMainCircle();
-    updateRunningCircle(circle1, 50, 1, 0.1);
-    updateRunningCircle(circle2, 30, -1, 0.3);
-    elapsedTime += delta;
+    updateRunningCircle(circle1, 50, 1, 0.1 * deltaTime);
+    updateRunningCircle(circle2, 30, -1, 0.3 * deltaTime);
+    elapsedTime += deltaTime;
 });
 
 // listen pointer down event
@@ -71,7 +71,7 @@ document.onkeydown = function (event) {
     event.preventDefault();
 }
 
-function addText (txt, position, anchor) {
+function addText(txt, position, anchor) {
     const tip = new PIXI.Text(txt, {
         fontSize: 24,
         fill: COLOR.pink
@@ -81,7 +81,7 @@ function addText (txt, position, anchor) {
     tip.position.set(position.x, position.y);
 }
 
-function updateMainCircle () {
+function updateMainCircle() {
     let mouse = app.renderer.plugins.interaction.mouse.global;
     let angle = Math.atan2(mouse.y - circle.y, mouse.x - circle.x);
     let hypot = Math.hypot(mouse.x - circle.x, mouse.y - circle.y);
@@ -94,7 +94,7 @@ function updateMainCircle () {
     circle.lineStyle(3, COLOR.white);
     for (let i = 0; i < slices; i++) {
         if (temp > i && RADIUS > hypot) {
-            circle.beginFill(COLOR.white, 0.1);
+            circle.beginFill(COLOR.white, 0.05);
         }
         circle.moveTo(0, 0);
         circle.arc(0, 0, RADIUS, sliceCirc * i, sliceCirc * (i + 1));
@@ -103,7 +103,7 @@ function updateMainCircle () {
     }
 }
 
-function updateRunningCircle (shape, radius, direction, speed) {
+function updateRunningCircle(shape, radius, direction, speed) {
     const circum = elapsedTime * speed;
     const invert = Math.floor(circum / PI_2) % 2 === 0;
 

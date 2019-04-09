@@ -42,7 +42,7 @@ for (let i = 0; i < 10; i++) { // outer
 // draw convex hull
 drawConvexHull();
 
-function createDot (x, y, color) {
+function createDot(x, y, color) {
     // create a PIXI graphic object
     const dot = new PIXI.Graphics();
     dot.beginFill(color, 0.05);
@@ -68,19 +68,19 @@ function createDot (x, y, color) {
     return dot;
 }
 
-function onDragStart (event) {
+function onDragStart(event) {
     this.data = event.data;
     this.alpha = 0.5;
     this.dragging = true;
 }
 
-function onDragEnd () {
+function onDragEnd() {
     this.alpha = 1;
     this.dragging = false;
     this.data = null;
 }
 
-function onDragMove () {
+function onDragMove() {
     if (this.dragging) {
         const newPosition = this.data.getLocalPosition(this.parent);
         this.x = newPosition.x;
@@ -89,13 +89,13 @@ function onDragMove () {
     }
 }
 
-function drawConvexHull () {
+function drawConvexHull() {
     feedback.clear();
     drawLine(dotsInner, COLOR.pink);
     drawLine(dotsOuter, COLOR.white);
 }
 
-function drawLine (dots, color) {
+function drawLine(dots, color) {
     const points = computeConvexHull(dots);
     
     if (points && points.length > 0) {
@@ -108,7 +108,7 @@ function drawLine (dots, color) {
     }
 }
 
-function computeConvexHull (dots) {
+function computeConvexHull(dots) {
     // must to be greater than or equal 3
     if (dots.length < 3) {
         return;
@@ -163,22 +163,22 @@ function computeConvexHull (dots) {
     return stack;
 }
 
-function getDistance (p1, p2) {
+function getDistance(p1, p2) {
     return (p2.x - p1.x) * (p2.x - p1.x) + (p2.y - p1.y) * (p2.y - p1.y);
 }
 
-function getAngle (p1, p2) {
+function getAngle(p1, p2) {
     return Math.atan2(p2.y - p1.y, p2.x - p1.x);
 }
 
 // three points are a counter-clockwise turn if ccw > 0, clockwise if
 // ccw < 0, and collinear if ccw = 0 because ccw is a determinant that
 // gives twice the signed area of the triangle formed by p1, p2 and p3.
-function ccw (p1, p2, p3) {
+function ccw(p1, p2, p3) {
     return (p2.x - p1.x) * (p3.y - p1.y) - (p2.y - p1.y) * (p3.x - p1.x);
 }
 
-function compare (p1, p2) {
+function compare(p1, p2) {
     if (p1.angle < p2.angle) {
         return -1;
     } else if (p1.angle > p2.angle) {

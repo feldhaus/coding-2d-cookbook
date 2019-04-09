@@ -37,7 +37,7 @@ array = []
 drawTree(app.renderer.width / 2, app.renderer.height, -90, DEPTH);
 array.reverse();
 
-function drawTree (x1, y1, angle, depth) {
+function drawTree(x1, y1, angle, depth) {
     if (depth > 0) {
         const x2 = x1 + (Math.cos(angle * DEG2RAD) * depth * 10);
         const y2 = y1 + (Math.sin(angle * DEG2RAD) * depth * 10);
@@ -59,7 +59,7 @@ function drawTree (x1, y1, angle, depth) {
     }
 }
 
-function update (deltaTime) {
+function update(deltaTime) {
     elapsedTime += deltaTime;
     const t = (elapsedTime % DURATION) / DURATION;
     const ix = Math.floor(elapsedTime / DURATION);
@@ -86,6 +86,6 @@ function update (deltaTime) {
     }
 }
 
-function lerp (a, b, t) {
+function lerp(a, b, t) {
     return a + (b - a) * t;
 }

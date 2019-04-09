@@ -34,7 +34,7 @@
         },
         {
             "title": "Raycast-Linear",
-            "descr": "",
+            "descr": "Use ARROWS (⇧ ⇩⇦ ⇨) or WASD to move the rect and MOUSE to aim",
             "entry": "raycast-linear.js"
         },
         {

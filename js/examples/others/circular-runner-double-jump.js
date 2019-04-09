@@ -16,7 +16,7 @@ document.body.appendChild(app.view);
 let radius1 = 150;
 let radius2 = 20;
 let gravity = 0.8;
-let playerSpeed = 0.01;
+let playerSpeed = 0.02;
 let currentRadians = 0;
 let jumps = 0;
 let jumpOffset = 0;
@@ -36,7 +36,7 @@ circle2.beginFill(COLOR.pink);
 circle2.drawCircle(0, 0, radius2);
 
 // runs an update loop
-app.ticker.add(function(delta) { update(); });
+app.ticker.add(function(deltaTime) { update(deltaTime); });
 
 // listen pointer down event
 app.renderer.plugins.interaction.on('pointerdown', jump);
@@ -55,11 +55,11 @@ document.onkeydown = function (event) {
     circle1.drawCircle(0, 0, radius1);
 }
 
-function update () {
+function update(deltaTime) {
     // is jumping?
     if (jumps > 0) {
         jumpOffset += jumpForce;
-        jumpForce -= gravity;
+        jumpForce -= gravity * deltaTime;
         if (jumpOffset < 0) {
             jumpOffset = 0;
             jumpForce = 0;
@@ -69,14 +69,14 @@ function update () {
 
     // update circle2 position
     const distanceFromCenter = (radius1 + radius2) + jumpOffset;
-    currentRadians += playerSpeed;
+    currentRadians += playerSpeed * deltaTime;
     circle2.position.set(
         app.renderer.width / 2 + distanceFromCenter * Math.cos(currentRadians),
         app.renderer.height / 2 + distanceFromCenter * Math.sin(currentRadians)
     );
 }
 
-function jump () {
+function jump() {
     // double jump
     if (jumps < 2) {
         jumps++;

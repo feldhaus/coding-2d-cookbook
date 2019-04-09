@@ -59,7 +59,7 @@ app.ticker.add(function() {
     }
 });
 
-function createDot (x, y) {
+function createDot(x, y) {
     // create a PIXI graphics object
     const dot = new PIXI.Graphics();
     dot.beginFill(COLOR.pink, 0.05);
@@ -85,19 +85,19 @@ function createDot (x, y) {
     return dot;
 }
 
-function onDragStart (event) {
+function onDragStart(event) {
     this.data = event.data;
     this.alpha = 0.5;
     this.dragging = true;
 }
 
-function onDragEnd () {
+function onDragEnd() {
     this.alpha = 1;
     this.dragging = false;
     this.data = null;
 }
 
-function onDragMove () {
+function onDragMove() {
     if (this.dragging) {
         const newPosition = this.data.getLocalPosition(this.parent);
         this.x = newPosition.x;
@@ -105,7 +105,7 @@ function onDragMove () {
     }
 }
 
-function checkLineIntersection (line1Start, line1End, line2Start, line2End) {
+function checkLineIntersection(line1Start, line1End, line2Start, line2End) {
     const result = {x: null, y: null, onLine1: false, onLine2: false};
 
     // if the graphics intersect, the result contains the x and y

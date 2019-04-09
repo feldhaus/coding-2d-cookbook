@@ -12,39 +12,31 @@ const app = new PIXI.Application({
 });
 document.body.appendChild(app.view);
 
-// add circle 1
-const circle1 = new PIXI.Graphics();
-app.stage.addChild(circle1);
-circle1.position.set(app.renderer.width / 2 - 100, app.renderer.height / 2);
-circle1.r = 150;
-circle1.lineStyle(3, COLOR.white);
-circle1.beginFill(0, 0);
-circle1.drawCircle(0, 0, circle1.r);
-circle1.interactive = true;
-circle1.buttonMode = true;
-circle1.dragOffset = new PIXI.Point();
-circle1
-    .on('pointerdown', onDragStart)
-    .on('pointerup', onDragEnd)
-    .on('pointerupoutside', onDragEnd)
-    .on('pointermove', onDragMove);
+// add circles
+const center = new PIXI.Point(app.renderer.width / 2, app.renderer.height / 2);
+const circle1 = createCircle(center.x - 100, center.y, 150);
+const circle2 = createCircle(center.x + 100, center.y, 100);
 
-// add circle 2
-const circle2 = new PIXI.Graphics();
-app.stage.addChild(circle2);
-circle2.position.set(app.renderer.width / 2 + 100, app.renderer.height / 2);
-circle2.r = 100;
-circle2.lineStyle(3, COLOR.white);
-circle2.beginFill(0, 0);
-circle2.drawCircle(0, 0, circle2.r);
-circle2.interactive = true;
-circle2.buttonMode = true;
-circle2.dragOffset = new PIXI.Point();
-circle2
-    .on('pointerdown', onDragStart)
-    .on('pointerup', onDragEnd)
-    .on('pointerupoutside', onDragEnd)
-    .on('pointermove', onDragMove);
+function createCircle(x, y, radius) {
+    const circle = new PIXI.Graphics();
+    app.stage.addChild(circle);
+    circle.position.set(x, y);
+    circle.r = radius;
+    circle.beginFill(COLOR.white, 0.05);
+    circle.drawCircle(0, 0, circle.r + 20);
+    circle.beginFill(0, 0);
+    circle.lineStyle(3, COLOR.white);
+    circle.drawCircle(0, 0, circle.r);
+    circle.interactive = true;
+    circle.buttonMode = true;
+    circle.dragOffset = new PIXI.Point();
+    circle
+        .on('pointerdown', onDragStart)
+        .on('pointerup', onDragEnd)
+        .on('pointerupoutside', onDragEnd)
+        .on('pointermove', onDragMove);
+    return circle;
+}
 
 // add rect 1
 const rect1 = new PIXI.Sprite(PIXI.Texture.WHITE);
@@ -59,17 +51,17 @@ rect2.anchor.set(0.5, 0.5);
 rect2.tint = COLOR.pink;
 
 // drag functions
-function onDragStart (event) {
+function onDragStart(event) {
     this.dragging = true;
     const position = event.data.getLocalPosition(this.parent);
     this.dragOffset.set(position.x - this.x, position.y - this.y);
 }
 
-function onDragEnd (event) {
+function onDragEnd(event) {
     this.dragging = false;
 }
 
-function onDragMove (event) {
+function onDragMove(event) {
     if (!this.dragging) return;
     const position = event.data.getLocalPosition(this.parent);
     this.position.set(
@@ -80,7 +72,7 @@ function onDragMove (event) {
 }
 
 // circle-circle-intersection
-function calcCircleIntersection () {
+function calcCircleIntersection() {
     const x1 = circle1.x, y1 = circle1.y, r1 = circle1.r;
     const x2 = circle2.x, y2 = circle2.y, r2 = circle2.r;
 

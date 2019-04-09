@@ -50,7 +50,7 @@ function drawMap(data) {
 // listen pointer move event
 app.renderer.plugins.interaction.on('pointermove', onPointerMove);
 
-function onPointerMove (event) {
+function onPointerMove(event) {
     // search if mouse position is over some state polygon
     let overState;
     Object.keys(mapData).forEach(state => {
@@ -77,7 +77,7 @@ function onPointerMove (event) {
     }
 }
 
-function contains (x, y, polygon) {
+function contains(x, y, polygon) {
     let inside = false;
     const length = polygon.length / 2;
     for (let i = 0, j = length - 1; i < length; j = i++) {

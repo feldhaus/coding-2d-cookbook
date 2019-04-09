@@ -41,7 +41,7 @@ walker.drawCircle(0, 0, 20);
 let elapsedTime = 0;
 app.ticker.add(function(deltaTime) { update(deltaTime); });
 
-function createDot (x, y, id) {
+function createDot(x, y, id) {
     // create a PIXI graphics object
     const dot = new PIXI.Graphics();
     dot.beginFill(COLOR.pink, 0.05);
@@ -76,17 +76,17 @@ function createDot (x, y, id) {
 }
 
 // drag functions
-function onDragStart (event) {
+function onDragStart(event) {
     this.dragging = true;
     const position = event.data.getLocalPosition(this.parent);
     this.dragOffset.set(position.x - this.x, position.y - this.y);
 }
 
-function onDragEnd (event) {
+function onDragEnd(event) {
     this.dragging = false;
 }
 
-function onDragMove (event) {
+function onDragMove(event) {
     if (this.dragging) {
         const position = event.data.getLocalPosition(this.parent);
         this.position.set(
@@ -97,13 +97,13 @@ function onDragMove (event) {
     }
 }
 
-function update (deltaTime) {
+function update(deltaTime) {
     elapsedTime += deltaTime;
     const t = (elapsedTime % DURATION) / DURATION;
     walker.position = cubicBezier(t, dot1, dot2, dot3, dot4);
 }
 
-function draw () {
+function draw() {
     graphics.clear();
 
     // line between dots

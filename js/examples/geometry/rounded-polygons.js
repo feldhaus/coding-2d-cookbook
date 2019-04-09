@@ -148,16 +148,16 @@ function drawRoundedPolygon (path, radius) {
     graphics.lineTo(first.x, first.y);
 }
 
-function getLength (dx, dy) {
+function getLength(dx, dy) {
     return Math.sqrt(dx * dx + dy * dy);
 }
 
-function getProportionPoint (point, segment, length, dx, dy) {
+function getProportionPoint(point, segment, length, dx, dy) {
     const factor = segment / length;
     return new PIXI.Point(point.x - dx * factor, point.y - dy * factor);
 }
 
-function straightSkeleton (path, spacing) {
+function straightSkeleton(path, spacing) {
     const order = polygonOrder(path);
     if (order < 0) { spacing *= -1; }
     
@@ -205,7 +205,7 @@ function straightSkeleton (path, spacing) {
     return resultingPath;
 }
 
-function polygonOrder (path) {
+function polygonOrder(path) {
     let signedArea = 0;
     const len = path.length;
     for (let i = 0; i < len; i++) {

@@ -48,7 +48,7 @@ drawPolygon(shapes, 700, 234, 7, 60, 40, 0);
 drawPolygon(shapes, 700, 374, 7, 60, 0, 0);
 drawPolygon(shapes, 700, 510, 7, 60, 60, Math.PI);
 
-function drawPolygon (graphics, x, y, sides, radius1, radius2, angle) {
+function drawPolygon(graphics, x, y, sides, radius1, radius2, angle) {
     // if they are different doubles the number of sides (star)
     if (radius2 !== radius1) {
         sides = 2 * sides;

@@ -52,6 +52,7 @@ const mapCoords = [
 // add graphics
 const graphics = new PIXI.Graphics();
 graphics.lineStyle(1, COLOR.white);
+graphics.beginFill(COLOR.white, 0.05);
 for (let i = 0; i < mapCoords.length; i++) {
     graphics.drawPolygon(mapCoords[i]);
 }
@@ -70,7 +71,7 @@ const feedback = new PIXI.Graphics();
 app.stage.addChild(feedback);
 
 // runs an update loop
-app.ticker.add(function(delta) { update(); });
+app.ticker.add(function(deltaTime) { update(deltaTime); });
 
 // listen keydown event
 document.onkeydown = function (event) {
@@ -106,13 +107,13 @@ document.onkeyup = function (event) {
     event.preventDefault();
 }
 
-function update () {
-    player.x += player.direction.x * 1.5;
-    player.y += player.direction.y * 1.5;
+function update(deltaTime) {
+    player.x += player.direction.x * 1.5 * deltaTime;
+    player.y += player.direction.y * 1.5 * deltaTime;
     raycastLinear();
 }
 
-function raycastLinear () {
+function raycastLinear() {
     // find closest intersection
     const closestIntersect = findClosestIntersection(
         player.position,
@@ -131,7 +132,7 @@ function raycastLinear () {
 }
 
 // returns a closest intersection 
-function findClosestIntersection (origin, direction) {
+function findClosestIntersection(origin, direction) {
     let closestIntersect = null;
 
     const ray = { a: origin, b: direction };
@@ -161,7 +162,7 @@ function findClosestIntersection (origin, direction) {
 }
 
 // returns an intersect between raycast and a segment
-function getIntersection (ray, seg) {
+function getIntersection(ray, seg) {
     const u = new PIXI.Point(ray.b.x - ray.a.x, ray.b.y - ray.a.y);
     const v = new PIXI.Point(seg.b.x - seg.a.x, seg.b.y - seg.a.y);
     const w = new PIXI.Point(ray.a.x - seg.a.x, ray.a.y - seg.a.y);
