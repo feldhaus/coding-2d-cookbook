@@ -12,12 +12,11 @@ This is a collection of tiny programs that each demonstrate a particular program
 
 ## Credits
 
-+ [PhotonStorm](https://github.com/photonstorm/) for creating
-  [Phaser](https://github.com/photonstorm/phaser).
-+ [Kenney](http://kenney.nl/assets/sokoban) for the default game's images.
++ [PixiJS](https://github.com/pixijs)
++ [CodeMirror](https://codemirror.net/)
 
 ## License
-Copyright (c) 2017 Maicon Feldhaus
+Copyright (c) 2019 Maicon Feldhaus
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
