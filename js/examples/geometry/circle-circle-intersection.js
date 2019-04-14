@@ -68,11 +68,13 @@ function onDragMove(event) {
         position.x - this.dragOffset.x,
         position.y - this.dragOffset.y
     );
-    calcCircleIntersection();
+    circleIntersection();
 }
 
-// circle-circle-intersection
-function calcCircleIntersection() {
+// first call
+circleIntersection();
+
+function circleIntersection() {
     const x1 = circle1.x, y1 = circle1.y, r1 = circle1.r;
     const x2 = circle2.x, y2 = circle2.y, r2 = circle2.r;
 
@@ -108,5 +110,3 @@ function calcCircleIntersection() {
         rect2.y = y + (h * dx) / d;
     }
 }
-
-calcCircleIntersection();

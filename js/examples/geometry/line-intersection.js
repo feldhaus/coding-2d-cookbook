@@ -29,12 +29,11 @@ app.stage.addChild(dot3);
 const dot4 = createDot(300, 120);
 app.stage.addChild(dot4);
 
-// ticker for doing render updates
-app.ticker.add(function() {
-    // clear graphics
+// first call
+draw();
+
+function draw() {
     graphics.clear();
-    
-    // set line style
     graphics.lineStyle(2, COLOR.white);
     
     // draw a line between dot1 and dot2
@@ -46,7 +45,7 @@ app.ticker.add(function() {
     graphics.lineTo(dot4.x, dot4.y);
     
     // get intersection
-    const intersection = checkLineIntersection(dot1, dot2, dot3, dot4);
+    const intersection = lineIntersection(dot1, dot2, dot3, dot4);
     if (intersection.onLine1 || intersection.onLine2) {
         if (intersection.onLine1 && intersection.onLine2) {
             graphics.beginFill(COLOR.white);
@@ -57,7 +56,7 @@ app.ticker.add(function() {
     } else {
         // no intersection
     }
-});
+}
 
 function createDot(x, y) {
     // create a PIXI graphics object
@@ -86,26 +85,23 @@ function createDot(x, y) {
 }
 
 function onDragStart(event) {
-    this.data = event.data;
     this.alpha = 0.5;
     this.dragging = true;
 }
 
-function onDragEnd() {
+function onDragEnd(event) {
     this.alpha = 1;
     this.dragging = false;
-    this.data = null;
 }
 
-function onDragMove() {
-    if (this.dragging) {
-        const newPosition = this.data.getLocalPosition(this.parent);
-        this.x = newPosition.x;
-        this.y = newPosition.y;
-    }
+function onDragMove(event) {
+    if (!this.dragging) return
+    const position = event.data.getLocalPosition(this.parent);
+    this.position.set(position.x, position.y);
+    draw();
 }
 
-function checkLineIntersection(line1Start, line1End, line2Start, line2End) {
+function lineIntersection(line1Start, line1End, line2Start, line2End) {
     const result = {x: null, y: null, onLine1: false, onLine2: false};
 
     // if the graphics intersect, the result contains the x and y

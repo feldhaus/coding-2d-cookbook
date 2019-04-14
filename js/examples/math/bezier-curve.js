@@ -87,14 +87,13 @@ function onDragEnd(event) {
 }
 
 function onDragMove(event) {
-    if (this.dragging) {
-        const position = event.data.getLocalPosition(this.parent);
-        this.position.set(
-            position.x - this.dragOffset.x,
-            position.y - this.dragOffset.y
-        );
-        draw();
-    }
+    if (!this.dragging) return;
+    const position = event.data.getLocalPosition(this.parent);
+    this.position.set(
+        position.x - this.dragOffset.x,
+        position.y - this.dragOffset.y
+    );
+    draw();
 }
 
 function update(deltaTime) {
@@ -102,6 +101,9 @@ function update(deltaTime) {
     const t = (elapsedTime % DURATION) / DURATION;
     walker.position = cubicBezier(t, dot1, dot2, dot3, dot4);
 }
+
+// first call
+draw();
 
 function draw() {
     graphics.clear();
@@ -129,5 +131,3 @@ function cubicBezier(t, p1, p2, p3, p4) {
         t1**3*p1.y + 3*t1**2*t*p2.y + 3*t1*t**2*p3.y + t**3*p4.y
     );
 }
-
-draw();

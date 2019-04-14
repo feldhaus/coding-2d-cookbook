@@ -39,9 +39,6 @@ for (let i = 0; i < 10; i++) { // outer
     app.stage.addChild(dot);
 }
 
-// draw convex hull
-drawConvexHull();
-
 function createDot(x, y, color) {
     // create a PIXI graphic object
     const dot = new PIXI.Graphics();
@@ -69,25 +66,24 @@ function createDot(x, y, color) {
 }
 
 function onDragStart(event) {
-    this.data = event.data;
     this.alpha = 0.5;
     this.dragging = true;
 }
 
-function onDragEnd() {
+function onDragEnd(event) {
     this.alpha = 1;
     this.dragging = false;
-    this.data = null;
 }
 
-function onDragMove() {
-    if (this.dragging) {
-        const newPosition = this.data.getLocalPosition(this.parent);
-        this.x = newPosition.x;
-        this.y = newPosition.y;
-        drawConvexHull();
-    }
+function onDragMove(event) {
+    if (!this.dragging) return;
+    const position = event.data.getLocalPosition(this.parent);
+    this.position.set(position.x, position.y);
+    drawConvexHull();
 }
+
+// first call
+drawConvexHull();
 
 function drawConvexHull() {
     feedback.clear();
