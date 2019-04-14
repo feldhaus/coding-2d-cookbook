@@ -13,6 +13,11 @@
             "entry": "circle-circle-intersection.js"
         },
         {
+            "title": "Circle-Line-Intersection",
+            "descr": "DRAG and DROP the dots",
+            "entry": "circle-line-intersection.js"
+        },
+        {
             "title": "Circle",
             "descr": "Use ARROWS (⇧ ⇩) to change the number of slices",
             "entry": "circle.js"
