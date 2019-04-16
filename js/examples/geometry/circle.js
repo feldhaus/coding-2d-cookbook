@@ -56,8 +56,8 @@ addText(
 // runs an update loop
 app.ticker.add(function(deltaTime) {
     updateMainCircle();
-    updateRunningCircle(circle1, 50, 1, 0.1 * deltaTime);
-    updateRunningCircle(circle2, 30, -1, 0.3 * deltaTime);
+    updateRunningCircle(circle1, 50, 1, 0.1);
+    updateRunningCircle(circle2, 30, -1, 0.3);
     elapsedTime += deltaTime;
 });
 
