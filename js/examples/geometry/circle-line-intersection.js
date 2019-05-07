@@ -46,10 +46,12 @@ function draw() {
     if (Object.keys(result1).length > 0) {
         graphics.beginFill(COLOR.white);
         graphics.drawCircle(result1.x, result1.y, 5);
+        graphics.endFill();
     }
     if (Object.keys(result2).length > 0) {
         graphics.beginFill(COLOR.white);
         graphics.drawCircle(result2.x, result2.y, 5);
+        graphics.endFill();
     }
 }
 

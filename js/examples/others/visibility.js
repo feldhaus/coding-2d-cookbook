@@ -31,9 +31,11 @@ function createShape(x, y, path) {
     app.stage.addChild(shape);
     shape.position.set(x, y);
     shape.lineStyle(1, COLOR.white);
-    shape.beginFill(0, 0);
+    shape.beginFill(0, 0.01);
     shape.drawPolygon(path);
     shape.closePath();
+    shape.endFill();
+    shape.shapePath = [].concat(path);
     shape.interactive = true;
     shape.buttonMode = true;
     shape.dragOffset = new PIXI.Point();
@@ -66,14 +68,6 @@ function onDragMove (event) {
     draw();
 }
 
-let showLines = false;
-document.onkeydown = function (event) {
-    if (event.code === 'KeyL') {
-        showLines = !showLines;
-        draw();
-    }
-}
-
 draw();
 
 function draw() {
@@ -85,7 +79,7 @@ function draw() {
     // convert shape points to "world" points
     shapes.forEach(shape => {
         points.push(
-            shape.currentPath.shape.points.slice(0,-2).map(
+            shape.shapePath.map(
                 (n,i) => n + (i % 2 === 0 ? shape.x : shape.y)
             )
         );
@@ -96,9 +90,6 @@ function draw() {
     const intersects = raycastToAllPoints(center, points);
 
     graphics.clear();
-    if (showLines) {
-        graphics.lineStyle(1, COLOR.pink);
-    }
     graphics.beginFill(COLOR.pink);
     graphics.drawCircle(center.x, center.y, 10);
     graphics.beginFill(COLOR.pink, 0.05);

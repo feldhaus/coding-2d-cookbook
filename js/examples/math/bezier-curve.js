@@ -122,6 +122,7 @@ function draw() {
         const pt = cubicBezier(i / PATH, dot1, dot2, dot3, dot4);
         graphics.drawCircle(pt.x, pt.y, 2);
     }
+    graphics.endFill();
 }
 
 function cubicBezier(t, p1, p2, p3, p4) {
