@@ -2,13 +2,13 @@
 const COLOR = {
     grey: 0x21252f,
     pink: 0xec407a,
-    white: 0xf2f5ea
+    white: 0xf2f5ea,
 };
 
 // create application
 const app = new PIXI.Application({
     backgroundColor: COLOR.grey,
-    antialias: true
+    antialias: true,
 });
 document.body.appendChild(app.view);
 
@@ -75,12 +75,16 @@ function onDragMove(event) {
 circleIntersection();
 
 function circleIntersection() {
-    const x1 = circle1.x, y1 = circle1.y, r1 = circle1.r;
-    const x2 = circle2.x, y2 = circle2.y, r2 = circle2.r;
+    const x1 = circle1.x,
+        y1 = circle1.y,
+        r1 = circle1.r;
+    const x2 = circle2.x,
+        y2 = circle2.y,
+        r2 = circle2.r;
 
     const dx = x2 - x1;
     const dy = y2 - y1;
-    const d = Math.sqrt(dx**2 + dy**2);
+    const d = Math.sqrt(dx ** 2 + dy ** 2);
 
     if (d > r1 + r2) {
         // no intersect
@@ -98,8 +102,8 @@ function circleIntersection() {
         rect1.visible = true;
         rect2.visible = true;
 
-        const a = (r1**2 - r2**2 + d**2) / (2 * d);
-        const h = Math.sqrt(r1**2 - a**2);
+        const a = (r1 ** 2 - r2 ** 2 + d ** 2) / (2 * d);
+        const h = Math.sqrt(r1 ** 2 - a ** 2);
         const x = x1 + (a * dx) / d;
         const y = y1 + (a * dy) / d;
 

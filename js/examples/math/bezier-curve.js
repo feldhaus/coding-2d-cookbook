@@ -2,7 +2,7 @@
 const COLOR = {
     grey: 0x21252f,
     pink: 0xec407a,
-    white: 0xf2f5ea
+    white: 0xf2f5ea,
 };
 const DURATION = 100;
 const PATH = 50;
@@ -10,7 +10,7 @@ const PATH = 50;
 // create application
 const app = new PIXI.Application({
     backgroundColor: COLOR.grey,
-    antialias: true
+    antialias: true,
 });
 document.body.appendChild(app.view);
 
@@ -39,7 +39,9 @@ walker.drawCircle(0, 0, 20);
 
 // runs an update loop
 let elapsedTime = 0;
-app.ticker.add(function(deltaTime) { update(deltaTime); });
+app.ticker.add(function(deltaTime) {
+    update(deltaTime);
+});
 
 function createDot(x, y, id) {
     // create a PIXI graphics object
@@ -53,21 +55,20 @@ function createDot(x, y, id) {
 
     const txt = new PIXI.Text(id.toString(), {
         fill: COLOR.white,
-        fontSize: 20
+        fontSize: 20,
     });
     txt.anchor.set(0.5, 0.5);
     dot.addChild(txt);
-    
+
     // enable the dot to be interactive
     // this will allow it to respond to mouse and touch events
     dot.interactive = true;
-    
+
     // this button mode will mean the hand cursor appears
     // when you roll over the bunny with your mouse
     dot.buttonMode = true;
-    
-    dot
-        .on('pointerdown', onDragStart)
+
+    dot.on('pointerdown', onDragStart)
         .on('pointerup', onDragEnd)
         .on('pointerupoutside', onDragEnd)
         .on('pointermove', onDragMove);
@@ -127,6 +128,7 @@ function draw() {
 
 function cubicBezier(t, p1, p2, p3, p4) {
     const t1 = 1 - t;
+    // prettier-ignore
     return new PIXI.Point(
         t1**3*p1.x + 3*t1**2*t*p2.x + 3*t1*t**2*p3.x + t**3*p4.x,
         t1**3*p1.y + 3*t1**2*t*p2.y + 3*t1*t**2*p3.y + t**3*p4.y

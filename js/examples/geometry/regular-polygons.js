@@ -2,14 +2,14 @@
 const COLOR = {
     grey: 0x21252f,
     pink: 0xec407a,
-    white: 0xf2f5ea
+    white: 0xf2f5ea,
 };
 const PI_2 = Math.PI / 2;
 
 // create application
 const app = new PIXI.Application({
     backgroundColor: COLOR.grey,
-    antialias: true
+    antialias: true,
 });
 document.body.appendChild(app.view);
 

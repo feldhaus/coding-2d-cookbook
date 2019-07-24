@@ -2,7 +2,7 @@
 const COLOR = {
     grey: 0x21252f,
     pink: 0xec407a,
-    white: 0xf2f5ea
+    white: 0xf2f5ea,
 };
 const PI_2 = Math.PI * 2;
 const RADIUS = 150;
@@ -10,7 +10,7 @@ const RADIUS = 150;
 // create application
 const app = new PIXI.Application({
     backgroundColor: COLOR.grey,
-    antialias: true
+    antialias: true,
 });
 document.body.appendChild(app.view);
 
@@ -42,11 +42,7 @@ addText(
     { x: circle.x, y: circle.y + RADIUS + 10 },
     { x: 0.5, y: 0.0 }
 );
-addText(
-    'π',
-    { x: circle.x - RADIUS - 10, y: circle.y },
-    { x: 1.0, y: 0.5 }
-);
+addText('π', { x: circle.x - RADIUS - 10, y: circle.y }, { x: 1.0, y: 0.5 });
 addText(
     '3π / 2',
     { x: circle.x, y: circle.y - RADIUS - 10 },
@@ -62,19 +58,19 @@ app.ticker.add(function(deltaTime) {
 });
 
 // listen pointer down event
-document.onkeydown = function (event) {
+document.onkeydown = function(event) {
     if (event.keyCode === 38) {
         slices = Math.min(slices + 1, 36);
     } else if (event.keyCode === 40) {
         slices = Math.max(slices - 1, 2);
     }
     event.preventDefault();
-}
+};
 
 function addText(txt, position, anchor) {
     const tip = new PIXI.Text(txt, {
         fontSize: 24,
-        fill: COLOR.pink
+        fill: COLOR.pink,
     });
     app.stage.addChild(tip);
     tip.anchor.set(anchor.x, anchor.y);
@@ -85,11 +81,13 @@ function updateMainCircle() {
     let mouse = app.renderer.plugins.interaction.mouse.global;
     let angle = Math.atan2(mouse.y - circle.y, mouse.x - circle.x);
     let hypot = Math.hypot(mouse.x - circle.x, mouse.y - circle.y);
-    if (angle < 0) { angle += PI_2; }
+    if (angle < 0) {
+        angle += PI_2;
+    }
 
     const sliceCirc = PI_2 / slices;
     const temp = angle / sliceCirc;
-    
+
     circle.clear();
     circle.lineStyle(3, COLOR.white);
     for (let i = 0; i < slices; i++) {
@@ -110,8 +108,8 @@ function updateRunningCircle(shape, radius, direction, speed) {
     shape.clear();
     shape.lineStyle(20, COLOR.white);
     if (invert) {
-        shape.arc(0, 0, radius, 0, circum % PI_2 * direction);
+        shape.arc(0, 0, radius, 0, (circum % PI_2) * direction);
     } else {
-        shape.arc(0, 0, radius, circum % PI_2 * direction, 0);
+        shape.arc(0, 0, radius, (circum % PI_2) * direction, 0);
     }
 }

@@ -2,17 +2,18 @@
 const COLOR = {
     grey: 0x21252f,
     pink: 0xec407a,
-    white: 0xf2f5ea
+    white: 0xf2f5ea,
 };
 
 // create application
 const app = new PIXI.Application({
     backgroundColor: COLOR.grey,
-    antialias: true
+    antialias: true,
 });
 document.body.appendChild(app.view);
 
 // map coordinates
+// prettier-ignore
 const mapCoords = [
     [
         45,106, 45,194, 12,194, 12,222, 22,222, 22,267, 12,267, 12,424, 35,447,
@@ -71,10 +72,12 @@ const feedback = new PIXI.Graphics();
 app.stage.addChild(feedback);
 
 // runs an update loop
-app.ticker.add(function(deltaTime) { update(deltaTime); });
+app.ticker.add(function(deltaTime) {
+    update(deltaTime);
+});
 
 // listen keydown event
-document.onkeydown = function (event) {
+document.onkeydown = function(event) {
     if (event.code === 'ArrowLeft' || event.code === 'KeyA') {
         player.direction.x = -1;
     } else if (event.code === 'ArrowRight' || event.code === 'KeyD') {
@@ -88,10 +91,10 @@ document.onkeydown = function (event) {
     }
 
     event.preventDefault();
-}
+};
 
 // listen keyup event
-document.onkeyup = function (event) {
+document.onkeyup = function(event) {
     if (event.code === 'ArrowLeft' || event.code === 'KeyA') {
         player.direction.x = 0;
     } else if (event.code === 'ArrowRight' || event.code === 'KeyD') {
@@ -105,7 +108,7 @@ document.onkeyup = function (event) {
     }
 
     event.preventDefault();
-}
+};
 
 function update(deltaTime) {
     player.x += player.direction.x * 1.5 * deltaTime;
@@ -119,7 +122,7 @@ function raycastLinear() {
         player.position,
         app.renderer.plugins.interaction.mouse.global // mouse position
     );
-    
+
     feedback.clear();
 
     // there is an intersect
@@ -131,33 +134,38 @@ function raycastLinear() {
     }
 }
 
-// returns a closest intersection 
+// returns a closest intersection
 function findClosestIntersection(origin, direction) {
     let closestIntersect = null;
 
     const ray = { a: origin, b: direction };
-    
+
     // see intersection between all the map segments
     for (let i = 0; i < mapCoords.length; i++) {
-        for (let j = 0; j < mapCoords[i].length-2; j+=2) {
+        for (let j = 0; j < mapCoords[i].length - 2; j += 2) {
             const seg = {
-                a: new PIXI.Point(mapCoords[i][j+0], mapCoords[i][j+1]),
-                b: new PIXI.Point(mapCoords[i][j+2], mapCoords[i][j+3])
+                a: new PIXI.Point(mapCoords[i][j + 0], mapCoords[i][j + 1]),
+                b: new PIXI.Point(mapCoords[i][j + 2], mapCoords[i][j + 3]),
             };
-            
+
             // get intersection
             const intersection = getIntersection(ray, seg);
-            
+
             // there is not intersection, continue
-            if (!intersection) { continue };
-            
+            if (!intersection) {
+                continue;
+            }
+
             // it's nearest, save it
-            if (!closestIntersect || intersection.distance < closestIntersect.distance) {
+            if (
+                !closestIntersect ||
+                intersection.distance < closestIntersect.distance
+            ) {
                 closestIntersect = intersection;
             }
         }
     }
-    
+
     return closestIntersect;
 }
 
@@ -179,6 +187,6 @@ function getIntersection(ray, seg) {
     return {
         x: ray.a.x + u.x * d2,
         y: ray.a.y + u.y * d2,
-        distance: d2
+        distance: d2,
     };
 }

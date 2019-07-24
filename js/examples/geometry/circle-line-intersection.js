@@ -2,13 +2,13 @@
 const COLOR = {
     grey: 0x21252f,
     pink: 0xec407a,
-    white: 0xf2f5ea
+    white: 0xf2f5ea,
 };
 
 // create application
 const app = new PIXI.Application({
     backgroundColor: COLOR.grey,
-    antialias: true
+    antialias: true,
 });
 document.body.appendChild(app.view);
 
@@ -33,13 +33,13 @@ function draw() {
     graphics.lineTo(dot2.x, dot2.y);
 
     graphics.drawCircle(400, 300, 100);
-    
+
     // get intersection
     const result1 = {};
     const result2 = {};
     circleLineIntersection(
-        {x: 400, y: 300, radius: 100},
-        {start: dot1, end: dot2},
+        { x: 400, y: 300, radius: 100 },
+        { start: dot1, end: dot2 },
         result1,
         result2
     );
@@ -63,17 +63,16 @@ function createDot(x, y) {
     dot.beginFill(COLOR.pink);
     dot.drawCircle(0, 0, 5);
     dot.position.set(x, y);
-    
+
     // enable the dot to be interactive
     // this will allow it to respond to mouse and touch events
     dot.interactive = true;
-    
+
     // this button mode will mean the hand cursor appears
     // when you roll over the bunny with your mouse
     dot.buttonMode = true;
-    
-    dot
-        .on('pointerdown', onDragStart)
+
+    dot.on('pointerdown', onDragStart)
         .on('pointerup', onDragEnd)
         .on('pointerupoutside', onDragEnd)
         .on('pointermove', onDragMove);
@@ -102,33 +101,33 @@ function circleLineIntersection(circle, segment, result1, result2) {
     const lx = segment.end.x - segment.start.x;
     const ly = segment.end.y - segment.start.y;
 
-    const len = Math.sqrt(lx**2 + ly**2);
+    const len = Math.sqrt(lx ** 2 + ly ** 2);
 
     const dx = lx / len;
     const dy = ly / len;
 
-    const t = dx * (circle.x - segment.start.x) +
-              dy * (circle.y - segment.start.y);
+    const t =
+        dx * (circle.x - segment.start.x) + dy * (circle.y - segment.start.y);
 
     const ex = t * dx + segment.start.x;
     const ey = t * dy + segment.start.y;
 
-    const lec = Math.sqrt((ex - circle.x)**2 + (ey - circle.y)**2);
+    const lec = Math.sqrt((ex - circle.x) ** 2 + (ey - circle.y) ** 2);
 
     if (lec < circle.radius) {
-        const dt = Math.sqrt(circle.radius**2 - lec**2);
+        const dt = Math.sqrt(circle.radius ** 2 - lec ** 2);
         const te = dx * lx + dy * ly;
 
         if (segment) {
-            if ((t-dt < 0 || t-dt > te) && (t+dt < 0 || t+dt > te)) {
+            if ((t - dt < 0 || t - dt > te) && (t + dt < 0 || t + dt > te)) {
                 // no intersetion
                 return;
-            } else if (t-dt < 0 || t-dt > te) {
+            } else if (t - dt < 0 || t - dt > te) {
                 result1.x = (t + dt) * dx + segment.start.x;
                 result1.y = (t + dt) * dy + segment.start.y;
                 // single intersection
                 return;
-            } else if (t+dt < 0 || t+dt > te) {
+            } else if (t + dt < 0 || t + dt > te) {
                 result1.x = (t - dt) * dx + segment.start.x;
                 result1.y = (t - dt) * dy + segment.start.y;
                 // single intersection

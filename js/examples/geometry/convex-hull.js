@@ -2,13 +2,13 @@
 const COLOR = {
     grey: 0x21252f,
     pink: 0xec407a,
-    white: 0xf2f5ea
+    white: 0xf2f5ea,
 };
 
 // create application
 const app = new PIXI.Application({
     backgroundColor: COLOR.grey,
-    antialias: true
+    antialias: true,
 });
 document.body.appendChild(app.view);
 
@@ -23,7 +23,8 @@ const dotsInner = [];
 const dotsOuter = [];
 let px, py;
 let dot;
-for (let i = 0; i < 5; i++) { // inner
+for (let i = 0; i < 5; i++) {
+    // inner
     px = 100 + Math.random() * (width - 200);
     py = 100 + Math.random() * (height - 200);
     dot = createDot(px, py, COLOR.pink);
@@ -31,7 +32,8 @@ for (let i = 0; i < 5; i++) { // inner
     dotsOuter.push(dot);
     app.stage.addChild(dot);
 }
-for (let i = 0; i < 10; i++) { // outer
+for (let i = 0; i < 10; i++) {
+    // outer
     px = 20 + Math.random() * (width - 40);
     py = 20 + Math.random() * (height - 40);
     dot = createDot(px, py, COLOR.white);
@@ -47,17 +49,16 @@ function createDot(x, y, color) {
     dot.beginFill(color);
     dot.drawCircle(0, 0, 5);
     dot.position.set(x, y);
-    
+
     // enable the dot to be interactive
     // this will allow it to respond to mouse and touch events
     dot.interactive = true;
-    
+
     // this button mode will mean the hand cursor appears
     // when you roll over the bunny with your mouse
     dot.buttonMode = true;
-    
-    dot
-        .on('pointerdown', onDragStart)
+
+    dot.on('pointerdown', onDragStart)
         .on('pointerup', onDragEnd)
         .on('pointerupoutside', onDragEnd)
         .on('pointermove', onDragMove);
@@ -93,7 +94,7 @@ function drawConvexHull() {
 
 function drawLine(dots, color) {
     const points = computeConvexHull(dots);
-    
+
     if (points && points.length > 0) {
         feedback.lineStyle(2, color);
         feedback.moveTo(points[0].x, points[0].y);
@@ -109,12 +110,12 @@ function computeConvexHull(dots) {
     if (dots.length < 3) {
         return;
     }
-    
+
     const points = dots.concat();
     const len = points.length;
 
     // the first step is to find the point with the lowest y-coordinate,
-    // if the lowest y-coordinate exists in more than one point in the set, 
+    // if the lowest y-coordinate exists in more than one point in the set,
     // the point with the lowest x-coordinate out of the candidates should be chose
     let min = 0;
     for (let i = 1; i < len; i++) {
@@ -126,12 +127,12 @@ function computeConvexHull(dots) {
             min = i;
         }
     }
-    
+
     // set the min as the first
     const tmp = points[0];
     points[0] = points[min];
     points[min] = tmp;
-    
+
     // calculate angle and distance from the lowest point
     for (let i = 0; i < len; i++) {
         points[i].distance = getDistance(points[0], points[i]);
@@ -140,10 +141,12 @@ function computeConvexHull(dots) {
             points[i].angle += Math.PI;
         }
     }
-    
+
     // sort points by angle
-    points.sort(function (a, b) { return compare(a, b); });
-    
+    points.sort(function(a, b) {
+        return compare(a, b);
+    });
+
     // create a stack
     let n = 2;
     const stack = [points[0], points[1], points[2]];
@@ -155,7 +158,7 @@ function computeConvexHull(dots) {
         stack.push(points[i]);
         n++;
     }
-    
+
     return stack;
 }
 

@@ -2,27 +2,27 @@
 const COLOR = {
     grey: 0x21252f,
     pink: 0xec407a,
-    white: 0xf2f5ea
+    white: 0xf2f5ea,
 };
 const PI_2 = Math.PI * 2;
 const POLYGONS = [
-    {x:    0, y: -150},
-    {x:  -38, y:  -52},
-    {x: -142, y:  -46},
-    {x:  -62, y:   20},
-    {x:  -88, y:  122},
-    {x:    0, y:   65},
-    {x:   88, y:  122},
-    {x:   62, y:   20},
-    {x:  142, y:  -46},
-    {x:   38, y:  -52},
-    {x:    0, y: -150}
+    { x: 0, y: -150 },
+    { x: -38, y: -52 },
+    { x: -142, y: -46 },
+    { x: -62, y: 20 },
+    { x: -88, y: 122 },
+    { x: 0, y: 65 },
+    { x: 88, y: 122 },
+    { x: 62, y: 20 },
+    { x: 142, y: -46 },
+    { x: 38, y: -52 },
+    { x: 0, y: -150 },
 ];
 
 // create application
 const app = new PIXI.Application({
     backgroundColor: COLOR.grey,
-    antialias: true
+    antialias: true,
 });
 document.body.appendChild(app.view);
 
@@ -45,18 +45,18 @@ let gap = 5;
 app.ticker.add(function(deltaTime) {
     elapsedTime += deltaTime;
     const offset = elapsedTime * 0.01;
-    
+
     circle.clear();
     circle.lineStyle(5, COLOR.pink);
     drawDashedCircle(circle, 150, dash, gap, offset);
-    
+
     polygon.clear();
     polygon.lineStyle(3, COLOR.white);
     drawDashedPolygon(polygon, POLYGONS, dash, gap, offset);
     polygon.rotation += deltaTime * 0.01;
 });
 
-document.onkeydown = function (event) {
+document.onkeydown = function(event) {
     // dash (min: 1 - max: 50)
     if (event.keyCode === 39) {
         dash = Math.min(dash + 1, 50);
@@ -73,7 +73,7 @@ document.onkeydown = function (event) {
         gap = Math.max(gap - 1, 1);
         event.preventDefault();
     }
-}
+};
 
 function drawDashedCircle(graphics, radius, dash, gap, offset) {
     const circum = radius * PI_2;
@@ -84,11 +84,8 @@ function drawDashedCircle(graphics, radius, dash, gap, offset) {
     const offsetAngle = offset * chunkAngle;
 
     let theta = offsetAngle;
-    
-    graphics.moveTo(
-        radius * Math.cos(theta),
-        radius * Math.sin(theta)
-    );
+
+    graphics.moveTo(radius * Math.cos(theta), radius * Math.sin(theta));
     for (let i = 0; i < chunks; i++) {
         theta = chunkAngle * i + offsetAngle;
         graphics.arc(0, 0, radius, theta, theta + dashAngle);
@@ -130,14 +127,11 @@ function drawDashedPolygon(graphics, polygons, dash, gap, offset) {
         dx = p2.x - p1.x;
         dy = p2.y - p1.y;
         len = Math.sqrt(dx * dx + dy * dy);
-        normal = {x: dx / len, y: dy / len};
+        normal = { x: dx / len, y: dy / len };
         progressOnLine = 0;
 
-        graphics.moveTo(
-            p1.x + gapLeft * normal.x,
-            p1.y + gapLeft * normal.y
-        );
-        while (progressOnLine <= len){
+        graphics.moveTo(p1.x + gapLeft * normal.x, p1.y + gapLeft * normal.y);
+        while (progressOnLine <= len) {
             progressOnLine += gapLeft;
             if (dashLeft > 0) {
                 progressOnLine += dashLeft;

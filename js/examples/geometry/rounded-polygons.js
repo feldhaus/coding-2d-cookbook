@@ -49,10 +49,7 @@ drawRoundedPolygon(shape2, 30);
 
 // add a new point
 function addPoint (event) {
-    points.push(new PIXI.Point(
-        event.data.global.x,
-        event.data.global.y)
-    );
+    points.push(new PIXI.Point(event.data.global.x, event.data.global.y));
     
     if (points.length > 2) {
         graphics.clear();
