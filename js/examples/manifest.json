@@ -4,6 +4,11 @@
             "title": "Bevier-Curve",
             "descr": "DRAG and DROP the dots to change the curve",
             "entry": "bezier-curve.js"
+        },
+        {
+            "title": "Scale-Mode",
+            "descr": "CLICK to switch the scale mode",
+            "entry": "scale-mode.js"
         }
     ],
     "geometry": [
