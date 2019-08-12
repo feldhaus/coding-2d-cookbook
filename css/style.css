@@ -528,7 +528,7 @@ a:hover {
 .main-content .example-frame {
   width: 100%;
   max-width: 800px;
-  background: #38404e url(../../assets/images/tile.png) 56px 56px;
+  background: #38404e;
   position: relative;
 }
 .main-content .example-frame .sizer {
