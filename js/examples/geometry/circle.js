@@ -1,9 +1,5 @@
 // constants
-const COLOR = {
-    grey: 0x21252f,
-    pink: 0xec407a,
-    white: 0xf2f5ea,
-};
+const COLOR = { grey: 0x21252f, pink: 0xec407a, white: 0xf2f5ea };
 const PI_2 = Math.PI * 2;
 const RADIUS = 150;
 
