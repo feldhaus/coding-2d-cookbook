@@ -80,6 +80,13 @@
             "entry": "tree.js"
         }
     ],
+    "pathfinding": [
+        {
+            "title": "Breadth-First-Search",
+            "descr": "CLICK on the tiles to create or remove a wall",
+            "entry": "breadth-first-search.js"
+        }
+    ],
     "others": [
         {
             "title": "Circular-Runner-Double-Jump",
