@@ -446,7 +446,7 @@ a:hover {
   color: #b1b8c4;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  background: url(../../assets/images/arrow-right-default.png) 15px 12px no-repeat;
+  background: url(./../assets/images/arrow-right-default.png) 15px 12px no-repeat;
   cursor: pointer;
 }
 .main-nav .main-menu .section:hover,
@@ -459,7 +459,7 @@ a:hover {
   transition: color 0.2s cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 .main-nav .main-menu .section.open {
-  background: url(../../assets/images/arrow-down-default.png) 14px 13px no-repeat;
+  background: url(./../assets/images/arrow-down-default.png) 14px 13px no-repeat;
 }
 .main-nav .main-menu ul {
   list-style: none;
@@ -645,7 +645,7 @@ a:hover {
   color: #919bac;
 }
 .main-content .code .CodeMirror {
-  background: #272d37 url(../../assets/images/code-lines.png) 0 5px;
+  background: #272d37 url(./../assets/images/code-lines.png) 0 5px;
   font-family: 'Roboto Mono';
   font-weight: 400;
   font-size: 14px;
@@ -712,11 +712,11 @@ a:hover {
   height: 40px;
   position: relative;
   width: 175px;
-  background: url(../../assets/images/icon-arrow-down.png) 155px 18px no-repeat;
+  background: url(./../assets/images/icon-arrow-down.png) 155px 18px no-repeat;
   z-index: 10;
 }
 .main-content .code .footer .select-group .select.open {
-  background-image: url(../../assets/images/icon-arrow-up.png);
+  background-image: url(./../assets/images/icon-arrow-up.png);
 }
 .main-content .code .footer .select-group .select .current {
   display: block;
