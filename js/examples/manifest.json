@@ -85,6 +85,11 @@
             "title": "Breadth-First-Search",
             "descr": "CLICK on the tiles to create or remove a wall",
             "entry": "breadth-first-search.js"
+        },
+        {
+            "title": "Greedy-Best-First-Search",
+            "descr": "CLICK on the tiles to create or remove a wall",
+            "entry": "greedy-best-first-search.js"
         }
     ],
     "others": [
