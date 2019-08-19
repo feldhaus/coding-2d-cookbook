@@ -81,10 +81,10 @@ function addNode(x, y, data) {
 // return the adjacent edges of a node: north, south, east and west
 function getAdjacentEdges(grid, col, row) {
     const edges = [];
-    if (col > 0) edges.push(grid[col - 1][row]);
-    if (row > 0) edges.push(grid[col][row - 1]);
     if (col < COLS - 1) edges.push(grid[col + 1][row]);
     if (row < ROWS - 1) edges.push(grid[col][row + 1]);
+    if (row > 0) edges.push(grid[col][row - 1]);
+    if (col > 0) edges.push(grid[col - 1][row]);
     return edges;
 }
 
@@ -132,6 +132,7 @@ function reconstructPath(cameFrom, start, goal, path = []) {
     return path;
 }
 
+const timeoutIDs = [];
 function drawPath() {
     // reset grid
     for (let col = 0; col < COLS; col++) {
@@ -156,12 +157,14 @@ function drawPath() {
     });
 
     // show visited nodes
+    timeoutIDs.forEach(id => clearTimeout(id));
     const flattenGrid = grid.concat().flat();
     Object.keys(cameFrom).forEach(key => {
         const node = flattenGrid.find(n => n.id === key);
-        setTimeout(() => {
+        const timeoutID = setTimeout(() => {
             node.sprite.tint = COLOR.pink;
             node.label.style.fill = COLOR.pink;
-        }, node.step * 5);
+        }, node.step * 50);
+        timeoutIDs.push(timeoutID);
     });
 }

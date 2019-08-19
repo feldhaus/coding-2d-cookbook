@@ -81,10 +81,10 @@ function addNode(x, y, data) {
 // return the adjacent edges of a node: north, south, east and west
 function getAdjacentEdges(grid, col, row) {
     const edges = [];
-    if (col > 0) edges.push(grid[col - 1][row]);
-    if (row > 0) edges.push(grid[col][row - 1]);
     if (col < COLS - 1) edges.push(grid[col + 1][row]);
     if (row < ROWS - 1) edges.push(grid[col][row + 1]);
+    if (row > 0) edges.push(grid[col][row - 1]);
+    if (col > 0) edges.push(grid[col - 1][row]);
     return edges;
 }
 
@@ -116,18 +116,19 @@ function breadthFirstSearch(graph, start, goal) {
     return cameFrom;
 }
 
-function findPath(grid, cameFrom, start, goal, path = []) {
+function reconstructPath(cameFrom, start, goal, path = []) {
     if (goal) {
         path.push(goal);
 
         if (start.id !== goal.id) {
-            return findPath(grid, cameFrom, start, cameFrom[goal.id], path);
+            return reconstructPath(cameFrom, start, cameFrom[goal.id], path);
         }
     }
 
     return path;
 }
 
+const timeoutIDs = [];
 function drawPath() {
     // reset grid
     for (let col = 0; col < COLS; col++) {
@@ -140,7 +141,7 @@ function drawPath() {
 
     // find the path
     const cameFrom = breadthFirstSearch(grid, start, goal);
-    const path = findPath(grid, cameFrom, start, goal);
+    const path = reconstructPath(cameFrom, start, goal);
 
     // draw the path
     graphicsPath.lineStyle(3, COLOR.pink);
@@ -152,12 +153,14 @@ function drawPath() {
     });
 
     // show visited nodes
+    timeoutIDs.forEach(id => clearTimeout(id));
     const flattenGrid = grid.concat().flat();
     Object.keys(cameFrom).forEach(key => {
         const node = flattenGrid.find(n => n.id === key);
-        setTimeout(() => {
+        const timeoutID = setTimeout(() => {
             node.sprite.tint = COLOR.pink;
             node.label.style.fill = COLOR.pink;
-        }, node.step * 5);
+        }, node.step * 10);
+        timeoutIDs.push(timeoutID);
     });
 }
