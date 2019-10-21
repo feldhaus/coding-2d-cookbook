@@ -104,6 +104,11 @@
             "entry": "dashed-lines.js"
         },
         {
+            "title": "Seeking-Target",
+            "descr": "Move the MOUSE",
+            "entry": "seeking-target.js"
+        },
+        {
             "title": "Visibility",
             "descr": "DRAG and DROP the shapes to see the light effect and press L to show the lines",
             "entry": "visibility.js"
