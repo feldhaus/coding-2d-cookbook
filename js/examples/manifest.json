@@ -104,6 +104,11 @@
             "entry": "dashed-lines.js"
         },
         {
+            "title": "Moving-Around",
+            "descr": "Use ARROWS (⇧ ⇩⇦ ⇨) or WASD to move",
+            "entry": "moving-around.js"
+        },
+        {
             "title": "Seeking-Target",
             "descr": "Move the MOUSE",
             "entry": "seeking-target.js"
