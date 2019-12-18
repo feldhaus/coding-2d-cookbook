@@ -12,8 +12,8 @@ jQuery(document).ready(function($) {
 
     let editor;
 
-    const loadExamples = function() {
-        $.getJSON('js/examples/manifest.json', function(data) {
+    const loadSnippets = function() {
+        $.getJSON('js/manifest.json', function(data) {
             const sections = Object.keys(data);
             for (let i = 0; i < sections.length; i++) {
                 let html = '<span class="section" data-section="' + sections[i] + '">' + sections[i] + '</span><ul data-section="' + sections[i] + '">';
@@ -52,7 +52,7 @@ jQuery(document).ready(function($) {
                 $('.main-content h2').text($(this).attr('data-descr'));
 
                 $.ajax({
-                    url: 'js/examples/' + $(this).parent().attr('data-section') + '/' + $(this).attr('data-src'),
+                    url: 'js/' + $(this).parent().attr('data-section') + '/' + $(this).attr('data-src'),
                     dataType: "text",
                     success: function(data) {
                         generateIFrameContent(data);
@@ -115,5 +115,5 @@ jQuery(document).ready(function($) {
         frameDoc.close();
     };
 
-    loadExamples();
+    loadSnippets();
 });
