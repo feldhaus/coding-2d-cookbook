@@ -92,6 +92,13 @@
             "entry": "greedy-best-first-search.js"
         }
     ],
+    "animation": [
+        {
+            "title": "Floating",
+            "descr": "",
+            "entry": "floating.js"
+        }
+    ],
     "others": [
         {
             "title": "Circular-Runner-Double-Jump",
