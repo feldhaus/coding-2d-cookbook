@@ -65,7 +65,7 @@
     ],
     "fractal": [
         {
-            "title": "Lightning Bolt",
+            "title": "Lightning-Bolt",
             "descr": "CLICK to create a lightning bolt",
             "entry": "lightning-bolt.js"
         },
@@ -73,6 +73,11 @@
             "title": "Phyllotaxis",
             "descr": "",
             "entry": "phyllotaxis.js"
+        },
+        {
+            "title": "Sierpinski-Carpet",
+            "descr": "",
+            "entry": "sierpinski-carpet.js"
         },
         {
             "title": "Tree",
