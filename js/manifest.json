@@ -38,6 +38,11 @@
             "entry": "convex-hull.js"
         },
         {
+            "title": "Line-Interpolate",
+            "descr": "DRAG and DROP the dots",
+            "entry": "line-interpolate.js"
+        },
+        {
             "title": "Line-Intersection",
             "descr": "DRAG and DROP the dots",
             "entry": "line-intersection.js"
