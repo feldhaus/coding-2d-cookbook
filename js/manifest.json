@@ -18,6 +18,11 @@
     ],
     "geometry": [
         {
+            "title": "Angle-Reflect",
+            "descr": "DRAG and DROP the circles",
+            "entry": "angle-reflect.js"
+        },
+        {
             "title": "Circle-Circle-Intersection",
             "descr": "DRAG and DROP the circles",
             "entry": "circle-circle-intersection.js"
