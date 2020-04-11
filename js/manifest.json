@@ -1,26 +1,19 @@
 {
-    "math": [
+    "geometry": [
         {
             "title": "Angle-LookAt",
             "descr": "Move the MOUSE",
             "entry": "angle-lookat.js"
         },
         {
-            "title": "Bevier-Curve",
-            "descr": "DRAG and DROP the dots to change the curve",
-            "entry": "bezier-curve.js"
-        },
-        {
-            "title": "Scale-Mode",
-            "descr": "CLICK to switch the scale mode",
-            "entry": "scale-mode.js"
-        }
-    ],
-    "geometry": [
-        {
             "title": "Angle-Reflect",
             "descr": "DRAG and DROP the circles",
             "entry": "angle-reflect.js"
+        },
+        {
+            "title": "Bevier-Curve",
+            "descr": "DRAG and DROP the dots to change the curve",
+            "entry": "bezier-curve.js"
         },
         {
             "title": "Circle-Circle-Intersection",
@@ -129,6 +122,11 @@
             "title": "Moving-Around",
             "descr": "Use ARROWS (⇧ ⇩⇦ ⇨) or WASD to move",
             "entry": "moving-around.js"
+        },
+        {
+            "title": "Scale-Mode",
+            "descr": "CLICK to switch the scale mode",
+            "entry": "scale-mode.js"
         },
         {
             "title": "Seeking-Target",
