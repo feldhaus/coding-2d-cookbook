@@ -8,6 +8,11 @@ const app = new PIXI.Application({
 });
 document.body.appendChild(app.view);
 
+const center = new PIXI.Point(
+  app.renderer.width * 0.5,
+  app.renderer.height * 0.5
+);
+
 // add the graphics
 const graphics = new PIXI.Graphics();
 app.stage.addChild(graphics);
@@ -18,54 +23,46 @@ const points = [];
 // listen pointer down event
 app.renderer.plugins.interaction.on('pointerdown', addPoint);
 
-// draw a sample shape (star)
-graphics.lineStyle(5, COLOR.pink);
-const shape1 = [
-  new PIXI.Point(200, 100),
-  new PIXI.Point(220, 150),
-  new PIXI.Point(280, 150),
-  new PIXI.Point(230, 190),
-  new PIXI.Point(250, 250),
-  new PIXI.Point(200, 220),
-  new PIXI.Point(150, 250),
-  new PIXI.Point(170, 190),
-  new PIXI.Point(120, 150),
-  new PIXI.Point(180, 150),
+const star = [
+  new PIXI.Point(center.x, center.y - 200),
+  new PIXI.Point(center.x + 40, center.y - 45),
+  new PIXI.Point(center.x + 190, center.y - 45),
+  new PIXI.Point(center.x + 65, center.y + 25),
+  new PIXI.Point(center.x + 100, center.y + 175),
+  new PIXI.Point(center.x, center.y + 55),
+  new PIXI.Point(center.x - 100, center.y + 175),
+  new PIXI.Point(center.x - 65, center.y + 25),
+  new PIXI.Point(center.x - 190, center.y - 45),
+  new PIXI.Point(center.x - 40, center.y - 45),
 ];
-drawRoundedPolygon(shape1, 10);
-
-// draw a sample shape (rect)
-const shape2 = [
-  new PIXI.Point(400, 200),
-  new PIXI.Point(600, 200),
-  new PIXI.Point(600, 400),
-  new PIXI.Point(400, 400),
-];
-drawRoundedPolygon(shape2, 30);
+draw(star);
 
 // add a new point
 function addPoint(event) {
   points.push(new PIXI.Point(event.data.global.x, event.data.global.y));
+  draw(points);
+}
+
+// add a new point
+function draw(points) {
+  graphics.clear();
+
+  for (let i = 0; i < points.length; i++) {
+    graphics.beginFill(COLOR.white);
+    graphics.drawCircle(points[i].x, points[i].y, 2);
+    graphics.endFill();
+  }
 
   if (points.length > 2) {
-    graphics.clear();
-
     graphics.lineStyle(5, COLOR.pink);
-    drawRoundedPolygon(straightSkeleton(points, 20), 20);
+    drawRoundedPolygon(points, 20);
 
     graphics.lineStyle(1, COLOR.white, 0.5);
     graphics.drawPolygon(points.concat(points[0]));
-
-    graphics.endFill();
   }
-  graphics.lineStyle(1, COLOR.white, 1);
-  graphics.beginFill(COLOR.white);
-  graphics.drawCircle(event.data.global.x, event.data.global.y, 2);
-  graphics.endFill();
 }
 
 function drawRoundedPolygon(path, radius) {
-  let first;
   const len = path.length;
   for (let i = 0; i < len; i++) {
     // get the current point and the next two
@@ -73,46 +70,40 @@ function drawRoundedPolygon(path, radius) {
     const p1 = path[(i + 1) % len];
     const p2 = path[(i + 2) % len];
 
-    // vector 1
-    const dx1 = p1.x - p0.x;
-    const dy1 = p1.y - p0.y;
-
-    // vector 2
-    const dx2 = p1.x - p2.x;
-    const dy2 = p1.y - p2.y;
-
-    // angle between vector 1 and vector 2 divided by 2
-    const angle = (angleBetween(p0, p1) - angleBetween(p2, p1)) / 2;
+    const v0 = new PIXI.Point(p1.x - p0.x, p1.y - p0.y);
+    const v1 = new PIXI.Point(p1.x - p2.x, p1.y - p2.y);
 
     // the length of segment between angular point and the
     // points of intersection with the circle of a given radius
+    const angle = (angleBetween(p0, p1) - angleBetween(p2, p1)) / 2;
     const tan = Math.abs(Math.tan(angle));
-    const seg = radius / tan;
+    const seg0 = radius / tan;
 
     // check the segment
-    const len1 = distanceBetween(p0, p1);
-    const len2 = distanceBetween(p2, p1);
+    const len0 = distanceBetween(p0, p1);
+    const len1 = distanceBetween(p2, p1);
 
-    // points of intersection are calculated by the proportion
-    // between the coordinates of the vector, length of vector and
-    // the length of the segment
-    const cross1 = getProportionPoint(p1, seg, len1, dx1, dy1);
-    const cross2 = getProportionPoint(p1, seg, len2, dx2, dy2);
+    // points of intersection are calculated by the proportion between the
+    // coordinates of the vector, length of vector and the length of the segment
+    const cross0 = getProportionPoint(p1, v0, seg0, len0);
+    const cross1 = getProportionPoint(p1, v1, seg0, len1);
 
     // calculation of the coordinates of the circle
     // center by the addition of angular vectors
-    const dx = p1.x * 2 - cross1.x - cross2.x;
-    const dy = p1.y * 2 - cross1.y - cross2.y;
+    const cross = new PIXI.Point(
+      p1.x * 2 - cross0.x - cross1.x,
+      p1.y * 2 - cross0.y - cross1.y
+    );
 
-    const L = magnitude({ x: dx, y: dy });
-    const d = magnitude({ x: seg, y: radius });
+    const len2 = magnitude(cross);
+    const seg1 = magnitude({ x: seg0, y: radius });
 
     // center radius
-    const cx = getProportionPoint(p1, d, L, dx, dy);
+    const centerCircle = getProportionPoint(p1, cross, seg1, len2);
 
     // start and end angle of arc
-    const startAngle = angleBetween(cx, cross1);
-    const endAngle = angleBetween(cx, cross2);
+    const startAngle = angleBetween(centerCircle, cross0);
+    const endAngle = angleBetween(centerCircle, cross1);
 
     // get clock wise direction to draw the arc
     let sweepAngle = endAngle - startAngle;
@@ -124,84 +115,29 @@ function drawRoundedPolygon(path, radius) {
     const anticlockwise = sweepAngle < 0 || sweepAngle > Math.PI;
 
     if (i === 0) {
-      graphics.moveTo(cross1.x, cross1.y);
-      first = cross1;
+      graphics.moveTo(cross0.x, cross0.y);
     } else {
-      graphics.lineTo(cross1.x, cross1.y);
+      graphics.lineTo(cross0.x, cross0.y);
     }
 
     // draw the arc to connect the next vector
-    graphics.arc(cx.x, cx.y, radius, startAngle, endAngle, anticlockwise);
+    graphics.arc(
+      centerCircle.x,
+      centerCircle.y,
+      radius,
+      startAngle,
+      endAngle,
+      anticlockwise
+    );
   }
 
   // close the path
-  graphics.lineTo(first.x, first.y);
+  graphics.closePath();
 }
 
-function getProportionPoint(point, segment, length, dx, dy) {
+function getProportionPoint(p0, p1, segment, length) {
   const factor = segment / length;
-  return new PIXI.Point(point.x - dx * factor, point.y - dy * factor);
-}
-
-function straightSkeleton(path, spacing) {
-  const order = polygonOrder(path);
-  if (order < 0) {
-    spacing *= -1;
-  }
-
-  const resultingPath = [];
-  const len = path.length;
-
-  for (let i = 0; i < len; i++) {
-    const p0 = path[i % len];
-    const p1 = path[(i + 1) % len];
-    const p2 = path[(i + 2) % len];
-
-    const a0 = new PIXI.Point(p1.x - p0.x, p1.y - p0.y);
-    const a1 = new PIXI.Point(p2.x - p1.x, p2.y - p1.y);
-
-    const mi0 = a0.y / a0.x;
-    const mi1 = a1.y / a1.x;
-
-    const li0 = Math.sqrt(a0.x * a0.x + a0.y * a0.y);
-    const li1 = Math.sqrt(a1.x * a1.x + a1.y * a1.y);
-
-    const ri0 = p0.x + (spacing * a0.y) / li0;
-    const ri1 = p1.x + (spacing * a1.y) / li1;
-
-    const si0 = p0.y - (spacing * a0.x) / li0;
-    const si1 = p1.y - (spacing * a1.x) / li1;
-
-    const point = new PIXI.Point(
-      (mi1 * ri1 - mi0 * ri0 + si0 - si1) / (mi1 - mi0),
-      (mi0 * mi1 * (ri1 - ri0) + mi1 * si0 - mi0 * si1) / (mi1 - mi0)
-    );
-
-    if (a0.x === 0) {
-      point.x = p1.x + (spacing * a0.y) / Math.abs(a0.y);
-      point.y = mi1 * point.x - mi1 * ri1 + si1;
-    }
-
-    if (a1.x === 0) {
-      point.x = p2.x + (spacing * a1.y) / Math.abs(a1.y);
-      point.y = mi0 * point.x - mi0 * ri0 + si0;
-    }
-
-    resultingPath.push(point);
-  }
-
-  return resultingPath;
-}
-
-function polygonOrder(path) {
-  let signedArea = 0;
-  const len = path.length;
-  for (let i = 0; i < len; i++) {
-    p0 = path[i];
-    p1 = path[(i + 1) % len];
-    signedArea += p0.x * p1.y - p1.x * p0.y;
-  }
-  return signedArea;
+  return new PIXI.Point(p0.x - p1.x * factor, p0.y - p1.y * factor);
 }
 
 // returns the length of a vector
