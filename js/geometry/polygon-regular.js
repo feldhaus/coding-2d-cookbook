@@ -1,6 +1,6 @@
 // constants
 const COLOR = { grey: 0x21252f, pink: 0xec407a, white: 0xf2f5ea };
-const PI_2 = Math.PI / 2;
+const PI_2 = Math.PI * 2;
 
 // create application
 const app = new PIXI.Application({
@@ -50,15 +50,22 @@ function drawPolygon(graphics, x, y, sides, radius1, radius2, angle) {
     sides = 2 * sides;
   }
 
+  const startAngle = angle - Math.PI / 2;
+
   // get all points
-  const slice = Math.PI / sides;
-  for (let i = 0; i <= sides; i++) {
-    const a = i * 2 * slice - PI_2 + angle;
-    const r = i % 2 === 0 ? radius1 : radius2;
-    if (i === 0) {
-      graphics.moveTo(x + r * Math.cos(a), y + r * Math.sin(a));
-    } else {
-      graphics.lineTo(x + r * Math.cos(a), y + r * Math.sin(a));
-    }
+  const slice = PI_2 / sides;
+  const polygon = [];
+  for (let i = 0; i < sides; i++) {
+    const radius = i % 2 === 0 ? radius1 : radius2;
+    polygon.push(pointTranslate({ x, y }, startAngle + i * slice, radius));
   }
+  graphics.drawPolygon(polygon);
+}
+
+// translates a point by an angle in radians and distance
+function pointTranslate(point, angle, distance) {
+  return new PIXI.Point(
+    point.x + distance * Math.cos(angle),
+    point.y + distance * Math.sin(angle)
+  );
 }
