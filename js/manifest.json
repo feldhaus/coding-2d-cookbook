@@ -61,6 +61,11 @@
             "entry": "polygon-rounded.js"
         },
         {
+            "title": "Polygon-Straight-Skeleton",
+            "descr": "CLICK to create a new polygon",
+            "entry": "polygon-straight-skeleton.js"
+        },
+        {
             "title": "Raycast-Linear",
             "descr": "Use ARROWS (⇧ ⇩⇦ ⇨) or WASD to move the rect and MOUSE to aim",
             "entry": "raycast-linear.js"
