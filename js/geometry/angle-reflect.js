@@ -1,102 +1,117 @@
 // constants
 const COLOR = { grey: 0x21252f, pink: 0xec407a, white: 0xf2f5ea };
+const SURFACE_LENGTH = 400;
 
 // create application
 const app = new PIXI.Application({
-    backgroundColor: COLOR.grey,
-    antialias: true,
+  backgroundColor: COLOR.grey,
+  antialias: true,
 });
 document.body.appendChild(app.view);
+
+const center = new PIXI.Point(
+  app.renderer.width * 0.5,
+  app.renderer.height * 0.5
+);
 
 // add graphics
 const graphics = new PIXI.Graphics();
 app.stage.addChild(graphics);
 
-const center = new PIXI.Point(app.renderer.width / 2, app.renderer.height / 2);
-const surfaceLength = 400;
-
 // add interactive dots
-const dot1 = createDot(center.x - 200, center.y);
+const dot1 = createDot();
 app.stage.addChild(dot1);
+dot1.position.set(center.x - 200, center.y);
 dot1.on('pointermove', function (event) {
-    if (this.alpha === 1) return;
-    const angle = angleBetween(center, event.data.global);
-    const point = pointTranslate(center, angle, surfaceLength * 0.5);
-    this.position.set(point.x, point.y);
-    draw();
+  if (this.alpha === 1) return;
+  const angle = angleBetween(center, this.position);
+  const translatePoint = pointTranslate(center, angle, SURFACE_LENGTH * 0.5);
+  this.position.copyFrom(translatePoint);
+  draw();
 });
 
-const dot2 = createDot(center.x - 150, center.y - 200);
+const dot2 = createDot();
 app.stage.addChild(dot2);
-dot2.on('pointermove', function (event) {
-    if (this.alpha === 1) return;
-    const position = event.data.getLocalPosition(this.parent);
-    this.position.set(position.x, position.y);
-    draw();
-});
+dot2.position.set(center.x - 150, center.y - 200);
 
-// first call
-draw();
+function createDot() {
+  const g = new PIXI.Graphics();
+  g.beginFill(COLOR.pink, 0.05);
+  g.drawCircle(0, 0, 30);
+  g.beginFill(COLOR.pink);
+  g.drawCircle(0, 0, 5);
+  g.interactive = g.buttonMode = true;
+  g.offset = new PIXI.Point();
+  // listeners
+  g.on('pointerdown', (event) => {
+    g.alpha = 0.5;
+    g.offset.set(event.data.global.x - g.x, event.data.global.y - g.y);
+  });
+  g.on('pointerup', () => {
+    g.alpha = 1;
+  });
+  g.on('pointerupoutside', () => {
+    g.alpha = 1;
+  });
+  g.on('pointermove', (event) => {
+    if (g.alpha === 1) return;
+    g.position.set(
+      event.data.global.x - g.offset.x,
+      event.data.global.y - g.offset.y
+    );
+    draw();
+  });
+  return g;
+}
 
 function draw() {
-    graphics.clear();
-    graphics.lineStyle(2, COLOR.white);
+  graphics.clear();
 
-    const incidenceAngle = angleBetween(dot2, center);
-    const incidenceLength = distanceBetween(dot2, center);
-    const surfaceAngle = angleBetween(dot1, center);
-    const surfacePoint = pointTranslate(dot1, surfaceAngle, surfaceLength);
-    const reflectAngle = angleReflect(incidenceAngle, surfaceAngle);
-    const reflectPoint = pointTranslate(center, reflectAngle, incidenceLength);
+  // get all required values to draw
+  const incidenceAngle = angleBetween(dot2, center);
+  const incidenceLength = distanceBetween(dot2, center);
+  const surfaceAngle = angleBetween(dot1, center);
+  const surfacePoint = pointTranslate(dot1, surfaceAngle, SURFACE_LENGTH);
+  const reflectAngle = angleReflect(incidenceAngle, surfaceAngle);
+  const reflectPoint = pointTranslate(center, reflectAngle, incidenceLength);
 
-    graphics.moveTo(dot1.x, dot1.y);
-    graphics.lineTo(surfacePoint.x, surfacePoint.y);
-    graphics.moveTo(dot2.x, dot2.y);
-    graphics.lineTo(center.x, center.y);
+  // draw incidence and surface lines
+  graphics.lineStyle(2, COLOR.white);
+  graphics.moveTo(dot1.x, dot1.y);
+  graphics.lineTo(surfacePoint.x, surfacePoint.y);
+  graphics.moveTo(dot2.x, dot2.y);
+  graphics.lineTo(center.x, center.y);
 
-    graphics.lineStyle(2, COLOR.pink);
-    graphics.lineTo(reflectPoint.x, reflectPoint.y);
+  // draw reflect line
+  graphics.lineStyle(2, COLOR.pink);
+  graphics.lineTo(reflectPoint.x, reflectPoint.y);
 }
-
-function createDot(x, y) {
-    // create and draw a graphics object
-    const dot = new PIXI.Graphics();
-    dot.beginFill(COLOR.pink, 0.05);
-    dot.drawCircle(0, 0, 30);
-    dot.beginFill(COLOR.pink);
-    dot.drawCircle(0, 0, 5);
-    dot.position.set(x, y);
-    // this will allow it to respond to mouse and touch events
-    dot.interactive = true;
-    // this button mode will mean the hand cursor appears
-    dot.buttonMode = true;
-    // listen to events
-    dot.on('pointerdown', function () { this.alpha = 0.5; }) // prettier-ignore
-        .on('pointerup', function () { this.alpha = 1; }) // prettier-ignore
-        .on('pointerupoutside', function () { this.alpha = 1; }) // prettier-ignore
-
-    return dot;
-}
+draw();
 
 // translates a point by an angle in radians and distance
 function pointTranslate(point, angle, distance) {
-    return new PIXI.Point(
-        point.x + distance * Math.cos(angle),
-        point.y + distance * Math.sin(angle)
-    );
+  return new PIXI.Point(
+    point.x + distance * Math.cos(angle),
+    point.y + distance * Math.sin(angle)
+  );
 }
 
-// calculates the angle between 2 points, in radians
-function angleBetween(p1, p2) {
-    return Math.atan2(p2.y - p1.y, p2.x - p1.x);
+// returns the length of a vector
+function magnitude(vector) {
+  return Math.sqrt(vector.x * vector.x + vector.y * vector.y);
 }
 
-// calculates the distance between 2 points
-function distanceBetween(p1, p2) {
-    return Math.sqrt((p2.x - p1.x) ** 2 + (p2.y - p1.y) ** 2);
+// returns the angle between 2 points, in radians
+function angleBetween(p0, p1) {
+  return Math.atan2(p1.y - p0.y, p1.x - p0.x);
 }
 
-// Returns the angle of reflection given an angle of incidence and a surface angle.
+// returns the distance between 2 points
+function distanceBetween(p0, p1) {
+  return magnitude({ x: p1.x - p0.x, y: p1.y - p0.y });
+}
+
+// returns the angle of reflection
 function angleReflect(incidenceAngle, surfaceAngle) {
-    return surfaceAngle * 2 - incidenceAngle;
+  return surfaceAngle * 2 - incidenceAngle;
 }

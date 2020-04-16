@@ -3,8 +3,8 @@ const COLOR = { grey: 0x21252f, pink: 0xec407a, white: 0xf2f5ea };
 
 // create application
 const app = new PIXI.Application({
-    backgroundColor: COLOR.grey,
-    antialias: true,
+  backgroundColor: COLOR.grey,
+  antialias: true,
 });
 document.body.appendChild(app.view);
 
@@ -17,59 +17,60 @@ graphics.lineStyle(2, COLOR.isabelline);
 app.renderer.plugins.interaction.on('pointerdown', lightning);
 
 function lightning(event) {
-    drawLightning(event.data.global.x, 0, 20, 3, false);
+  drawLightning(event.data.global.x, 0, 20, 3, false);
 }
 
 function drawLightning(x, y, segments, boltWidth, branch) {
-    let width = app.renderer.width;
-    let height = app.renderer.height;
+  const width = app.renderer.width;
+  const height = app.renderer.height;
 
-    if (!branch) graphics.clear();
+  if (!branch) graphics.clear();
 
-    // Draw each of the segments
-    for (let i = 0; i < segments; i++) {
-        // Set the lightning color and bolt width
-        graphics.lineStyle(boltWidth, 0xffffff);
-        graphics.moveTo(x, y);
+  // draw each of the segments
+  for (let i = 0; i < segments; i++) {
+    // set the lightning color and bolt width
+    graphics.lineStyle(boltWidth, 0xffffff);
+    graphics.moveTo(x, y);
 
-        // Calculate an x offset from the end of the last line segment and
-        // keep it within the bounds of the bitmap
-        if (branch) {
-            x += integerInRange(-10, 10); // For a branch
-        } else {
-            x += integerInRange(-30, 30); // For the main bolt
-        }
-
-        if (x <= 10) x = 10;
-        if (x >= width - 10) x = width - 10;
-
-        // Calculate a y offset from the end of the last line segment.
-        // When we've reached the ground or there are no more segments left,
-        // set the y position to the height of the bitmap. For branches, we
-        // don't care if they reach the ground so don't set the last coordinate
-        // to the ground if it's hanging in the air.
-        if (branch) {
-            y += integerInRange(10, 20); // For a branch
-        } else {
-            y += integerInRange(20, height / segments); // For the main bolt
-        }
-        if ((!branch && i == segments - 1) || y > height) {
-            y = height;
-        }
-
-        // Draw the line segment
-        graphics.lineTo(x, y);
-
-        // Quit when it reached the ground
-        if (y >= height) break;
-
-        // Draw a branch, thinner, bolt starting from this position
-        if (!branch && Math.random() < 0.4) {
-            drawLightning(x, y, 10, 1, true);
-        }
+    // calculate an x offset from the end of the last line segment and keep it
+    // within the bounds of the renderer
+    if (branch) {
+      x += rangeInt(-10, 10);
+    } else {
+      x += rangeInt(-30, 30);
     }
+
+    if (x <= 10) x = 10;
+    if (x >= width - 10) x = width - 10;
+
+    // calculate a y offset from the end of the last line segment
+    if (branch) {
+      // if it reaches the ground so don't set the last coordinate to the
+      // ground if it's hanging in the air
+      y += rangeInt(10, 20);
+    } else {
+      y += rangeInt(20, height / segments);
+    }
+
+    // when it's reached the ground or there are no more segments left,
+    // set the y position to the height
+    if ((!branch && i == segments - 1) || y > height) {
+      y = height;
+    }
+
+    // draw the line segment
+    graphics.lineTo(x, y);
+
+    // quit when it reached the ground
+    if (y >= height) break;
+
+    // draw a branch, thinner, bolt starting from this position
+    if (!branch && Math.random() < 0.4) {
+      drawLightning(x, y, 10, 1, true);
+    }
+  }
 }
 
-function integerInRange(min, max) {
-    return Math.floor(Math.random() * (max - min)) + min;
+function rangeInt(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
 }

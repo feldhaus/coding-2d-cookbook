@@ -3,36 +3,24 @@ const COLOR = { grey: 0x21252f, pink: 0xec407a, white: 0xf2f5ea };
 
 // create application
 const app = new PIXI.Application({
-    backgroundColor: COLOR.grey,
-    antialias: true,
+  backgroundColor: COLOR.grey,
+  antialias: true,
 });
 document.body.appendChild(app.view);
 
-// add circles
-const center = new PIXI.Point(app.renderer.width / 2, app.renderer.height / 2);
-const circle1 = createCircle(center.x - 100, center.y, 150);
-const circle2 = createCircle(center.x + 100, center.y, 100);
+const center = new PIXI.Point(
+  app.renderer.width * 0.5,
+  app.renderer.height * 0.5
+);
 
-function createCircle(x, y, radius) {
-    const circle = new PIXI.Graphics();
-    app.stage.addChild(circle);
-    circle.position.set(x, y);
-    circle.r = radius;
-    circle.beginFill(COLOR.white, 0.05);
-    circle.drawCircle(0, 0, circle.r + 20);
-    circle.beginFill(0, 0);
-    circle.lineStyle(3, COLOR.white);
-    circle.drawCircle(0, 0, circle.r);
-    circle.interactive = true;
-    circle.buttonMode = true;
-    circle.dragOffset = new PIXI.Point();
-    circle
-        .on('pointerdown', onDragStart)
-        .on('pointerup', onDragEnd)
-        .on('pointerupoutside', onDragEnd)
-        .on('pointermove', onDragMove);
-    return circle;
-}
+// add circles
+const circle1 = createCircle(150);
+app.stage.addChild(circle1);
+circle1.position.set(center.x - 100, center.y);
+
+const circle2 = createCircle(100);
+app.stage.addChild(circle2);
+circle2.position.set(center.x + 100, center.y);
 
 // add rect 1
 const rect1 = new PIXI.Sprite(PIXI.Texture.WHITE);
@@ -46,67 +34,86 @@ app.stage.addChild(rect2);
 rect2.anchor.set(0.5, 0.5);
 rect2.tint = COLOR.pink;
 
-// drag functions
-function onDragStart(event) {
-    this.dragging = true;
-    const position = event.data.getLocalPosition(this.parent);
-    this.dragOffset.set(position.x - this.x, position.y - this.y);
-}
-
-function onDragEnd(event) {
-    this.dragging = false;
-}
-
-function onDragMove(event) {
-    if (!this.dragging) return;
-    const position = event.data.getLocalPosition(this.parent);
-    this.position.set(
-        position.x - this.dragOffset.x,
-        position.y - this.dragOffset.y
+function createCircle(radius) {
+  const g = new PIXI.Graphics();
+  g.beginFill(COLOR.white, 0.05);
+  g.drawCircle(0, 0, radius + 20);
+  g.beginFill(0, 0);
+  g.lineStyle(3, COLOR.white);
+  g.drawCircle(0, 0, radius);
+  g.interactive = g.buttonMode = true;
+  g.offset = new PIXI.Point();
+  g.radius = radius;
+  // listeners
+  g.on('pointerdown', (event) => {
+    g.dragging = true;
+    g.offset.set(event.data.global.x - g.x, event.data.global.y - g.y);
+  });
+  g.on('pointerup', () => {
+    g.dragging = false;
+  });
+  g.on('pointerupoutside', () => {
+    g.dragging = false;
+  });
+  g.on('pointermove', (event) => {
+    if (!g.dragging) return;
+    g.position.set(
+      event.data.global.x - g.offset.x,
+      event.data.global.y - g.offset.y
     );
     circleIntersection();
+  });
+  return g;
 }
 
-// first call
+function circleIntersection() {
+  const x1 = circle1.x,
+    y1 = circle1.y,
+    r1 = circle1.radius;
+  const x2 = circle2.x,
+    y2 = circle2.y,
+    r2 = circle2.radius;
+
+  const dx = x2 - x1;
+  const dy = y2 - y1;
+  const distance = distanceBetween(circle1, circle2);
+
+  if (distance > r1 + r2) {
+    // no intersect
+    rect1.visible = false;
+    rect2.visible = false;
+  } else if (distance < Math.abs(r2 - r1)) {
+    // no intersect - one circle is contained within the other
+    rect1.visible = false;
+    rect2.visible = false;
+  } else if (distance === 0 && r1 === r2) {
+    // no intersect - the circles are equal and coincident
+    rect1.visible = false;
+    rect2.visible = false;
+  } else {
+    rect1.visible = true;
+    rect2.visible = true;
+
+    const a = (r1 ** 2 - r2 ** 2 + distance ** 2) / (2 * distance);
+    const h = Math.sqrt(r1 ** 2 - a ** 2);
+    const x = x1 + (a * dx) / distance;
+    const y = y1 + (a * dy) / distance;
+
+    rect1.x = x + (h * dy) / distance;
+    rect1.y = y - (h * dx) / distance;
+
+    rect2.x = x - (h * dy) / distance;
+    rect2.y = y + (h * dx) / distance;
+  }
+}
 circleIntersection();
 
-function circleIntersection() {
-    const x1 = circle1.x,
-        y1 = circle1.y,
-        r1 = circle1.r;
-    const x2 = circle2.x,
-        y2 = circle2.y,
-        r2 = circle2.r;
+// returns the length of a vector
+function magnitude(vector) {
+  return Math.sqrt(vector.x * vector.x + vector.y * vector.y);
+}
 
-    const dx = x2 - x1;
-    const dy = y2 - y1;
-    const d = Math.sqrt(dx ** 2 + dy ** 2);
-
-    if (d > r1 + r2) {
-        // no intersect
-        rect1.visible = false;
-        rect2.visible = false;
-    } else if (d < Math.abs(r2 - r1)) {
-        // no intersect - one circle is contained within the other
-        rect1.visible = false;
-        rect2.visible = false;
-    } else if (d === 0 && r1 === r2) {
-        // no intersect - the circles are equal and coincident
-        rect1.visible = false;
-        rect2.visible = false;
-    } else {
-        rect1.visible = true;
-        rect2.visible = true;
-
-        const a = (r1 ** 2 - r2 ** 2 + d ** 2) / (2 * d);
-        const h = Math.sqrt(r1 ** 2 - a ** 2);
-        const x = x1 + (a * dx) / d;
-        const y = y1 + (a * dy) / d;
-
-        rect1.x = x + (h * dy) / d;
-        rect1.y = y - (h * dx) / d;
-
-        rect2.x = x - (h * dy) / d;
-        rect2.y = y + (h * dx) / d;
-    }
+// returns the distance between 2 points
+function distanceBetween(p0, p1) {
+  return magnitude({ x: p1.x - p0.x, y: p1.y - p0.y });
 }

@@ -4,8 +4,8 @@ const PI_2 = Math.PI / 2;
 
 // create application
 const app = new PIXI.Application({
-    backgroundColor: COLOR.grey,
-    antialias: true,
+  backgroundColor: COLOR.grey,
+  antialias: true,
 });
 document.body.appendChild(app.view);
 
@@ -45,20 +45,20 @@ drawPolygon(shapes, 700, 374, 7, 60, 0, 0);
 drawPolygon(shapes, 700, 510, 7, 60, 60, Math.PI);
 
 function drawPolygon(graphics, x, y, sides, radius1, radius2, angle) {
-    // if they are different doubles the number of sides (star)
-    if (radius2 !== radius1) {
-        sides = 2 * sides;
-    }
+  // if they are different doubles the number of sides (star)
+  if (radius2 !== radius1) {
+    sides = 2 * sides;
+  }
 
-    // get all points
-    const slice = Math.PI / sides;
-    for (let i = 0; i <= sides; i++) {
-        const a = i * 2 * slice - PI_2 + angle;
-        const r = i % 2 === 0 ? radius1 : radius2;
-        if (i === 0) {
-            graphics.moveTo(x + r * Math.cos(a), y + r * Math.sin(a));
-        } else {
-            graphics.lineTo(x + r * Math.cos(a), y + r * Math.sin(a));
-        }
+  // get all points
+  const slice = Math.PI / sides;
+  for (let i = 0; i <= sides; i++) {
+    const a = i * 2 * slice - PI_2 + angle;
+    const r = i % 2 === 0 ? radius1 : radius2;
+    if (i === 0) {
+      graphics.moveTo(x + r * Math.cos(a), y + r * Math.sin(a));
+    } else {
+      graphics.lineTo(x + r * Math.cos(a), y + r * Math.sin(a));
     }
+  }
 }

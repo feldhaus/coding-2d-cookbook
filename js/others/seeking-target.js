@@ -5,18 +5,18 @@ const MAXFORCE = 0.2;
 
 // create application
 const app = new PIXI.Application({
-    backgroundColor: COLOR.grey,
-    antialias: true,
+  backgroundColor: COLOR.grey,
+  antialias: true,
 });
 document.body.appendChild(app.view);
 
 // runs an update loop
-app.ticker.add(function(deltaTime) {
-    if (app.renderer.plugins.interaction.mouseOverRenderer) {
-        seek();
-        update(deltaTime);
-        vehicle.rotation = Math.atan2(velocity.y, velocity.x);
-    }
+app.ticker.add(function (deltaTime) {
+  if (app.renderer.plugins.interaction.mouseOverRenderer) {
+    seek();
+    update(deltaTime);
+    vehicle.rotation = Math.atan2(velocity.y, velocity.x);
+  }
 });
 
 const vehicle = new PIXI.Graphics();
@@ -29,63 +29,63 @@ let velocity = new PIXI.Point();
 let acceleration = new PIXI.Point();
 
 function seek() {
-    // mouse position
-    const target = app.renderer.plugins.interaction.mouse.global;
+  // mouse position
+  const target = app.renderer.plugins.interaction.mouse.global;
 
-    // a desired point from the position to the target
-    let desired = new PIXI.Point(target.x - vehicle.x, target.y - vehicle.y);
+  // a desired point from the position to the target
+  let desired = new PIXI.Point(target.x - vehicle.x, target.y - vehicle.y);
 
-    // scale to maximum speed
-    desired = normalize(desired);
-    desired.x *= MAXSPEED;
-    desired.y *= MAXSPEED;
+  // scale to maximum speed
+  desired = normalize(desired);
+  desired.x *= MAXSPEED;
+  desired.y *= MAXSPEED;
 
-    // steering = desired minus velocity
-    let steer = new PIXI.Point(desired.x - velocity.x, desired.y - velocity.y);
+  // steering = desired minus velocity
+  let steer = new PIXI.Point(desired.x - velocity.x, desired.y - velocity.y);
 
-    // limit to maximum steering force
-    steer = limit(steer, MAXFORCE);
-    acceleration.x += steer.x;
-    acceleration.y += steer.y;
+  // limit to maximum steering force
+  steer = limit(steer, MAXFORCE);
+  acceleration.x += steer.x;
+  acceleration.y += steer.y;
 }
 
 function update(deltaTime) {
-    // update velocity
-    velocity.x += acceleration.x;
-    velocity.y += acceleration.y;
+  // update velocity
+  velocity.x += acceleration.x;
+  velocity.y += acceleration.y;
 
-    // limit speed
-    velocity = limit(velocity, MAXSPEED);
-    vehicle.x += velocity.x * deltaTime;
-    vehicle.y += velocity.y * deltaTime;
+  // limit speed
+  velocity = limit(velocity, MAXSPEED);
+  vehicle.x += velocity.x * deltaTime;
+  vehicle.y += velocity.y * deltaTime;
 
-    // reset accelerationelertion to 0 each cycle
-    acceleration.x = 0;
-    acceleration.y = 0;
+  // reset accelerationelertion to 0 each cycle
+  acceleration.x = 0;
+  acceleration.y = 0;
 }
 
 function magnitude(vector) {
-    return Math.sqrt(vector.x * vector.x + vector.y * vector.y);
+  return Math.sqrt(vector.x * vector.x + vector.y * vector.y);
 }
 
 function magnitudeSqr(vector) {
-    return vector.x * vector.x + vector.y * vector.y;
+  return vector.x * vector.x + vector.y * vector.y;
 }
 
 function normalize(vector) {
-    let mag = magnitude(vector);
-    if (mag > 0) {
-        vector.x /= mag;
-        vector.y /= mag;
-    }
-    return vector;
+  let mag = magnitude(vector);
+  if (mag > 0) {
+    vector.x /= mag;
+    vector.y /= mag;
+  }
+  return vector;
 }
 
 function limit(vector, max) {
-    if (magnitudeSqr(vector) > max * max) {
-        vector = normalize(vector);
-        vector.x *= max;
-        vector.y *= max;
-    }
-    return vector;
+  if (magnitudeSqr(vector) > max * max) {
+    vector = normalize(vector);
+    vector.x *= max;
+    vector.y *= max;
+  }
+  return vector;
 }
