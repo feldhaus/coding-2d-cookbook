@@ -46,24 +46,24 @@
             "entry": "line-intersection.js"
         },
         {
-            "title": "Point-In-Polygon",
+            "title": "Polygon-Contains",
             "descr": "Move the MOUSE over the map",
-            "entry": "point-in-polygon.js"
+            "entry": "polygon-contains.js"
+        },
+        {
+            "title": "Polygon-Regular",
+            "descr": "",
+            "entry": "polygon-regular.js"
+        },
+        {
+            "title": "Polygon-Rounded",
+            "descr": "CLICK to create a new polygon",
+            "entry": "polygon-rounded.js"
         },
         {
             "title": "Raycast-Linear",
             "descr": "Use ARROWS (⇧ ⇩⇦ ⇨) or WASD to move the rect and MOUSE to aim",
             "entry": "raycast-linear.js"
-        },
-        {
-            "title": "Regular-Polygons",
-            "descr": "",
-            "entry": "regular-polygons.js"
-        },
-        {
-            "title": "Rounded-Polygons",
-            "descr": "CLICK to create a new polygon",
-            "entry": "rounded-polygons.js"
         }
     ],
     "fractal": [
