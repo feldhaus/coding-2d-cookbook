@@ -15,12 +15,7 @@ fetch('./assets/json/de_aztec.json')
 
 // add graphics
 const graphics = new PIXI.Graphics();
-// graphics.lineStyle(1, COLOR.white);
-// graphics.beginFill(COLOR.white, 0.05);
-// for (let i = 0; i < mapCoords.length; i++) {
-//     graphics.drawPolygon(mapCoords[i]);
-// }
-// app.stage.addChild(graphics);
+
 function drawMap(data) {
   mapCoords = data.coords;
   graphics.lineStyle(1, COLOR.white);
@@ -58,7 +53,7 @@ document.onkeydown = function (event) {
 
   if (event.code === 'ArrowUp' || event.code === 'KeyW') {
     player.direction.y = -1;
-  } else if (event.code === 'ArrowDow' || event.code === 'KeyS') {
+  } else if (event.code === 'ArrowDown' || event.code === 'KeyS') {
     player.direction.y = 1;
   }
 
@@ -75,7 +70,7 @@ document.onkeyup = function (event) {
 
   if (event.code === 'ArrowUp' || event.code === 'KeyW') {
     player.direction.y = 0;
-  } else if (event.code === 'ArrowDow' || event.code === 'KeyS') {
+  } else if (event.code === 'ArrowDown' || event.code === 'KeyS') {
     player.direction.y = 0;
   }
 
