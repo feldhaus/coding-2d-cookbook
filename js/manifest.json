@@ -110,6 +110,11 @@
             "title": "Floating",
             "descr": "",
             "entry": "floating.js"
+        },
+        {
+            "title": "Waves",
+            "descr": "",
+            "entry": "waves.js"
         }
     ],
     "others": [
