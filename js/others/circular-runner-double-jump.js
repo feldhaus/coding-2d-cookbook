@@ -2,7 +2,7 @@
 const COLOR = { grey: 0x21252f, pink: 0xec407a, white: 0xf2f5ea };
 const GRAVITY = 0.8;
 const PLAYER_SPEED = 0.02;
-const JUMP_LIMIT = 3; // double jump
+const JUMP_LIMIT = 2; // double jump
 const JUMP_FORCE = 12;
 
 // create application

@@ -11,7 +11,6 @@ document.body.appendChild(app.view);
 // add graphics
 const graphics = new PIXI.Graphics();
 app.stage.addChild(graphics);
-// graphics.beginFill(COLOR.pink);
 
 const width = app.renderer.width;
 const height = app.renderer.height;
