@@ -1,12 +1,14 @@
-// constants
-const COLOR = { grey: 0x21252f, pink: 0xec407a, white: 0xf2f5ea };
-
 // create application
 const app = new PIXI.Application({
-  backgroundColor: COLOR.grey,
+  backgroundColor: 0x21252f,
   antialias: true,
+  width: 800,
+  height: 600,
 });
 document.body.appendChild(app.view);
+
+// constants
+const color = { pink: 0xec407a, white: 0xf2f5ea };
 
 let mapCoords = [];
 fetch('./assets/json/de_aztec.json')
@@ -18,8 +20,8 @@ const graphics = new PIXI.Graphics();
 
 function drawMap(data) {
   mapCoords = data.coords;
-  graphics.lineStyle(1, COLOR.white);
-  graphics.beginFill(COLOR.white, 0.05);
+  graphics.lineStyle(1, color.white);
+  graphics.beginFill(color.white, 0.05);
   for (let i = 0; i < mapCoords.length; i++) {
     graphics.drawPolygon(mapCoords[i]);
   }
@@ -28,7 +30,7 @@ function drawMap(data) {
 
 // add player
 const player = new PIXI.Sprite(PIXI.Texture.WHITE);
-player.tint = COLOR.pink;
+player.tint = color.pink;
 player.anchor.set(0.5, 0.5);
 player.position.set(50, 300);
 player.direction = new PIXI.Point(0, 0);
@@ -94,7 +96,7 @@ function raycastLinear() {
 
   // there is an intersect
   if (closestIntersect != null) {
-    feedback.lineStyle(2, COLOR.pink);
+    feedback.lineStyle(2, color.pink);
     feedback.drawCircle(closestIntersect.x, closestIntersect.y, 3);
     feedback.moveTo(player.x, player.y);
     feedback.lineTo(closestIntersect.x, closestIntersect.y);

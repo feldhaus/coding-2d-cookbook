@@ -1,12 +1,14 @@
-// constants
-const COLOR = { grey: 0x21252f, pink: 0xec407a, white: 0xf2f5ea };
-
 // create application
 const app = new PIXI.Application({
-  backgroundColor: COLOR.grey,
+  backgroundColor: 0x21252f,
   antialias: true,
+  width: 800,
+  height: 600,
 });
 document.body.appendChild(app.view);
+
+// constants
+const color = { pink: 0xec407a, white: 0xf2f5ea };
 
 // add graphics
 const map = new PIXI.Graphics();
@@ -17,7 +19,7 @@ app.stage.addChild(feedback);
 
 // add state name
 const stateName = new PIXI.Text('', {
-  fill: COLOR.pink,
+  fill: color.pink,
   fontSize: 24,
 });
 stateName.anchor.set(0, 1);
@@ -32,8 +34,8 @@ fetch('./assets/json/usa-map.json')
 
 function drawMap(data) {
   mapData = data;
-  map.lineStyle(2, COLOR.white);
-  map.beginFill(COLOR.white, 0.05);
+  map.lineStyle(2, color.white);
+  map.beginFill(color.white, 0.05);
   Object.keys(data).forEach((state) => {
     data[state].forEach((path) => {
       map.drawPolygon(path);
@@ -64,8 +66,8 @@ function onPointerMove(event) {
   if (overState) {
     stateName.text = overState;
     mapData[overState].forEach((path) => {
-      feedback.lineStyle(4, COLOR.pink);
-      feedback.beginFill(COLOR.pink, 0.05);
+      feedback.lineStyle(4, color.pink);
+      feedback.beginFill(color.pink, 0.05);
       feedback.drawPolygon(path);
       feedback.closePath();
     });

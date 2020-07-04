@@ -1,12 +1,14 @@
-// constants
-const COLOR = { grey: 0x21252f, pink: 0xec407a, white: 0xf2f5ea };
-
 // create application
 const app = new PIXI.Application({
-  backgroundColor: COLOR.grey,
+  backgroundColor: 0x21252f,
   antialias: true,
+  width: 800,
+  height: 600,
 });
 document.body.appendChild(app.view);
+
+// constants
+const color = { pink: 0xec407a, white: 0xf2f5ea };
 
 // add graphics
 const graphics = new PIXI.Graphics();
@@ -31,7 +33,7 @@ dot4.position.set(300, 120);
 
 function draw() {
   graphics.clear();
-  graphics.lineStyle(2, COLOR.white);
+  graphics.lineStyle(2, color.white);
 
   // draw a line between dot1 and dot2
   graphics.moveTo(dot1.x, dot1.y);
@@ -45,9 +47,9 @@ function draw() {
   const intersection = lineIntersection(dot1, dot2, dot3, dot4);
   if (intersection.onLine1 || intersection.onLine2) {
     if (intersection.onLine1 && intersection.onLine2) {
-      graphics.beginFill(COLOR.white);
+      graphics.beginFill(color.white);
     } else {
-      graphics.beginFill(COLOR.grey);
+      graphics.beginFill(color.grey);
     }
     graphics.drawCircle(intersection.x, intersection.y, 5);
   } else {
@@ -58,9 +60,9 @@ draw();
 
 function createDot() {
   const g = new PIXI.Graphics();
-  g.beginFill(COLOR.pink, 0.05);
+  g.beginFill(color.pink, 0.05);
   g.drawCircle(0, 0, 30);
-  g.beginFill(COLOR.pink);
+  g.beginFill(color.pink);
   g.drawCircle(0, 0, 5);
   g.interactive = g.buttonMode = true;
   g.offset = new PIXI.Point();

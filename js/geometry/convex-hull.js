@@ -1,26 +1,28 @@
-// constants
-const COLOR = { grey: 0x21252f, pink: 0xec407a, white: 0xf2f5ea };
-
 // create application
 const app = new PIXI.Application({
-  backgroundColor: COLOR.grey,
+  backgroundColor: 0x21252f,
   antialias: true,
+  width: 800,
+  height: 600,
 });
 document.body.appendChild(app.view);
+
+// constants
+const color = { pink: 0xec407a, white: 0xf2f5ea };
+const width = app.renderer.width;
+const height = app.renderer.height;
 
 // draw the feedback
 const feedback = new PIXI.Graphics();
 app.stage.addChild(feedback);
 
 // create dots
-const width = app.renderer.width;
-const height = app.renderer.height;
 const dotsInner = [];
 const dotsOuter = [];
 let dot;
 for (let i = 0; i < 5; i++) {
   // inner
-  dot = createDot(COLOR.pink);
+  dot = createDot(color.pink);
   dot.position.set(
     100 + Math.random() * (width - 200),
     100 + Math.random() * (height - 200)
@@ -31,7 +33,7 @@ for (let i = 0; i < 5; i++) {
 }
 for (let i = 0; i < 10; i++) {
   // outer
-  dot = createDot(COLOR.white);
+  dot = createDot(color.white);
   dot.position.set(
     20 + Math.random() * (width - 40),
     20 + Math.random() * (height - 40)
@@ -72,8 +74,8 @@ function createDot(color) {
 
 function drawConvexHull() {
   feedback.clear();
-  drawLine(dotsInner, COLOR.pink);
-  drawLine(dotsOuter, COLOR.white);
+  drawLine(dotsInner, color.pink);
+  drawLine(dotsOuter, color.white);
 }
 drawConvexHull();
 

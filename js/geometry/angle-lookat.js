@@ -1,13 +1,14 @@
-// constants
-const COLOR = { grey: 0x21252f, pink: 0xec407a, white: 0xf2f5ea };
-
 // create application
 const app = new PIXI.Application({
-  backgroundColor: COLOR.grey,
+  backgroundColor: 0x21252f,
   antialias: true,
+  width: 800,
+  height: 600,
 });
 document.body.appendChild(app.view);
 
+// constants
+const color = { pink: 0xec407a, white: 0xf2f5ea };
 const center = new PIXI.Point(
   app.renderer.width * 0.5,
   app.renderer.height * 0.5
@@ -16,8 +17,8 @@ const center = new PIXI.Point(
 // add graphics
 const graphics = new PIXI.Graphics();
 app.stage.addChild(graphics);
-graphics.position.set(center.x, center.y);
-graphics.beginFill(COLOR.pink);
+graphics.position.copyFrom(center);
+graphics.beginFill(color.pink);
 graphics.drawPolygon(50, 0, -50, -40, -30, 0, -50, 40);
 
 // listen pointer move event

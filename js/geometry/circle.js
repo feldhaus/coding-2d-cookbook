@@ -1,19 +1,20 @@
-// constants
-const COLOR = { grey: 0x21252f, pink: 0xec407a, white: 0xf2f5ea };
-const PI_2 = Math.PI * 2;
-const RADIUS = 150;
-
 // create application
 const app = new PIXI.Application({
-  backgroundColor: COLOR.grey,
+  backgroundColor: 0x21252f,
   antialias: true,
+  width: 800,
+  height: 600,
 });
 document.body.appendChild(app.view);
 
+// constants
+const color = { pink: 0xec407a, white: 0xf2f5ea };
 const center = new PIXI.Point(
   app.renderer.width * 0.5,
   app.renderer.height * 0.5
 );
+const circumference = Math.PI * 2;
+const radius = 150;
 
 // variables
 let slices = 20;
@@ -35,18 +36,18 @@ circle2.position.set(app.renderer.width - 100, 100);
 // add labels
 addText(
   '0, 2π',
-  { x: circle.x + RADIUS + 10, y: circle.y },
+  { x: circle.x + radius + 10, y: circle.y },
   { x: 0.0, y: 0.5 }
 );
 addText(
   'π / 2',
-  { x: circle.x, y: circle.y + RADIUS + 10 },
+  { x: circle.x, y: circle.y + radius + 10 },
   { x: 0.5, y: 0.0 }
 );
-addText('π', { x: circle.x - RADIUS - 10, y: circle.y }, { x: 1.0, y: 0.5 });
+addText('π', { x: circle.x - radius - 10, y: circle.y }, { x: 1.0, y: 0.5 });
 addText(
   '3π / 2',
-  { x: circle.x, y: circle.y - RADIUS - 10 },
+  { x: circle.x, y: circle.y - radius - 10 },
   { x: 0.5, y: 1.0 }
 );
 
@@ -71,7 +72,7 @@ document.onkeydown = function (event) {
 function addText(txt, position, anchor) {
   const tip = new PIXI.Text(txt, {
     fontSize: 24,
-    fill: COLOR.pink,
+    fill: color.pink,
   });
   app.stage.addChild(tip);
   tip.anchor.set(anchor.x, anchor.y);
@@ -83,20 +84,20 @@ function updateMainCircle() {
   let angle = Math.atan2(mouse.y - circle.y, mouse.x - circle.x);
   let hypot = Math.hypot(mouse.x - circle.x, mouse.y - circle.y);
   if (angle < 0) {
-    angle += PI_2;
+    angle += circumference;
   }
 
-  const sliceCirc = PI_2 / slices;
+  const sliceCirc = circumference / slices;
   const temp = angle / sliceCirc;
 
   circle.clear();
-  circle.lineStyle(3, COLOR.white);
+  circle.lineStyle(3, color.white);
   for (let i = 0; i < slices; i++) {
-    if (temp > i && RADIUS > hypot) {
-      circle.beginFill(COLOR.white, 0.05);
+    if (temp > i && radius > hypot) {
+      circle.beginFill(color.white, 0.05);
     }
     circle.moveTo(0, 0);
-    circle.arc(0, 0, RADIUS, sliceCirc * i, sliceCirc * (i + 1));
+    circle.arc(0, 0, radius, sliceCirc * i, sliceCirc * (i + 1));
     circle.lineTo(0, 0);
     circle.endFill();
   }
@@ -104,13 +105,13 @@ function updateMainCircle() {
 
 function updateRunningCircle(shape, radius, direction, speed) {
   const circum = elapsedTime * speed;
-  const invert = Math.floor(circum / PI_2) % 2 === 0;
+  const invert = Math.floor(circum / circumference) % 2 === 0;
 
   shape.clear();
-  shape.lineStyle(20, COLOR.white);
+  shape.lineStyle(20, color.white);
   if (invert) {
-    shape.arc(0, 0, radius, 0, (circum % PI_2) * direction);
+    shape.arc(0, 0, radius, 0, (circum % circumference) * direction);
   } else {
-    shape.arc(0, 0, radius, (circum % PI_2) * direction, 0);
+    shape.arc(0, 0, radius, (circum % circumference) * direction, 0);
   }
 }

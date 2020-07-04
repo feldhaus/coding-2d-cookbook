@@ -1,7 +1,16 @@
+// create application
+const app = new PIXI.Application({
+  backgroundColor: 0x21252f,
+  antialias: true,
+  width: 800,
+  height: 600,
+});
+document.body.appendChild(app.view);
+
 // constants
-const COLOR = { grey: 0x21252f, pink: 0xec407a, white: 0xf2f5ea };
-const PI_2 = Math.PI * 2;
-const POLYGONS = [
+const color = { pink: 0xec407a, white: 0xf2f5ea };
+const circumference = Math.PI * 2;
+const starPolygon = [
   { x: 0, y: -150 },
   { x: -38, y: -52 },
   { x: -142, y: -46 },
@@ -14,13 +23,6 @@ const POLYGONS = [
   { x: 38, y: -52 },
   { x: 0, y: -150 },
 ];
-
-// create application
-const app = new PIXI.Application({
-  backgroundColor: COLOR.grey,
-  antialias: true,
-});
-document.body.appendChild(app.view);
 
 // add circle graphcis
 const circle = new PIXI.Graphics();
@@ -43,12 +45,12 @@ app.ticker.add(function (deltaTime) {
   const offset = elapsedTime * 0.01;
 
   circle.clear();
-  circle.lineStyle(5, COLOR.pink);
+  circle.lineStyle(5, color.pink);
   drawDashedCircle(circle, 150, dash, gap, offset);
 
   polygon.clear();
-  polygon.lineStyle(3, COLOR.white);
-  drawDashedPolygon(polygon, POLYGONS, dash, gap, offset);
+  polygon.lineStyle(3, color.white);
+  drawDashedPolygon(polygon, starPolygon, dash, gap, offset);
   polygon.rotation += deltaTime * 0.01;
 });
 
@@ -72,10 +74,10 @@ document.onkeydown = function (event) {
 };
 
 function drawDashedCircle(graphics, radius, dash, gap, offset) {
-  const circum = radius * PI_2;
+  const circum = radius * circumference;
   const stepSize = dash + gap;
   const chunks = Math.ceil(circum / stepSize);
-  const chunkAngle = PI_2 / chunks;
+  const chunkAngle = circumference / chunks;
   const dashAngle = (dash / stepSize) * chunkAngle;
   const offsetAngle = offset * chunkAngle;
 

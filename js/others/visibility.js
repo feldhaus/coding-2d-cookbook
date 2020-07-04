@@ -1,13 +1,14 @@
-// constants
-const COLOR = { grey: 0x21252f, pink: 0xec407a, white: 0xf2f5ea };
-
 // create application
 const app = new PIXI.Application({
-  backgroundColor: COLOR.grey,
+  backgroundColor: 0x21252f,
   antialias: true,
+  width: 800,
+  height: 600,
 });
 document.body.appendChild(app.view);
 
+// constants
+const color = { pink: 0xec407a, white: 0xf2f5ea };
 const center = new PIXI.Point(
   app.renderer.width * 0.5,
   app.renderer.height * 0.5
@@ -32,7 +33,7 @@ function createShape(x, y, path) {
   const shape = new PIXI.Graphics();
   app.stage.addChild(shape);
   shape.position.set(x, y);
-  shape.lineStyle(1, COLOR.white);
+  shape.lineStyle(1, color.white);
   shape.beginFill(0, 0.01);
   shape.drawPolygon(path);
   shape.closePath();
@@ -86,9 +87,9 @@ function draw() {
   const intersects = raycastToAllPoints(center, points);
 
   graphics.clear();
-  graphics.beginFill(COLOR.pink);
+  graphics.beginFill(color.pink);
   graphics.drawCircle(center.x, center.y, 10);
-  graphics.beginFill(COLOR.pink, 0.05);
+  graphics.beginFill(color.pink, 0.05);
 
   for (let i = 0; i < intersects.length; i++) {
     graphics.moveTo(center.x, center.y);

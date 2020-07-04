@@ -1,21 +1,22 @@
-// constants
-const COLOR = { grey: 0x21252f, pink: 0xec407a, white: 0xf2f5ea };
-const GRAVITY = 0.8;
-const PLAYER_SPEED = 0.02;
-const JUMP_LIMIT = 2; // double jump
-const JUMP_FORCE = 12;
-
 // create application
 const app = new PIXI.Application({
-  backgroundColor: COLOR.grey,
+  backgroundColor: 0x21252f,
   antialias: true,
+  width: 800,
+  height: 600,
 });
 document.body.appendChild(app.view);
 
+// constants
+const color = { pink: 0xec407a, white: 0xf2f5ea };
 const center = new PIXI.Point(
   app.renderer.width * 0.5,
   app.renderer.height * 0.5
 );
+const gravity = 0.8;
+const playerSpeed = 0.02;
+const jumpLimit = 2; // double jump
+const jumpMaxForce = 12;
 
 // variables
 let radius1 = 150;
@@ -28,14 +29,14 @@ let jumpForce = 0;
 // add circle 1
 const circle1 = new PIXI.Graphics();
 app.stage.addChild(circle1);
-circle1.beginFill(COLOR.white);
+circle1.beginFill(color.white);
 circle1.drawCircle(0, 0, radius1);
 circle1.position.copyFrom(center);
 
 // add circle 2
 const circle2 = new PIXI.Graphics();
 app.stage.addChild(circle2);
-circle2.beginFill(COLOR.pink);
+circle2.beginFill(color.pink);
 circle2.drawCircle(0, 0, radius2);
 
 // runs an update loop
@@ -56,7 +57,7 @@ document.onkeydown = function (event) {
   event.preventDefault();
 
   circle1.clear();
-  circle1.beginFill(COLOR.white);
+  circle1.beginFill(color.white);
   circle1.drawCircle(0, 0, radius1);
 };
 
@@ -64,7 +65,7 @@ function update(deltaTime) {
   // is jumping?
   if (jumps > 0) {
     jumpOffset += jumpForce;
-    jumpForce -= GRAVITY * deltaTime;
+    jumpForce -= gravity * deltaTime;
     if (jumpOffset < 0) {
       jumpOffset = 0;
       jumpForce = 0;
@@ -74,7 +75,7 @@ function update(deltaTime) {
 
   // update circle2 position
   const distanceFromCenter = radius1 + radius2 + jumpOffset;
-  currentRadians += PLAYER_SPEED * deltaTime;
+  currentRadians += playerSpeed * deltaTime;
   const translatePoint = pointTranslate(
     center,
     currentRadians,
@@ -84,9 +85,9 @@ function update(deltaTime) {
 }
 
 function jump() {
-  if (jumps < JUMP_LIMIT) {
+  if (jumps < jumpLimit) {
     jumps++;
-    jumpForce = JUMP_FORCE;
+    jumpForce = jumpMaxForce;
   }
 }
 

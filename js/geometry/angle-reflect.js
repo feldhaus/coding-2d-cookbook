@@ -1,18 +1,19 @@
-// constants
-const COLOR = { grey: 0x21252f, pink: 0xec407a, white: 0xf2f5ea };
-const SURFACE_LENGTH = 400;
-
 // create application
 const app = new PIXI.Application({
-  backgroundColor: COLOR.grey,
+  backgroundColor: 0x21252f,
   antialias: true,
+  width: 800,
+  height: 600,
 });
 document.body.appendChild(app.view);
 
+// constants
+const color = { pink: 0xec407a, white: 0xf2f5ea };
 const center = new PIXI.Point(
   app.renderer.width * 0.5,
   app.renderer.height * 0.5
 );
+const surfaceLength = 400;
 
 // add graphics
 const graphics = new PIXI.Graphics();
@@ -25,7 +26,7 @@ dot1.position.set(center.x - 200, center.y);
 dot1.on('pointermove', function (event) {
   if (this.alpha === 1) return;
   const angle = angleBetween(center, this.position);
-  const translatePoint = pointTranslate(center, angle, SURFACE_LENGTH * 0.5);
+  const translatePoint = pointTranslate(center, angle, surfaceLength * 0.5);
   this.position.copyFrom(translatePoint);
   draw();
 });
@@ -36,9 +37,9 @@ dot2.position.set(center.x - 150, center.y - 200);
 
 function createDot() {
   const g = new PIXI.Graphics();
-  g.beginFill(COLOR.pink, 0.05);
+  g.beginFill(color.pink, 0.05);
   g.drawCircle(0, 0, 30);
-  g.beginFill(COLOR.pink);
+  g.beginFill(color.pink);
   g.drawCircle(0, 0, 5);
   g.interactive = g.buttonMode = true;
   g.offset = new PIXI.Point();
@@ -71,19 +72,19 @@ function draw() {
   const incidenceAngle = angleBetween(dot2, center);
   const incidenceLength = distanceBetween(dot2, center);
   const surfaceAngle = angleBetween(dot1, center);
-  const surfacePoint = pointTranslate(dot1, surfaceAngle, SURFACE_LENGTH);
+  const surfacePoint = pointTranslate(dot1, surfaceAngle, surfaceLength);
   const reflectAngle = angleReflect(incidenceAngle, surfaceAngle);
   const reflectPoint = pointTranslate(center, reflectAngle, incidenceLength);
 
   // draw incidence and surface lines
-  graphics.lineStyle(2, COLOR.white);
+  graphics.lineStyle(2, color.white);
   graphics.moveTo(dot1.x, dot1.y);
   graphics.lineTo(surfacePoint.x, surfacePoint.y);
   graphics.moveTo(dot2.x, dot2.y);
   graphics.lineTo(center.x, center.y);
 
   // draw reflect line
-  graphics.lineStyle(2, COLOR.pink);
+  graphics.lineStyle(2, color.pink);
   graphics.lineTo(reflectPoint.x, reflectPoint.y);
 }
 draw();

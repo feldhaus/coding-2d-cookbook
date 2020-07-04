@@ -1,20 +1,22 @@
-// constants
-const COLOR = { grey: 0x21252f, pink: 0xec407a, white: 0xf2f5ea };
-const SIZE = 40;
-const COLS = 18;
-const ROWS = 13;
-const FONT_STYLE = {
-  fontSize: 10,
-  fontFamily: '"Courier New", Courier, monospace',
-  fill: COLOR.white,
-};
-
 // create application
 const app = new PIXI.Application({
-  backgroundColor: COLOR.grey,
+  backgroundColor: 0x21252f,
   antialias: true,
+  width: 800,
+  height: 600,
 });
 document.body.appendChild(app.view);
+
+// constants
+const color = { pink: 0xec407a, white: 0xf2f5ea };
+const size = 40;
+const cols = 18;
+const rows = 13;
+const fontStyle = {
+  fontSize: 10,
+  fontFamily: '"Courier New", Courier, monospace',
+  fill: color.white,
+};
 
 // add graphics
 const graphicsGrid = new PIXI.Graphics();
@@ -25,9 +27,9 @@ app.stage.addChild(graphicsPath);
 
 // define grid
 const grid = [];
-for (let col = 0; col < COLS; col++) {
+for (let col = 0; col < cols; col++) {
   grid.push([]);
-  for (let row = 0; row < ROWS; row++) {
+  for (let row = 0; row < rows; row++) {
     grid[col].push({ col, row, id: `${col}x${row}`, wall: false });
   }
 }
@@ -36,18 +38,18 @@ for (let col = 0; col < COLS; col++) {
 const start = grid[4][6];
 const goal = grid[13][6];
 
-graphicsGrid.beginFill(COLOR.pink);
-graphicsGrid.drawCircle((start.col + 1.5) * SIZE, (start.row + 1.5) * SIZE, 8);
-graphicsGrid.drawCircle((goal.col + 1.5) * SIZE, (goal.row + 1.5) * SIZE, 8);
+graphicsGrid.beginFill(color.pink);
+graphicsGrid.drawCircle((start.col + 1.5) * size, (start.row + 1.5) * size, 8);
+graphicsGrid.drawCircle((goal.col + 1.5) * size, (goal.row + 1.5) * size, 8);
 graphicsGrid.endFill();
 
 // draw grid
-graphicsGrid.lineStyle(0.5, COLOR.white);
-for (let col = 0; col < COLS; col++) {
-  for (let row = 0; row < ROWS; row++) {
-    const x = (col + 1) * SIZE;
-    const y = (row + 1) * SIZE;
-    graphicsGrid.drawRect(x, y, SIZE, SIZE);
+graphicsGrid.lineStyle(0.5, color.white);
+for (let col = 0; col < cols; col++) {
+  for (let row = 0; row < rows; row++) {
+    const x = (col + 1) * size;
+    const y = (row + 1) * size;
+    graphicsGrid.drawRect(x, y, size, size);
     addNode(x, y, grid[col][row]);
   }
 }
@@ -60,8 +62,8 @@ function addNode(x, y, data) {
 
   const sprite = PIXI.Sprite.from(PIXI.Texture.WHITE);
   container.addChild(sprite);
-  sprite.width = SIZE;
-  sprite.height = SIZE;
+  sprite.width = size;
+  sprite.height = size;
   sprite.alpha = 0.05;
   sprite.interactive = true;
   sprite.buttonMode = true;
@@ -73,7 +75,7 @@ function addNode(x, y, data) {
     drawPath();
   });
 
-  const label = new PIXI.Text(data.id, FONT_STYLE);
+  const label = new PIXI.Text(data.id, fontStyle);
   container.addChild(label);
   data.label = label;
 }
@@ -81,8 +83,8 @@ function addNode(x, y, data) {
 // return the adjacent edges of a node: north, south, east and west
 function getAdjacentEdges(grid, col, row) {
   const edges = [];
-  if (col < COLS - 1) edges.push(grid[col + 1][row]);
-  if (row < ROWS - 1) edges.push(grid[col][row + 1]);
+  if (col < cols - 1) edges.push(grid[col + 1][row]);
+  if (row < rows - 1) edges.push(grid[col][row + 1]);
   if (row > 0) edges.push(grid[col][row - 1]);
   if (col > 0) edges.push(grid[col - 1][row]);
   return edges;
@@ -131,10 +133,10 @@ function reconstructPath(cameFrom, start, goal, path = []) {
 const timeoutIDs = [];
 function drawPath() {
   // reset grid
-  for (let col = 0; col < COLS; col++) {
-    for (let row = 0; row < ROWS; row++) {
+  for (let col = 0; col < cols; col++) {
+    for (let row = 0; row < rows; row++) {
       grid[col][row].sprite.tint = 0xffffff;
-      grid[col][row].label.style.fill = COLOR.white;
+      grid[col][row].label.style.fill = color.white;
     }
   }
   graphicsPath.clear();
@@ -144,10 +146,10 @@ function drawPath() {
   const path = reconstructPath(cameFrom, start, goal);
 
   // draw the path
-  graphicsPath.lineStyle(3, COLOR.pink);
+  graphicsPath.lineStyle(3, color.pink);
   path.forEach((node, index) => {
-    const x = (node.col + 1.5) * SIZE;
-    const y = (node.row + 1.5) * SIZE;
+    const x = (node.col + 1.5) * size;
+    const y = (node.row + 1.5) * size;
     if (index === 0) graphicsPath.moveTo(x, y);
     else graphicsPath.lineTo(x, y);
   });
@@ -158,8 +160,8 @@ function drawPath() {
   Object.keys(cameFrom).forEach((key) => {
     const node = flattenGrid.find((n) => n.id === key);
     const timeoutID = setTimeout(() => {
-      node.sprite.tint = COLOR.pink;
-      node.label.style.fill = COLOR.pink;
+      node.sprite.tint = color.pink;
+      node.label.style.fill = color.pink;
     }, node.step * 10);
     timeoutIDs.push(timeoutID);
   });

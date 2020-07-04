@@ -1,13 +1,14 @@
-// constants
-const COLOR = { grey: 0x21252f, pink: 0xec407a, white: 0xf2f5ea };
-
 // create application
 const app = new PIXI.Application({
-  backgroundColor: COLOR.grey,
+  backgroundColor: 0x21252f,
   antialias: true,
+  width: 800,
+  height: 600,
 });
 document.body.appendChild(app.view);
 
+// constants
+const color = { pink: 0xec407a, white: 0xf2f5ea };
 const center = new PIXI.Point(
   app.renderer.width * 0.5,
   app.renderer.height * 0.5
@@ -47,20 +48,20 @@ function draw(points) {
   graphics.clear();
 
   for (let i = 0; i < points.length; i++) {
-    graphics.beginFill(COLOR.white);
+    graphics.beginFill(color.white);
     graphics.drawCircle(points[i].x, points[i].y, 2);
     graphics.endFill();
   }
 
   if (points.length > 2) {
     for (let i = 0; i < 3; i++) {
-      graphics.lineStyle(3 - i, COLOR.pink, 1 - i * 0.1);
+      graphics.lineStyle(3 - i, color.pink, 1 - i * 0.1);
       graphics.drawPolygon(straightSkeleton(points, (i + 1) * 10));
-      graphics.lineStyle(3 - i, COLOR.pink, 1 - i * 0.1);
+      graphics.lineStyle(3 - i, color.pink, 1 - i * 0.1);
       graphics.drawPolygon(straightSkeleton(points, (i + 1) * -10));
     }
 
-    graphics.lineStyle(1, COLOR.white, 1);
+    graphics.lineStyle(1, color.white, 1);
     graphics.drawPolygon(points.concat(points[0]));
   }
 }

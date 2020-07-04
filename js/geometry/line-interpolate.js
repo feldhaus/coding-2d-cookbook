@@ -1,13 +1,15 @@
-// constants
-const COLOR = { grey: 0x21252f, pink: 0xec407a, white: 0xf2f5ea };
-const DURATION = 180;
-
 // create application
 const app = new PIXI.Application({
-  backgroundColor: COLOR.grey,
+  backgroundColor: 0x21252f,
   antialias: true,
+  width: 800,
+  height: 600,
 });
 document.body.appendChild(app.view);
+
+// constants
+const color = { pink: 0xec407a, white: 0xf2f5ea };
+const duration = 180;
 
 // add graphics
 const graphics = new PIXI.Graphics();
@@ -29,24 +31,24 @@ app.ticker.add(function (deltaTime) {
 
 function update(deltaTime) {
   elapsedTime += deltaTime;
-  draw((elapsedTime % DURATION) / DURATION);
+  draw((elapsedTime % duration) / duration);
 }
 
 function draw(threshold) {
   graphics.clear();
-  graphics.lineStyle(2, COLOR.white);
+  graphics.lineStyle(2, color.white);
   graphics.moveTo(dot1.x, dot1.y);
   graphics.lineTo(dot2.x, dot2.y);
   const interpolation = lineInterpolate(dot1, dot2, threshold);
-  graphics.beginFill(COLOR.grey);
+  graphics.beginFill(color.grey);
   graphics.drawCircle(interpolation.x, interpolation.y, 5);
 }
 
 function createDot() {
   const g = new PIXI.Graphics();
-  g.beginFill(COLOR.pink, 0.05);
+  g.beginFill(color.pink, 0.05);
   g.drawCircle(0, 0, 30);
-  g.beginFill(COLOR.pink);
+  g.beginFill(color.pink);
   g.drawCircle(0, 0, 5);
   g.interactive = g.buttonMode = true;
   g.offset = new PIXI.Point();

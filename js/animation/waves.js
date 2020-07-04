@@ -1,20 +1,22 @@
-// constants
-const COLOR = { grey: 0x21252f, pink: 0xec407a, white: 0xf2f5ea };
-const RADIUS = 100;
-const WAVES_LENGTH = 300;
-const CIRCUMFERENCE = Math.PI * 2;
-
 // create application
 const app = new PIXI.Application({
-  backgroundColor: COLOR.grey,
+  backgroundColor: 0x21252f,
   antialias: true,
+  width: 800,
+  height: 600,
 });
 document.body.appendChild(app.view);
 
+// constants
+const color = { pink: 0xec407a, white: 0xf2f5ea };
 const center = new PIXI.Point(
   app.renderer.width * 0.5,
   app.renderer.height * 0.5
 );
+const radius = 100;
+const wavesLength = 300;
+const circumference = Math.PI * 2;
+const rate = 1 / (app.ticker.FPS * 5); // 5 seconds
 
 // add graphics
 const graphics = new PIXI.Graphics();
@@ -23,20 +25,19 @@ app.stage.addChild(graphics);
 const circle = new PIXI.Point(center.x - 200, center.y);
 
 // runs an update loop
-const rate = 1 / (app.ticker.FPS * 5); // 5 seconds
 let threshold = 0;
 app.ticker.add(function (deltaTime) {
   threshold += deltaTime * rate;
   threshold %= 1;
   
-  const angle = (threshold * CIRCUMFERENCE) % (Math.PI * 2);
+  const angle = (threshold * circumference) % (Math.PI * 2);
 
   graphics.clear();
-  graphics.lineStyle(2, COLOR.pink);
-  graphics.drawCircle(circle.x, circle.y, RADIUS);
+  graphics.lineStyle(2, color.pink);
+  graphics.drawCircle(circle.x, circle.y, radius);
 
-  const p0 = pointTranslate(circle, 0, RADIUS);
-  const p1 = pointTranslate(circle, angle, RADIUS);
+  const p0 = pointTranslate(circle, 0, radius);
+  const p1 = pointTranslate(circle, angle, radius);
   const p2 = new PIXI.Point(center.x .x, p1.y);
   const p3 = pointTranslate(circle, angle, 50);
 
@@ -44,26 +45,26 @@ app.ticker.add(function (deltaTime) {
   graphics.lineTo(p0.x, p0.y);
   graphics.moveTo(circle.x, circle.y);
   graphics.lineTo(p1.x, p1.y);
-  graphics.lineTo(center.x + threshold * WAVES_LENGTH, p2.y);
+  graphics.lineTo(center.x + threshold * wavesLength, p2.y);
 
-  graphics.lineStyle(10, COLOR.pink);
+  graphics.lineStyle(10, color.pink);
   graphics.moveTo(p3.x, p3.y);
   graphics.arc(circle.x, circle.y, 50, -angle, 0);
 
-  graphics.lineStyle(2, COLOR.pink);
-  graphics.moveTo(center.x + WAVES_LENGTH, circle.y);
+  graphics.lineStyle(2, color.pink);
+  graphics.moveTo(center.x + wavesLength, circle.y);
   graphics.lineTo(center.x, circle.y);
 
-  for (let i = 0; i <= WAVES_LENGTH; i++) {
-    const t = i / WAVES_LENGTH;
+  for (let i = 0; i <= wavesLength; i++) {
+    const t = i / wavesLength;
     if (t < threshold) {
-      graphics.lineStyle(10, COLOR.pink);
+      graphics.lineStyle(10, color.pink);
     } else {
-      graphics.lineStyle(2, COLOR.pink);
+      graphics.lineStyle(2, color.pink);
     }
     graphics.lineTo(
-      center.x + t * WAVES_LENGTH,
-      circle.y - Math.sin(t * CIRCUMFERENCE) * RADIUS
+      center.x + t * wavesLength,
+      circle.y - Math.sin(t * circumference) * radius
     );
   }
 });

@@ -1,18 +1,20 @@
-// constants
-const COLOR = { grey: 0x21252f, pink: 0xec407a, white: 0xf2f5ea };
-const PI_2 = Math.PI * 2;
-
 // create application
 const app = new PIXI.Application({
-  backgroundColor: COLOR.grey,
+  backgroundColor: 0x21252f,
   antialias: true,
+  width: 800,
+  height: 600,
 });
 document.body.appendChild(app.view);
+
+// constants
+const color = { pink: 0xec407a, white: 0xf2f5ea };
+const circumference = Math.PI * 2;
 
 // create shape (graphics)
 const shapes = new PIXI.Graphics();
 app.stage.addChild(shapes);
-shapes.lineStyle(2, COLOR.white);
+shapes.lineStyle(2, color.white);
 
 // triangles
 drawPolygon(shapes, 100, 110, 3, 80, 80, 0);
@@ -53,7 +55,7 @@ function drawPolygon(graphics, x, y, sides, radius1, radius2, angle) {
   const startAngle = angle - Math.PI / 2;
 
   // get all points
-  const slice = PI_2 / sides;
+  const slice = circumference / sides;
   const polygon = [];
   for (let i = 0; i < sides; i++) {
     const radius = i % 2 === 0 ? radius1 : radius2;

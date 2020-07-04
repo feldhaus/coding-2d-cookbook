@@ -1,25 +1,31 @@
-// constants
-const COLOR = { grey: 0x21252f, pink: 0xec407a, white: 0xf2f5ea };
-
 // create application
 const app = new PIXI.Application({
-  backgroundColor: COLOR.grey,
+  backgroundColor: 0x21252f,
   antialias: true,
+  width: 800,
+  height: 600,
 });
 document.body.appendChild(app.view);
+
+// constants
+const color = { pink: 0xec407a, white: 0xf2f5ea };
+const center = new PIXI.Point(
+  app.renderer.width * 0.5,
+  app.renderer.height * 0.5
+);
 
 // add background
 const background = new PIXI.Sprite();
 app.stage.addChild(background);
 background.anchor.set(0.5);
-background.position.set(app.renderer.width * 0.5, app.renderer.height * 0.5);
+background.position.copyFrom(center);
 
 // add graphics
 const graphics = new PIXI.Graphics();
 app.stage.addChild(graphics);
 graphics.lineStyle(3, 0xffffff);
 graphics.drawRect(-200, -150, 400, 300);
-graphics.position.set(app.renderer.width * 0.5, app.renderer.height * 0.5);
+graphics.position.copyFrom(center);
 
 // load image
 PIXI.Loader.shared

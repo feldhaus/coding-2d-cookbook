@@ -1,13 +1,14 @@
-// constants
-const COLOR = { grey: 0x21252f, pink: 0xec407a, white: 0xf2f5ea };
-
 // create application
 const app = new PIXI.Application({
-  backgroundColor: COLOR.grey,
+  backgroundColor: 0x21252f,
   antialias: true,
+  width: 800,
+  height: 600,
 });
 document.body.appendChild(app.view);
 
+// constants
+const color = { pink: 0xec407a, white: 0xf2f5ea };
 const center = new PIXI.Point(
   app.renderer.width * 0.5,
   app.renderer.height * 0.5
@@ -26,20 +27,20 @@ circle2.position.set(center.x + 100, center.y);
 const rect1 = new PIXI.Sprite(PIXI.Texture.WHITE);
 app.stage.addChild(rect1);
 rect1.anchor.set(0.5, 0.5);
-rect1.tint = COLOR.pink;
+rect1.tint = color.pink;
 
 // add rect 2
 const rect2 = new PIXI.Sprite(PIXI.Texture.WHITE);
 app.stage.addChild(rect2);
 rect2.anchor.set(0.5, 0.5);
-rect2.tint = COLOR.pink;
+rect2.tint = color.pink;
 
 function createCircle(radius) {
   const g = new PIXI.Graphics();
-  g.beginFill(COLOR.white, 0.05);
+  g.beginFill(color.white, 0.05);
   g.drawCircle(0, 0, radius + 20);
   g.beginFill(0, 0);
-  g.lineStyle(3, COLOR.white);
+  g.lineStyle(3, color.white);
   g.drawCircle(0, 0, radius);
   g.interactive = g.buttonMode = true;
   g.offset = new PIXI.Point();

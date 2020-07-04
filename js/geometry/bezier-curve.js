@@ -1,14 +1,20 @@
-// constants
-const COLOR = { grey: 0x21252f, pink: 0xec407a, white: 0xf2f5ea };
-const DURATION = 100;
-const PATH = 50;
-
 // create application
 const app = new PIXI.Application({
-  backgroundColor: COLOR.grey,
+  backgroundColor: 0x21252f,
   antialias: true,
+  width: 800,
+  height: 600,
 });
 document.body.appendChild(app.view);
+
+// constants
+const color = { pink: 0xec407a, white: 0xf2f5ea };
+const center = new PIXI.Point(
+  app.renderer.width * 0.5,
+  app.renderer.height * 0.5
+);
+const duration = 100;
+const path = 50;
 
 // add graphics
 const graphics = new PIXI.Graphics();
@@ -40,14 +46,14 @@ dot4.position.set(700, 450);
 // circle that will walk along the path
 const walker = new PIXI.Graphics();
 app.stage.addChild(walker);
-walker.lineStyle(5, COLOR.pink);
+walker.lineStyle(5, color.pink);
 walker.drawCircle(0, 0, 20);
 
 function createDot() {
   const g = new PIXI.Graphics();
-  g.beginFill(COLOR.pink, 0.05);
+  g.beginFill(color.pink, 0.05);
   g.drawCircle(0, 0, 30);
-  g.beginFill(COLOR.pink);
+  g.beginFill(color.pink);
   g.drawCircle(0, 0, 5);
   g.interactive = g.buttonMode = true;
   g.offset = new PIXI.Point();
@@ -77,7 +83,7 @@ function draw() {
   graphics.clear();
 
   // line between dots
-  graphics.lineStyle(2, COLOR.white);
+  graphics.lineStyle(2, color.white);
   graphics.moveTo(dot1.x, dot1.y);
   graphics.lineTo(dot2.x, dot2.y);
   graphics.lineTo(dot3.x, dot3.y);
@@ -85,9 +91,9 @@ function draw() {
 
   // draw path
   graphics.lineStyle(0);
-  graphics.beginFill(COLOR.pink);
-  for (let i = 0; i < PATH; i++) {
-    const position = cubicBezier(dot1, dot2, dot3, dot4, i / PATH);
+  graphics.beginFill(color.pink);
+  for (let i = 0; i < path; i++) {
+    const position = cubicBezier(dot1, dot2, dot3, dot4, i / path);
     graphics.drawCircle(position.x, position.y, 2);
   }
   graphics.endFill();
@@ -96,7 +102,7 @@ draw();
 
 function update(deltaTime) {
   elapsedTime += deltaTime;
-  const threshold = (elapsedTime % DURATION) / DURATION;
+  const threshold = (elapsedTime % duration) / duration;
   walker.position = cubicBezier(dot1, dot2, dot3, dot4, threshold);
 }
 

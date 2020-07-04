@@ -1,17 +1,19 @@
-// constants
-const COLOR = { grey: 0x21252f, pink: 0xec407a, white: 0xf2f5ea };
-
 // create application
 const app = new PIXI.Application({
-  backgroundColor: COLOR.grey,
+  backgroundColor: 0x21252f,
   antialias: true,
+  width: 800,
+  height: 600,
 });
 document.body.appendChild(app.view);
+
+// constants
+const color = { pink: 0xec407a, white: 0xf2f5ea };
 
 // add tree graphics
 const graphics = new PIXI.Graphics();
 app.stage.addChild(graphics);
-graphics.lineStyle(2, COLOR.isabelline);
+graphics.lineStyle(2, color.white);
 
 // listen pointer down event
 app.renderer.plugins.interaction.on('pointerdown', lightning);

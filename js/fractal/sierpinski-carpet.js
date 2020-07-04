@@ -1,20 +1,21 @@
-// constants
-const COLOR = { grey: 0x21252f, pink: 0xec407a, white: 0xf2f5ea };
-
 // create application
 const app = new PIXI.Application({
-  backgroundColor: COLOR.grey,
+  backgroundColor: 0x21252f,
   antialias: true,
+  width: 800,
+  height: 600,
 });
 document.body.appendChild(app.view);
+
+// constants
+const color = { pink: 0xec407a, white: 0xf2f5ea };
+const width = app.renderer.width;
+const height = app.renderer.height;
+const minSize = Math.min(width, height);
 
 // add graphics
 const graphics = new PIXI.Graphics();
 app.stage.addChild(graphics);
-
-const width = app.renderer.width;
-const height = app.renderer.height;
-const minSize = Math.min(width, height);
 
 carpet(minSize, 4, (width - minSize) / 2, (height - minSize) / 2);
 
@@ -24,9 +25,9 @@ function carpet(size, level, x0, y0) {
 
   const newSize = size / 3;
   if (level % 2 === 0) {
-    graphics.lineStyle(2, COLOR.white);
+    graphics.lineStyle(2, color.white);
   } else {
-    graphics.lineStyle(2, COLOR.pink);
+    graphics.lineStyle(2, color.pink);
   }
   graphics.drawRect(newSize + x0, newSize + y0, newSize, newSize);
   for (let x = 0; x < 3; x++) {

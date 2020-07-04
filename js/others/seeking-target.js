@@ -1,14 +1,20 @@
-// constants
-const COLOR = { grey: 0x21252f, pink: 0xec407a, white: 0xf2f5ea };
-const MAXSPEED = 5;
-const MAXFORCE = 0.2;
-
 // create application
 const app = new PIXI.Application({
-  backgroundColor: COLOR.grey,
+  backgroundColor: 0x21252f,
   antialias: true,
+  width: 800,
+  height: 600,
 });
 document.body.appendChild(app.view);
+
+// constants
+const color = { pink: 0xec407a, white: 0xf2f5ea };
+const center = new PIXI.Point(
+  app.renderer.width * 0.5,
+  app.renderer.height * 0.5
+);
+const maxSpeed = 5;
+const maxForce = 0.2;
 
 // runs an update loop
 app.ticker.add(function (deltaTime) {
@@ -21,8 +27,8 @@ app.ticker.add(function (deltaTime) {
 
 const vehicle = new PIXI.Graphics();
 app.stage.addChild(vehicle);
-vehicle.position.set(400, 300);
-vehicle.beginFill(COLOR.pink);
+vehicle.position.copyFrom(center);
+vehicle.beginFill(color.pink);
 vehicle.drawPolygon(10, 0, -10, -8, -6, 0, -10, 8);
 
 let velocity = new PIXI.Point();
@@ -37,14 +43,14 @@ function seek() {
 
   // scale to maximum speed
   desired = normalize(desired);
-  desired.x *= MAXSPEED;
-  desired.y *= MAXSPEED;
+  desired.x *= maxSpeed;
+  desired.y *= maxSpeed;
 
   // steering = desired minus velocity
   let steer = new PIXI.Point(desired.x - velocity.x, desired.y - velocity.y);
 
   // limit to maximum steering force
-  steer = limit(steer, MAXFORCE);
+  steer = limit(steer, maxForce);
   acceleration.x += steer.x;
   acceleration.y += steer.y;
 }
@@ -55,7 +61,7 @@ function update(deltaTime) {
   velocity.y += acceleration.y;
 
   // limit speed
-  velocity = limit(velocity, MAXSPEED);
+  velocity = limit(velocity, maxSpeed);
   vehicle.x += velocity.x * deltaTime;
   vehicle.y += velocity.y * deltaTime;
 

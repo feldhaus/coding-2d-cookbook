@@ -1,28 +1,33 @@
-// constants
-const COLOR = { grey: 0x21252f, pink: 0xec407a, white: 0xf2f5ea };
-const DEG2RAD = Math.PI / 180;
-
 // create application
 const app = new PIXI.Application({
-  backgroundColor: COLOR.grey,
+  backgroundColor: 0x21252f,
   antialias: true,
+  width: 800,
+  height: 600,
 });
 document.body.appendChild(app.view);
+
+// constants
+const color = { pink: 0xec407a, white: 0xf2f5ea };
+const center = new PIXI.Point(
+  app.renderer.width * 0.5,
+  app.renderer.height * 0.5
+);
+const deg2rad = Math.PI / 180;
 
 // add graphics
 const graphics = new PIXI.Graphics();
 app.stage.addChild(graphics);
-graphics.position.set(400, 300);
+graphics.position.copyFrom(center);
 
 // convert the golden angle to radians
-const goldenAngle = 137.5 * DEG2RAD;
+const goldenAngle = 137.5 * deg2rad;
 
 // scaling parameter
 const c = 8;
 
 // is the ordering number of a floret, counting outward from the center
 let n = 0;
-let color = 0;
 
 app.ticker.add(function (deltaTime) {
   // is the angle between a reference direction and the position
@@ -43,7 +48,7 @@ app.ticker.add(function (deltaTime) {
   const radius = c - n * 0.005;
   if (radius > 0) {
     // draw a circle
-    graphics.beginFill(COLOR.white, (5 + (n % 45)) / 50);
+    graphics.beginFill(color.white, (5 + (n % 45)) / 50);
     graphics.drawCircle(x, y, radius);
 
     // increase n

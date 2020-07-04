@@ -1,43 +1,45 @@
-// constants
-const COLOR = { grey: 0x21252f, pink: 0xec407a, white: 0xf2f5ea };
-const HANDLING = 0.07;
-const RADIUS = 15;
-
 // create application
 const app = new PIXI.Application({
-  backgroundColor: COLOR.grey,
+  backgroundColor: 0x21252f,
   antialias: true,
+  width: 800,
+  height: 600,
 });
 document.body.appendChild(app.view);
+
+// constants
+const color = { pink: 0xec407a, white: 0xf2f5ea };
+const handling = 0.07;
+const radius = 15;
 
 // add vehicle
 const vehicle = new PIXI.Graphics();
 app.stage.addChild(vehicle);
 vehicle.position.set(400, 300);
-vehicle.beginFill(COLOR.pink);
-vehicle.drawCircle(0, 0, RADIUS);
+vehicle.beginFill(color.pink);
+vehicle.drawCircle(0, 0, radius);
 vehicle.direction = new PIXI.Point();
 
 // add compass
 const compass = new PIXI.Graphics();
 app.stage.addChild(compass);
 compass.position.set(400, 300);
-compass.beginFill(COLOR.white);
+compass.beginFill(color.white);
 compass.drawPolygon(5, 0, 0, -5, 0, 5);
 
 // runs an update loop
 app.ticker.add(function (deltaTime) {
-  vehicle.rotation += HANDLING * vehicle.direction.x * deltaTime;
+  vehicle.rotation += handling * vehicle.direction.x * deltaTime;
   vehicle.x += vehicle.direction.y * Math.cos(vehicle.rotation) * deltaTime;
   vehicle.y += vehicle.direction.y * Math.sin(vehicle.rotation) * deltaTime;
-  vehicle.x = clamp(vehicle.x, RADIUS, 800 - RADIUS);
-  vehicle.y = clamp(vehicle.y, RADIUS, 600 - RADIUS);
+  vehicle.x = clamp(vehicle.x, radius, 800 - radius);
+  vehicle.y = clamp(vehicle.y, radius, 600 - radius);
 
   compass.rotation += (vehicle.rotation - compass.rotation) * 0.1;
   compass.position = pointTranslate(
     vehicle.position,
     compass.rotation,
-    RADIUS + 5
+    radius + 5
   );
 });
 

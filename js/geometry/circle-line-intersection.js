@@ -1,13 +1,14 @@
-// constants
-const COLOR = { grey: 0x21252f, pink: 0xec407a, white: 0xf2f5ea };
-
 // create application
 const app = new PIXI.Application({
-  backgroundColor: COLOR.grey,
+  backgroundColor: 0x21252f,
   antialias: true,
+  width: 800,
+  height: 600,
 });
 document.body.appendChild(app.view);
 
+// constants
+const color = { pink: 0xec407a, white: 0xf2f5ea };
 const center = new PIXI.Point(
   app.renderer.width * 0.5,
   app.renderer.height * 0.5
@@ -28,9 +29,9 @@ dot2.position.set(700, 500);
 
 function createDot() {
   const g = new PIXI.Graphics();
-  g.beginFill(COLOR.pink, 0.05);
+  g.beginFill(color.pink, 0.05);
   g.drawCircle(0, 0, 30);
-  g.beginFill(COLOR.pink);
+  g.beginFill(color.pink);
   g.drawCircle(0, 0, 5);
   g.interactive = g.buttonMode = true;
   g.offset = new PIXI.Point();
@@ -58,7 +59,7 @@ function createDot() {
 
 function draw() {
   graphics.clear();
-  graphics.lineStyle(2, COLOR.white);
+  graphics.lineStyle(2, color.white);
   graphics.moveTo(dot1.x, dot1.y);
   graphics.lineTo(dot2.x, dot2.y);
 
@@ -75,13 +76,13 @@ function draw() {
   );
 
   if (Object.keys(result1).length > 0) {
-    graphics.beginFill(COLOR.white);
+    graphics.beginFill(color.white);
     graphics.drawCircle(result1.x, result1.y, 5);
     graphics.endFill();
   }
 
   if (Object.keys(result2).length > 0) {
-    graphics.beginFill(COLOR.white);
+    graphics.beginFill(color.white);
     graphics.drawCircle(result2.x, result2.y, 5);
     graphics.endFill();
   }
