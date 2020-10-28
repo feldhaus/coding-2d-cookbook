@@ -115,6 +115,11 @@
             "title": "Waves",
             "descr": "",
             "entry": "waves.js"
+        },
+        {
+            "title": "Wiggle",
+            "descr": "",
+            "entry": "wiggle.js"
         }
     ],
     "others": [
