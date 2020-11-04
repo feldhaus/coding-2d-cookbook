@@ -13,7 +13,7 @@ const center = new PIXI.Point(
   app.renderer.width * 0.5,
   app.renderer.height * 0.5
 );
-const circumference = Math.PI * 2;
+const tau = Math.PI * 2; // alias for two pi
 const radius = 150;
 
 // variables
@@ -84,10 +84,10 @@ function updateMainCircle() {
   let angle = Math.atan2(mouse.y - circle.y, mouse.x - circle.x);
   let hypot = Math.hypot(mouse.x - circle.x, mouse.y - circle.y);
   if (angle < 0) {
-    angle += circumference;
+    angle += tau;
   }
 
-  const sliceCirc = circumference / slices;
+  const sliceCirc = tau / slices;
   const temp = angle / sliceCirc;
 
   circle.clear();
@@ -105,13 +105,13 @@ function updateMainCircle() {
 
 function updateRunningCircle(shape, radius, direction, speed) {
   const circum = elapsedTime * speed;
-  const invert = Math.floor(circum / circumference) % 2 === 0;
+  const invert = Math.floor(circum / tau) % 2 === 0;
 
   shape.clear();
   shape.lineStyle(20, color.white);
   if (invert) {
-    shape.arc(0, 0, radius, 0, (circum % circumference) * direction);
+    shape.arc(0, 0, radius, 0, (circum % tau) * direction);
   } else {
-    shape.arc(0, 0, radius, (circum % circumference) * direction, 0);
+    shape.arc(0, 0, radius, (circum % tau) * direction, 0);
   }
 }

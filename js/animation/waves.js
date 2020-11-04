@@ -15,7 +15,7 @@ const center = new PIXI.Point(
 );
 const radius = 100;
 const wavesLength = 300;
-const circumference = Math.PI * 2;
+const tau = Math.PI * 2; // alias for two pi
 const rate = 1 / (app.ticker.FPS * 5); // 5 seconds
 
 // add graphics
@@ -30,7 +30,7 @@ app.ticker.add(function (deltaTime) {
   threshold += deltaTime * rate;
   threshold %= 1;
   
-  const angle = (threshold * circumference) % (Math.PI * 2);
+  const angle = (threshold * tau) % tau;
 
   graphics.clear();
   graphics.lineStyle(2, color.pink);
@@ -64,7 +64,7 @@ app.ticker.add(function (deltaTime) {
     }
     graphics.lineTo(
       center.x + t * wavesLength,
-      circle.y - Math.sin(t * circumference) * radius
+      circle.y - Math.sin(t * tau) * radius
     );
   }
 });

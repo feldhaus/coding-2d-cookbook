@@ -13,6 +13,7 @@ const center = new PIXI.Point(
   app.renderer.width * 0.5,
   app.renderer.height * 0.5
 );
+const tau = Math.PI * 2; // alias for two pi
 
 // add the graphics
 const graphics = new PIXI.Graphics();
@@ -109,9 +110,9 @@ function drawRoundedPolygon(path, radius) {
     // get clock wise direction to draw the arc
     let sweepAngle = endAngle - startAngle;
     if (sweepAngle < -Math.PI) {
-      sweepAngle = Math.PI * 2 + sweepAngle;
+      sweepAngle = tau + sweepAngle;
     } else if (sweepAngle > Math.PI) {
-      sweepAngle = sweepAngle - Math.PI * 2;
+      sweepAngle = sweepAngle - tau;
     }
     const anticlockwise = sweepAngle < 0 || sweepAngle > Math.PI;
 

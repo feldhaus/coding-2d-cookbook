@@ -9,7 +9,7 @@ document.body.appendChild(app.view);
 
 // constants
 const color = { pink: 0xec407a, white: 0xf2f5ea };
-const circumference = Math.PI * 2;
+const tau = Math.PI * 2; // alias for two pi
 
 // create shape (graphics)
 const shapes = new PIXI.Graphics();
@@ -55,7 +55,7 @@ function drawPolygon(graphics, x, y, sides, radius1, radius2, angle) {
   const startAngle = angle - Math.PI / 2;
 
   // get all points
-  const slice = circumference / sides;
+  const slice = tau / sides;
   const polygon = [];
   for (let i = 0; i < sides; i++) {
     const radius = i % 2 === 0 ? radius1 : radius2;

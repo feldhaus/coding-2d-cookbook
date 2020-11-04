@@ -9,7 +9,7 @@ document.body.appendChild(app.view);
 
 // constants
 const color = { pink: 0xec407a, white: 0xf2f5ea };
-const circumference = Math.PI * 2;
+const tau = Math.PI * 2; // alias for two pi
 const starPolygon = [
   { x: 0, y: -150 },
   { x: -38, y: -52 },
@@ -74,10 +74,10 @@ document.onkeydown = function (event) {
 };
 
 function drawDashedCircle(graphics, radius, dash, gap, offset) {
-  const circum = radius * circumference;
+  const circum = radius * tau;
   const stepSize = dash + gap;
   const chunks = Math.ceil(circum / stepSize);
-  const chunkAngle = circumference / chunks;
+  const chunkAngle = tau / chunks;
   const dashAngle = (dash / stepSize) * chunkAngle;
   const offsetAngle = offset * chunkAngle;
 
