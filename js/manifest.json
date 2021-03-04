@@ -11,7 +11,7 @@
             "entry": "angle-reflect.js"
         },
         {
-            "title": "Bevier-Curve",
+            "title": "Bezier-Curve",
             "descr": "DRAG and DROP the dots to change the curve",
             "entry": "bezier-curve.js"
         },
