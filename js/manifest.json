@@ -69,6 +69,11 @@
             "title": "Raycast-Linear",
             "descr": "Use ARROWS (⇧ ⇩⇦ ⇨) or WASD to move the rect and MOUSE to aim",
             "entry": "raycast-linear.js"
+        },
+        {
+            "title": "Rectangles-Merge",
+            "descr": "DRAG and DROP the rectangles",
+            "entry": "rectangles-merge.js"
         }
     ],
     "fractal": [
