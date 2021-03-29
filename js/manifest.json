@@ -51,6 +51,11 @@
             "entry": "polygon-contains.js"
         },
         {
+            "title": "Polygon-Merge",
+            "descr": "DRAG and DROP the polygons",
+            "entry": "polygon-merge.js"
+        },
+        {
             "title": "Polygon-Regular",
             "descr": "",
             "entry": "polygon-regular.js"
