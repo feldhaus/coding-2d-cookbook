@@ -143,66 +143,45 @@ function mergeRectangles() {
   const sortY = points.concat();
   sortY.sort(cmpY);
 
-  const edgesH = new Map();
-  const edgesV = new Map();
-  let i, curr;
-
   // go through each row and create edges between the vertices 2i and 2i + 1 in that row
-  i = 0;
-  while (i < points.length) {
-    curr = sortX[i].x;
-    while (i < points.length && sortX[i].x === curr) {
-      edgesH.set(sortX[i], sortX[i + 1]);
-      edgesH.set(sortX[i + 1], sortX[i]);
-      i += 2;
-    }
+  const edgesH = new Map();
+  for (let i = 0; i < sortX.length; i += 2) {
+    edgesH.set(sortX[i], sortX[i + 1]);
+    edgesH.set(sortX[i + 1], sortX[i]);
   }
 
   // go through each column and create edges between the vertices 2i and 2i + 1 in that column
-  i = 0;
-  while (i < points.length) {
-    curr = sortY[i].y;
-    while (i < points.length && sortY[i].y === curr) {
-      edgesV.set(sortY[i], sortY[i + 1]);
-      edgesV.set(sortY[i + 1], sortY[i]);
-      i += 2;
-    }
+  const edgesV = new Map();
+  for (let i = 0; i < sortY.length; i += 2) {
+    edgesV.set(sortY[i], sortY[i + 1]);
+    edgesV.set(sortY[i + 1], sortY[i]);
   }
 
   const polygons = [];
 
   while (edgesH.size > 0) {
     // can start from any point
-    const items = [{ position: edgesH.keys().next().value, flag: 0 }];
+    const items = [edgesH.keys().next().value];
 
-    while (true) {
+    do {
       const item = items[items.length - 1];
-
-      if (item.flag === 0) {
-        items.push({ position: popitem(edgesV, item.position), flag: 1 });
+      if (items.length % 2 === 0) {
+        items.push(popitem(edgesH, item));
       } else {
-        items.push({ position: popitem(edgesH, item.position), flag: 0 });
+        items.push(popitem(edgesV, item));
       }
+    } while (
+      items[0].x !== items[items.length - 1].x ||
+      items[0].y !== items[items.length - 1].y
+    );
 
-      const first = items[0];
-      const last = items[items.length - 1];
-
-      if (
-        last.position.x === first.position.x &&
-        last.position.y === first.position.y &&
-        last.flag === first.flag
-      ) {
-        // close the polygon
-        items.pop();
-        break;
-      }
-    }
+    items.pop();
 
     const polygon = [];
     items.forEach((item) => {
-      if (edgesH.has(item.position)) edgesH.delete(item.position);
-      if (edgesV.has(item.position)) edgesV.delete(item.position);
-      polygon.push(item.position.x, item.position.y);
+      if (edgesH.has(item)) edgesH.delete(item);
+      if (edgesV.has(item)) edgesV.delete(item);
+      polygon.push(item.x, item.y);
     });
     polygons.push(polygon);
   }
