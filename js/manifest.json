@@ -16,6 +16,11 @@
             "entry": "bezier-curve.js"
         },
         {
+            "title": "Bounding-Area",
+            "descr": "",
+            "entry": "bounding-area.js"
+        },
+        {
             "title": "Circle-Circle-Intersection",
             "descr": "DRAG and DROP the circles",
             "entry": "circle-circle-intersection.js"
