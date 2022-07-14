@@ -51,6 +51,11 @@
             "entry": "line-intersection.js"
         },
         {
+            "title": "Place-Around",
+            "descr": "Use ARROWS to change segment (⇦ ⇨) and number of items (⇧ ⇩)",
+            "entry": "place-around.js"
+        },
+        {
             "title": "Polygon-Contains",
             "descr": "Move the MOUSE over the map",
             "entry": "polygon-contains.js"
