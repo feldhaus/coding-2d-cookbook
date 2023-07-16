@@ -38,8 +38,8 @@ function createShape(x, y, path) {
   shape.getPolygon = () => {
     return path.map((n, i) => (i % 2 === 0 ? n + shape.x : n + shape.y));
   };
-  shape.interactive = true;
-  shape.buttonMode = true;
+  shape.eventMode = 'static';
+  shape.cursor = 'pointer';
   shape.dragOffset = new PIXI.Point();
   shape
     .on('pointerdown', onDragStart)

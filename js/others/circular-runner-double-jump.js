@@ -16,7 +16,7 @@ const center = new PIXI.Point(
 const gravity = 0.8;
 const playerSpeed = 0.02;
 const jumpLimit = 2; // double jump
-const jumpMaxForce = 12;
+const jumpMaxForce = 9;
 
 // variables
 let radius1 = 150;
@@ -45,13 +45,15 @@ app.ticker.add(function (deltaTime) {
 });
 
 // listen pointer down event
-app.renderer.plugins.interaction.on('pointerdown', jump);
+app.stage.eventMode = 'static';
+app.stage.hitArea = app.screen;
+app.stage.on('pointerdown', jump);
 
 // listen keydown event
 document.onkeydown = function (event) {
-  if (event.keyCode === 39) {
+  if (event.key === 'ArrowLeft') {
     radius1 = Math.min(radius1 + 1, 150);
-  } else if (event.keyCode === 37) {
+  } else if (event.key === 'ArrowRight') {
     radius1 = Math.max(radius1 - 1, 80);
   }
   event.preventDefault();

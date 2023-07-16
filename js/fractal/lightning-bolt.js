@@ -16,7 +16,9 @@ app.stage.addChild(graphics);
 graphics.lineStyle(2, color.white);
 
 // listen pointer down event
-app.renderer.plugins.interaction.on('pointerdown', lightning);
+app.stage.eventMode = 'static';
+app.stage.hitArea = app.screen;
+app.stage.on('pointerdown', lightning);
 
 function lightning(event) {
   drawLightning(event.data.global.x, 0, 20, 3, false);

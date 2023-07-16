@@ -24,16 +24,17 @@ background.position.copyFrom(center);
 const graphics = new PIXI.Graphics();
 app.stage.addChild(graphics);
 graphics.lineStyle(3, 0xffffff);
-graphics.drawRect(-200, -150, 400, 300);
+graphics.drawRect(-350, -150, 700, 300);
 graphics.position.copyFrom(center);
 
 // load image
-PIXI.Loader.shared
-  .add('background', './assets/images/background.jpg')
-  .load(onLoaded);
+PIXI.Assets.add('background', './assets/images/background.jpg')
+PIXI.Assets.load('background').then(onLoaded);
 
 // listen pointer down event
-app.renderer.plugins.interaction.on('pointerdown', switchScaleMode);
+app.stage.eventMode = 'static';
+app.stage.hitArea = app.screen;
+app.stage.on('pointerdown', switchScaleMode);
 
 function onLoaded() {
   background.texture = PIXI.Texture.from('background');

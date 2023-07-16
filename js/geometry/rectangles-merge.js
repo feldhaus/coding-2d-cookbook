@@ -44,8 +44,8 @@ function createShape(x, y, width, height) {
   shape.drawRect(0, 0, width, height);
   shape.closePath();
   shape.endFill();
-  shape.interactive = true;
-  shape.buttonMode = true;
+  shape.eventMode = 'static';
+  shape.cursor = 'pointer';
   shape.dragOffset = new PIXI.Point();
   shape
     .on('pointerdown', onDragStart)

@@ -38,17 +38,18 @@ dot2.position.set(center.x - 150, center.y - 200);
 function createDot() {
   const g = new PIXI.Graphics();
   g.beginFill(color.pink, 0.05);
-  g.drawCircle(0, 0, 30);
+  g.drawCircle(0, 0, 50);
   g.beginFill(color.pink);
   g.drawCircle(0, 0, 5);
-  g.interactive = g.buttonMode = true;
+  g.eventMode = 'static';
+  g.cursor = 'pointer';
   g.offset = new PIXI.Point();
   // listeners
   g.on('pointerdown', (event) => {
     g.alpha = 0.5;
     g.offset.set(event.data.global.x - g.x, event.data.global.y - g.y);
   });
-  g.on('pointerup', () => {
+  g.on('pointerup', (event) => {
     g.alpha = 1;
   });
   g.on('pointerupoutside', () => {

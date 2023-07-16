@@ -16,13 +16,18 @@ const center = new PIXI.Point(
 const maxSpeed = 5;
 const maxForce = 0.2;
 
+let pointer = { x: center.x, y: center.y };
+app.stage.eventMode = 'static';
+app.stage.hitArea = app.screen;
+app.stage.on('pointermove', (event) => {
+  pointer = event.data.global;
+});
+
 // runs an update loop
 app.ticker.add(function (deltaTime) {
-  if (app.renderer.plugins.interaction.mouseOverRenderer) {
-    seek();
-    update(deltaTime);
-    vehicle.rotation = Math.atan2(velocity.y, velocity.x);
-  }
+  seek();
+  update(deltaTime);
+  vehicle.rotation = Math.atan2(velocity.y, velocity.x);
 });
 
 const vehicle = new PIXI.Graphics();
@@ -35,11 +40,8 @@ let velocity = new PIXI.Point();
 let acceleration = new PIXI.Point();
 
 function seek() {
-  // mouse position
-  const target = app.renderer.plugins.interaction.mouse.global;
-
   // a desired point from the position to the target
-  let desired = new PIXI.Point(target.x - vehicle.x, target.y - vehicle.y);
+  let desired = new PIXI.Point(pointer.x - vehicle.x, pointer.y - vehicle.y);
 
   // scale to maximum speed
   desired = normalize(desired);

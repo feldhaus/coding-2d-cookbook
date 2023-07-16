@@ -42,7 +42,8 @@ function createCircle(radius) {
   g.beginFill(0, 0);
   g.lineStyle(3, color.white);
   g.drawCircle(0, 0, radius);
-  g.interactive = g.buttonMode = true;
+  g.eventMode = 'static';
+  g.cursor = 'pointer';
   g.offset = new PIXI.Point();
   g.radius = radius;
   // listeners

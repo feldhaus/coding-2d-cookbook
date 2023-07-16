@@ -15,6 +15,14 @@ fetch('./assets/json/de_aztec.json')
   .then((res) => res.json())
   .then((data) => drawMap(data));
 
+// listen pointer move event
+let pointer = { x: 0, y: 0 };
+app.stage.eventMode = 'static';
+app.stage.hitArea = app.screen;
+app.stage.on('pointermove', (event) => {
+  pointer = event.data.global;
+});
+
 // add graphics
 const graphics = new PIXI.Graphics();
 
@@ -89,7 +97,7 @@ function raycastLinear() {
   // find closest intersection
   const closestIntersect = findClosestIntersection(
     player.position,
-    app.renderer.plugins.interaction.mouse.global // mouse position
+    pointer
   );
 
   feedback.clear();

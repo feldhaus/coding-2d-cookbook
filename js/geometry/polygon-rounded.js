@@ -22,8 +22,10 @@ app.stage.addChild(graphics);
 // store clicked points
 const points = [];
 
-// listen pointer down event
-app.renderer.plugins.interaction.on('pointerdown', addPoint);
+// listen pointer move event
+app.stage.eventMode = 'static';
+app.stage.hitArea = app.screen;
+app.stage.on('pointerdown', addPoint);
 
 const star = [
   new PIXI.Point(center.x, center.y - 200),

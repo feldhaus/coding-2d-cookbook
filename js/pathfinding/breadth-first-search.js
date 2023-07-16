@@ -65,8 +65,8 @@ function addNode(x, y, data) {
   sprite.width = size;
   sprite.height = size;
   sprite.alpha = 0.05;
-  sprite.interactive = true;
-  sprite.buttonMode = true;
+  sprite.eventMode = 'static';
+  sprite.cursor = 'pointer';
   data.sprite = sprite;
 
   sprite.on('pointerdown', () => {

@@ -22,7 +22,9 @@ graphics.beginFill(color.pink);
 graphics.drawPolygon(50, 0, -50, -40, -30, 0, -50, 40);
 
 // listen pointer move event
-app.renderer.plugins.interaction.on('pointermove', (event) => {
+app.stage.eventMode = 'static';
+app.stage.hitArea = app.screen;
+app.stage.on('pointermove', (event) => {
   graphics.rotation = angleBetween(graphics, event.data.global);
 });
 

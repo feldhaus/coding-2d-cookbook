@@ -52,22 +52,31 @@ addText(
 );
 
 // runs an update loop
-app.ticker.add(function (deltaTime) {
-  updateMainCircle();
+app.ticker.add((deltaTime) => {
   updateRunningCircle(circle1, 50, 1, 0.1);
   updateRunningCircle(circle2, 30, -1, 0.3);
   elapsedTime += deltaTime;
 });
 
-// listen pointer down event
+// listen pointer move event
+app.stage.eventMode = 'static';
+app.stage.hitArea = app.screen;
+app.stage.on('pointermove', (event) => {
+  updateMainCircle(event.data.global);
+});
+
+// listen keyboard event
 document.onkeydown = function (event) {
-  if (event.keyCode === 38) {
+  if (event.code === 'ArrowUp' || event.code === 'KeyW') {
     slices = Math.min(slices + 1, 36);
-  } else if (event.keyCode === 40) {
+  } else if (event.code === 'ArrowDown' || event.code === 'KeyS') {
     slices = Math.max(slices - 1, 2);
   }
+  updateMainCircle({ x: 0, y: 0 });
   event.preventDefault();
 };
+
+updateMainCircle({ x: 0, y: 0 });
 
 function addText(txt, position, anchor) {
   const tip = new PIXI.Text(txt, {
@@ -79,10 +88,9 @@ function addText(txt, position, anchor) {
   tip.position.set(position.x, position.y);
 }
 
-function updateMainCircle() {
-  let mouse = app.renderer.plugins.interaction.mouse.global;
-  let angle = Math.atan2(mouse.y - circle.y, mouse.x - circle.x);
-  let hypot = Math.hypot(mouse.x - circle.x, mouse.y - circle.y);
+function updateMainCircle(position) {
+  let angle = Math.atan2(position.y - circle.y, position.x - circle.x);
+  let hypot = Math.hypot(position.x - circle.x, position.y - circle.y);
   if (angle < 0) {
     angle += tau;
   }
@@ -94,7 +102,7 @@ function updateMainCircle() {
   circle.lineStyle(3, color.white);
   for (let i = 0; i < slices; i++) {
     if (temp > i && radius > hypot) {
-      circle.beginFill(color.white, 0.05);
+      circle.beginFill(color.white, 0.2);
     }
     circle.moveTo(0, 0);
     circle.arc(0, 0, radius, sliceCirc * i, sliceCirc * (i + 1));

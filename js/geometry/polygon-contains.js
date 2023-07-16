@@ -45,7 +45,9 @@ function drawMap(data) {
 }
 
 // listen pointer move event
-app.renderer.plugins.interaction.on('pointermove', onPointerMove);
+app.stage.eventMode = 'static';
+app.stage.hitArea = app.screen;
+app.stage.on('pointermove', onPointerMove);
 
 function onPointerMove(event) {
   // search if mouse position is over some state polygon

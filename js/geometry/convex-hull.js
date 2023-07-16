@@ -48,7 +48,8 @@ function createDot(color) {
   g.drawCircle(0, 0, 30);
   g.beginFill(color);
   g.drawCircle(0, 0, 5);
-  g.interactive = g.buttonMode = true;
+  g.eventMode = 'static';
+  g.cursor = 'pointer';
   g.offset = new PIXI.Point();
   // listeners
   g.on('pointerdown', (event) => {
