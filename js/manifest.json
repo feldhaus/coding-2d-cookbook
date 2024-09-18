@@ -1,177 +1,199 @@
 {
-    "geometry": [
-        {
-            "title": "Angle-LookAt",
-            "descr": "Move the MOUSE",
-            "entry": "angle-lookat.js"
-        },
-        {
-            "title": "Angle-Reflect",
-            "descr": "DRAG and DROP the circles",
-            "entry": "angle-reflect.js"
-        },
-        {
-            "title": "Bezier-Curve",
-            "descr": "DRAG and DROP the dots to change the curve",
-            "entry": "bezier-curve.js"
-        },
-        {
-            "title": "Bounding-Area",
-            "descr": "",
-            "entry": "bounding-area.js"
-        },
-        {
-            "title": "Circle-Circle-Intersection",
-            "descr": "DRAG and DROP the circles",
-            "entry": "circle-circle-intersection.js"
-        },
-        {
-            "title": "Circle-Line-Intersection",
-            "descr": "DRAG and DROP the dots",
-            "entry": "circle-line-intersection.js"
-        },
-        {
-            "title": "Circle",
-            "descr": "Use ARROWS (⇧ ⇩) to change the number of slices",
-            "entry": "circle.js"
-        },
-        {
-            "title": "Convex-Hull",
-            "descr": "DRAG and DROP the dots",
-            "entry": "convex-hull.js"
-        },
-        {
-            "title": "Line-Interpolate",
-            "descr": "DRAG and DROP the dots",
-            "entry": "line-interpolate.js"
-        },
-        {
-            "title": "Line-Intersection",
-            "descr": "DRAG and DROP the dots",
-            "entry": "line-intersection.js"
-        },
-        {
-            "title": "Place-Around",
-            "descr": "Use ARROWS to change segment (⇦ ⇨) and number of items (⇧ ⇩)",
-            "entry": "place-around.js"
-        },
-        {
-            "title": "Polygon-Contains",
-            "descr": "Move the MOUSE over the map",
-            "entry": "polygon-contains.js"
-        },
-        {
-            "title": "Polygon-Merge",
-            "descr": "DRAG and DROP the polygons",
-            "entry": "polygon-merge.js"
-        },
-        {
-            "title": "Polygon-Regular",
-            "descr": "",
-            "entry": "polygon-regular.js"
-        },
-        {
-            "title": "Polygon-Rounded",
-            "descr": "CLICK to create a new polygon",
-            "entry": "polygon-rounded.js"
-        },
-        {
-            "title": "Polygon-Straight-Skeleton",
-            "descr": "CLICK to create a new polygon",
-            "entry": "polygon-straight-skeleton.js"
-        },
-        {
-            "title": "Raycast-Linear",
-            "descr": "Use ARROWS (⇧ ⇩⇦ ⇨) or WASD to move the rect and MOUSE to aim",
-            "entry": "raycast-linear.js"
-        },
-        {
-            "title": "Rectangles-Merge",
-            "descr": "DRAG and DROP the rectangles",
-            "entry": "rectangles-merge.js"
-        }
-    ],
-    "fractal": [
-        {
-            "title": "Lightning-Bolt",
-            "descr": "CLICK to create a lightning bolt",
-            "entry": "lightning-bolt.js"
-        },
-        {
-            "title": "Phyllotaxis",
-            "descr": "",
-            "entry": "phyllotaxis.js"
-        },
-        {
-            "title": "Sierpinski-Carpet",
-            "descr": "",
-            "entry": "sierpinski-carpet.js"
-        },
-        {
-            "title": "Tree",
-            "descr": "",
-            "entry": "tree.js"
-        }
-    ],
-    "pathfinding": [
-        {
-            "title": "Breadth-First-Search",
-            "descr": "CLICK on the tiles to create or remove a wall",
-            "entry": "breadth-first-search.js"
-        },
-        {
-            "title": "Greedy-Best-First-Search",
-            "descr": "CLICK on the tiles to create or remove a wall",
-            "entry": "greedy-best-first-search.js"
-        }
-    ],
-    "animation": [
-        {
-            "title": "Floating",
-            "descr": "",
-            "entry": "floating.js"
-        },
-        {
-            "title": "Waves",
-            "descr": "",
-            "entry": "waves.js"
-        },
-        {
-            "title": "Wiggle",
-            "descr": "",
-            "entry": "wiggle.js"
-        }
-    ],
-    "others": [
-        {
-            "title": "Circular-Runner-Double-Jump",
-            "descr": "CLICK to jump (double) and use ARROWS (⇦ ⇨) to change the circle radius",
-            "entry": "circular-runner-double-jump.js"
-        },
-        {
-            "title": "Dashed-Lines",
-            "descr": "Use ARROWS to change dash (⇦ ⇨) and gap (⇧ ⇩) size",
-            "entry": "dashed-lines.js"
-        },
-        {
-            "title": "Moving-Around",
-            "descr": "Use ARROWS (⇧ ⇩⇦ ⇨) or WASD to move",
-            "entry": "moving-around.js"
-        },
-        {
-            "title": "Scale-Mode",
-            "descr": "CLICK to switch the scale mode",
-            "entry": "scale-mode.js"
-        },
-        {
-            "title": "Seeking-Target",
-            "descr": "Move the MOUSE",
-            "entry": "seeking-target.js"
-        },
-        {
-            "title": "Visibility",
-            "descr": "DRAG and DROP the shapes to see the light effect and press L to show the lines",
-            "entry": "visibility.js"
-        }
-    ]
+  "geometry": [
+    {
+      "title": "Angle-LookAt",
+      "descr": "Move the MOUSE",
+      "entry": "angle-lookat.js"
+    },
+    {
+      "title": "Angle-Reflect",
+      "descr": "DRAG and DROP the circles",
+      "entry": "angle-reflect.js"
+    },
+    {
+      "title": "Bezier-Curve",
+      "descr": "DRAG and DROP the dots to change the curve",
+      "entry": "bezier-curve.js"
+    },
+    {
+      "title": "Bounding-Area",
+      "descr": "",
+      "entry": "bounding-area.js"
+    },
+    {
+      "title": "Circle-Circle-Intersection",
+      "descr": "DRAG and DROP the circles",
+      "entry": "circle-circle-intersection.js"
+    },
+    {
+      "title": "Circle-Line-Intersection",
+      "descr": "DRAG and DROP the dots",
+      "entry": "circle-line-intersection.js"
+    },
+    {
+      "title": "Circle",
+      "descr": "Use ARROWS (⇧ ⇩) to change the number of slices",
+      "entry": "circle.js"
+    },
+    {
+      "title": "Convex-Hull",
+      "descr": "DRAG and DROP the dots",
+      "entry": "convex-hull.js"
+    },
+    {
+      "title": "Line-Interpolate",
+      "descr": "DRAG and DROP the dots",
+      "entry": "line-interpolate.js"
+    },
+    {
+      "title": "Line-Intersection",
+      "descr": "DRAG and DROP the dots",
+      "entry": "line-intersection.js"
+    },
+    {
+      "title": "Place-Around",
+      "descr": "Use ARROWS to change segment (⇦ ⇨) and number of items (⇧ ⇩)",
+      "entry": "place-around.js"
+    },
+    {
+      "title": "Polygon-Contains",
+      "descr": "Move the MOUSE over the map",
+      "entry": "polygon-contains.js"
+    },
+    {
+      "title": "Polygon-Merge",
+      "descr": "DRAG and DROP the polygons",
+      "entry": "polygon-merge.js"
+    },
+    {
+      "title": "Polygon-Regular",
+      "descr": "",
+      "entry": "polygon-regular.js"
+    },
+    {
+      "title": "Polygon-Rounded",
+      "descr": "CLICK to create a new polygon",
+      "entry": "polygon-rounded.js"
+    },
+    {
+      "title": "Polygon-Straight-Skeleton",
+      "descr": "CLICK to create a new polygon",
+      "entry": "polygon-straight-skeleton.js"
+    },
+    {
+      "title": "Raycast-Linear",
+      "descr": "Use ARROWS (⇧ ⇩⇦ ⇨) or WASD to move the rect and MOUSE to aim",
+      "entry": "raycast-linear.js"
+    },
+    {
+      "title": "Rectangles-Merge",
+      "descr": "DRAG and DROP the rectangles",
+      "entry": "rectangles-merge.js"
+    }
+  ],
+  "fractal": [
+    {
+      "title": "Lightning-Bolt",
+      "descr": "CLICK to create a lightning bolt",
+      "entry": "lightning-bolt.js"
+    },
+    {
+      "title": "Phyllotaxis",
+      "descr": "",
+      "entry": "phyllotaxis.js"
+    },
+    {
+      "title": "Sierpinski-Carpet",
+      "descr": "",
+      "entry": "sierpinski-carpet.js"
+    },
+    {
+      "title": "Tree",
+      "descr": "",
+      "entry": "tree.js"
+    }
+  ],
+  "pathfinding": [
+    {
+      "title": "Breadth-First-Search",
+      "descr": "CLICK on the tiles to create or remove a wall",
+      "entry": "breadth-first-search.js"
+    },
+    {
+      "title": "Greedy-Best-First-Search",
+      "descr": "CLICK on the tiles to create or remove a wall",
+      "entry": "greedy-best-first-search.js"
+    }
+  ],
+  "animation": [
+    {
+      "title": "Floating",
+      "descr": "",
+      "entry": "floating.js"
+    },
+    {
+      "title": "Waves",
+      "descr": "",
+      "entry": "waves.js"
+    },
+    {
+      "title": "Wiggle",
+      "descr": "",
+      "entry": "wiggle.js"
+    }
+  ],
+  "constraint": [
+    {
+      "title": "Distance-Constraint",
+      "descr": "Use MOUSE to interact",
+      "entry": "distance-constraint.js"
+    },
+    {
+      "title": "Distance-Constraint-Chain",
+      "descr": "Use MOUSE to interact",
+      "entry": "distance-constraint-chain.js"
+    },
+    {
+      "title": "FABRIK-Chain",
+      "descr": "Use MOUSE to interact",
+      "entry": "fabrik-chain.js"
+    },
+    {
+      "title": "Snake",
+      "descr": "Use MOUSE to interact",
+      "entry": "snake.js"
+    }
+  ],
+  "others": [
+    {
+      "title": "Circular-Runner-Double-Jump",
+      "descr": "CLICK to jump (double) and use ARROWS (⇦ ⇨) to change the circle radius",
+      "entry": "circular-runner-double-jump.js"
+    },
+    {
+      "title": "Dashed-Lines",
+      "descr": "Use ARROWS to change dash (⇦ ⇨) and gap (⇧ ⇩) size",
+      "entry": "dashed-lines.js"
+    },
+    {
+      "title": "Moving-Around",
+      "descr": "Use ARROWS (⇧ ⇩⇦ ⇨) or WASD to move",
+      "entry": "moving-around.js"
+    },
+    {
+      "title": "Scale-Mode",
+      "descr": "CLICK to switch the scale mode",
+      "entry": "scale-mode.js"
+    },
+    {
+      "title": "Seeking-Target",
+      "descr": "Move the MOUSE",
+      "entry": "seeking-target.js"
+    },
+    {
+      "title": "Visibility",
+      "descr": "DRAG and DROP the shapes to see the light effect and press L to show the lines",
+      "entry": "visibility.js"
+    }
+  ]
 }
