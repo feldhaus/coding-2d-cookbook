@@ -1,14 +1,13 @@
 # Coding 2D Cookbook
-This is a collection of tiny programs that each demonstrate a particular programming concept.
+A collection of small programs, each demonstrating a specific programming concept. Each example is self-contained, and the only external library used is PixiJS, which handles the rendering and drawing.
 
 ## Why?
-
-* I can share it with others.
-* Learn topics that are interesting to me.
-* Help me to build up my knowledge in small increments.
-* I have a library of reference material in my own style.
-* It is quicker than looking up documentation or looking for a Stack Overflow answer.
-* Explore new topics.
+* Share knowledge with others.
+* Learn topics that interest me.
+* Build up knowledge incrementally.
+* Create a personal library of reference material in my own style.
+* Find answers faster than searching documentation or Stack Overflow.
+* Explore new concepts.
 
 ## Credits
 
