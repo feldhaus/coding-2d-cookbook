@@ -1,0 +1,25 @@
+name: Sync gh-pages with main
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  sync-gh-pages:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Configure Git
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+
+      - name: Overwrite gh-pages with main
+        run: |
+          # Push main to gh-pages
+          git push origin main:gh-pages --force
