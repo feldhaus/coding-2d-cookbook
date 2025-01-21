@@ -1,20 +1,29 @@
 # Coding 2D Cookbook
-A collection of small programs, each demonstrating a specific programming concept. Each example is self-contained, and the only external library used is PixiJS, which handles the rendering and drawing.
 
-## Why?
-* Share knowledge with others.
-* Learn topics that interest me.
-* Build up knowledge incrementally.
-* Create a personal library of reference material in my own style.
-* Find answers faster than searching documentation or Stack Overflow.
-* Explore new concepts.
+A collection of small, self-contained programs designed to demonstrate specific programming concepts. Each example leverages **PixiJS** for rendering and drawing, ensuring a focus on the concepts rather than boilerplate code.
+
+## Why This Exists
+
+This project serves multiple purposes:
+
+- **Knowledge Sharing:** Share programming insights with others in an accessible format.
+- **Personal Growth:** Explore topics that interest me and learn by doing.
+- **Incremental Learning:** Build a solid knowledge base step by step.
+- **Quick Reference:** Create a personal library for faster solutions, avoiding long searches through documentation or forums.
+- **Experimentation:** Explore new programming concepts in a structured way.
+
+## Features
+
+- **Self-Contained Examples:** Each program focuses on a single concept, making it easy to understand and reuse.
+- **Minimal Dependencies:** Uses only **PixiJS** for rendering and **CodeMirror** for code editing (where applicable).
 
 ## Credits
 
-+ [PixiJS](https://github.com/pixijs)
-+ [CodeMirror](https://codemirror.net/)
+- [PixiJS](https://github.com/pixijs)
+- [CodeMirror](https://codemirror.net/)
 
 ## License
+
 Copyright (c) 2019 Maicon Feldhaus
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
