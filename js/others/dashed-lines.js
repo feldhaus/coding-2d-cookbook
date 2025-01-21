@@ -26,25 +26,30 @@
     { x: 0, y: -150 },
   ];
 
-  // add circle graphcis
+  // input - controls
+  const controlsData = Object.assign({}, window.parent.controlsData);
+  window.addEventListener('message', (event) => {
+    const { type, key, value } = event.data;
+    if (type !== 'sliderinput') return;
+    controlsData[key] = value;
+    draw();
+  });
+
+  // add graphcis
   const circle = new PIXI.Graphics();
   app.stage.addChild(circle);
   circle.position.set(200, 300);
 
-  // add polygon graphcis
   const polygon = new PIXI.Graphics();
   app.stage.addChild(polygon);
   polygon.position.set(600, 300);
 
-  // variables
+  // runs an update loop
   let elapsedTime = 0;
-  let dash = 10;
-  let gap = 18;
-
-  // ticker for doing render updates
   app.ticker.add(({ elapsedMS, deltaTime }) => {
     elapsedTime += elapsedMS;
     const offset = elapsedTime * 0.001;
+    const { dash, gap } = controlsData;
 
     circle.clear();
     drawDashedCircle(circle, 150, dash, gap, offset);
@@ -55,25 +60,6 @@
     polygon.stroke({ width: 3, color: color.white });
     polygon.rotation += deltaTime * 0.01;
   });
-
-  document.onkeydown = function (event) {
-    // dash (min: 1 - max: 50)
-    if (event.code === 'ArrowLeft' || event.code === 'KeyA') {
-      dash = Math.min(dash + 1, 50);
-    } else if (event.code === 'KeyD' || event.code === 'ArrowRight') {
-      dash = Math.max(dash - 1, 1);
-    }
-    event.preventDefault();
-
-    // gap (min: 1 - max: 50)
-    if (event.code === 'ArrowUp' || event.code === 'KeyW') {
-      gap = Math.min(gap + 1, 50);
-      event.preventDefault();
-    } else if (event.code === 'ArrowDown' || event.code === 'KeyS') {
-      gap = Math.max(gap - 1, 1);
-      event.preventDefault();
-    }
-  };
 
   function drawDashedCircle(graphics, radius, dash, gap, offset) {
     const circum = radius * tau;

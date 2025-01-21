@@ -16,7 +16,7 @@
     app.renderer.height * 0.5,
   );
 
-  // add circles
+  // add graphics
   const circle1 = createCircle(150);
   app.stage.addChild(circle1);
   circle1.position.set(center.x - 100, center.y);
@@ -25,14 +25,12 @@
   app.stage.addChild(circle2);
   circle2.position.set(center.x + 100, center.y);
 
-  // add rect 1
   const rect1 = new PIXI.Sprite({ texture: PIXI.Texture.WHITE });
   app.stage.addChild(rect1);
   rect1.anchor.set(0.5, 0.5);
   rect1.tint = color.pink;
   rect1.scale.set(20, 20);
 
-  // add rect 2
   const rect2 = new PIXI.Sprite({ texture: PIXI.Texture.WHITE });
   app.stage.addChild(rect2);
   rect2.anchor.set(0.5, 0.5);
@@ -45,32 +43,46 @@
     g.fill({ color: color.white, alpha: 0.05 });
     g.circle(0, 0, radius);
     g.stroke({ width: 3, color: color.white });
-    g.eventMode = 'static';
+    g.eventMode = 'dynamic';
     g.cursor = 'pointer';
     g.offset = new PIXI.Point();
     g.radius = radius;
-    // listeners
-    g.on('pointerdown', (event) => {
-      g.dragging = true;
-      g.offset.set(event.data.global.x - g.x, event.data.global.y - g.y);
-      g.parent.addChild(g);
-    });
-    g.on('pointerup', () => {
-      g.dragging = false;
-    });
-    g.on('pointerupoutside', () => {
-      g.dragging = false;
-    });
-    g.on('pointermove', (event) => {
-      if (!g.dragging) return;
-      g.position.set(
-        event.data.global.x - g.offset.x,
-        event.data.global.y - g.offset.y,
-      );
-      circleIntersection();
-    });
     return g;
   }
+
+  // listen to pointer events
+  let dragging = null;
+  app.stage.eventMode = 'static';
+  app.stage.hitArea = app.screen;
+  app.stage.on('pointermove', (event) => {
+    if (dragging === null) return;
+
+    dragging.position.set(
+      event.data.global.x - dragging.offset.x,
+      event.data.global.y - dragging.offset.y,
+    );
+
+    circleIntersection();
+  });
+
+  [circle1, circle2].forEach((item) => {
+    item.on('pointerdown', (event) => {
+      dragging = item;
+      item.alpha = 0.5;
+      item.offset.set(
+        event.data.global.x - item.x,
+        event.data.global.y - item.y,
+      );
+    });
+    item.on('pointerup', () => {
+      dragging = null;
+      item.alpha = 1;
+    });
+    item.on('pointerupoutside', () => {
+      dragging = null;
+      item.alpha = 1;
+    });
+  });
 
   function circleIntersection() {
     const x1 = circle1.x,

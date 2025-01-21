@@ -14,7 +14,7 @@
   const handling = 0.07;
   const radius = 15;
 
-  // add vehicle
+  // add graphics
   const vehicle = new PIXI.Graphics();
   app.stage.addChild(vehicle);
   vehicle.position.set(400, 300);
@@ -22,12 +22,40 @@
   vehicle.fill({ color: color.pink });
   vehicle.direction = new PIXI.Point();
 
-  // add compass
   const compass = new PIXI.Graphics();
   app.stage.addChild(compass);
   compass.position.set(400, 300);
   compass.poly([5, 0, 0, -5, 0, 5]);
   compass.fill({ color: color.white });
+
+  // listen to key events
+  document.onkeydown = (event) => {
+    if (event.code === 'KeyA' || event.code === 'ArrowLeft') {
+      vehicle.direction.x = -1;
+    } else if (event.code === 'KeyD' || event.code === 'ArrowRight') {
+      vehicle.direction.x = 1;
+    }
+    if (event.code === 'KeyS' || event.code === 'ArrowDown') {
+      vehicle.direction.y = -1;
+    } else if (event.code === 'KeyW' || event.code === 'ArrowUp') {
+      vehicle.direction.y = 1;
+    }
+    event.preventDefault();
+  };
+
+  document.onkeyup = (event) => {
+    if (event.code === 'KeyA' || event.code === 'ArrowLeft') {
+      vehicle.direction.x = 0;
+    } else if (event.code === 'KeyD' || event.code === 'ArrowRight') {
+      vehicle.direction.x = 0;
+    }
+    if (event.code === 'KeyS' || event.code === 'ArrowDown') {
+      vehicle.direction.y = 0;
+    } else if (event.code === 'KeyW' || event.code === 'ArrowUp') {
+      vehicle.direction.y = 0;
+    }
+    event.preventDefault();
+  };
 
   // runs an update loop
   app.ticker.add(({ deltaTime }) => {
@@ -44,36 +72,6 @@
       radius + 5,
     );
   });
-
-  // listen keydown event
-  document.onkeydown = (event) => {
-    if (event.code === 'KeyA' || event.code === 'ArrowLeft') {
-      vehicle.direction.x = -1;
-    } else if (event.code === 'KeyD' || event.code === 'ArrowRight') {
-      vehicle.direction.x = 1;
-    }
-    if (event.code === 'KeyS' || event.code === 'ArrowDown') {
-      vehicle.direction.y = -1;
-    } else if (event.code === 'KeyW' || event.code === 'ArrowUp') {
-      vehicle.direction.y = 1;
-    }
-    event.preventDefault();
-  };
-
-  // listen keyup event
-  document.onkeyup = (event) => {
-    if (event.code === 'KeyA' || event.code === 'ArrowLeft') {
-      vehicle.direction.x = 0;
-    } else if (event.code === 'KeyD' || event.code === 'ArrowRight') {
-      vehicle.direction.x = 0;
-    }
-    if (event.code === 'KeyS' || event.code === 'ArrowDown') {
-      vehicle.direction.y = 0;
-    } else if (event.code === 'KeyW' || event.code === 'ArrowUp') {
-      vehicle.direction.y = 0;
-    }
-    event.preventDefault();
-  };
 
   // restrict a value to a given range
   function clamp(value, min, max) {

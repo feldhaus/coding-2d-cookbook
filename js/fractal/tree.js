@@ -19,11 +19,10 @@
   const duration = 100;
   const branches = 10;
 
-  // add tree graphics
+  // add graphics
   const graphics = new PIXI.Graphics();
   app.stage.addChild(graphics);
 
-  // add tree fill animation graphics
   const animation = new PIXI.Graphics();
   app.stage.addChild(animation);
 

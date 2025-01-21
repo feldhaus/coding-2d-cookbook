@@ -14,71 +14,84 @@
   const width = app.renderer.width;
   const height = app.renderer.height;
 
-  // draw the feedback
+  // add graphics
   const feedback = new PIXI.Graphics();
   app.stage.addChild(feedback);
 
-  // create dots
-  const dotsInner = [];
-  const dotsOuter = [];
-  let dot;
+  const innerCircles = [];
+  const outerCircles = [];
+  // inner
   for (let i = 0; i < 5; i++) {
-    // inner
-    dot = createDot(color.pink);
-    dot.position.set(
+    const circle = createCircle(color.pink);
+    circle.position.set(
       100 + Math.random() * (width - 200),
       100 + Math.random() * (height - 200),
     );
-    dotsInner.push(dot);
-    dotsOuter.push(dot);
-    app.stage.addChild(dot);
+    innerCircles.push(circle);
+    outerCircles.push(circle);
+    app.stage.addChild(circle);
   }
+  // outer
   for (let i = 0; i < 10; i++) {
-    // outer
-    dot = createDot(color.white);
-    dot.position.set(
+    const circle = createCircle(color.white);
+    circle.position.set(
       20 + Math.random() * (width - 40),
       20 + Math.random() * (height - 40),
     );
-    dotsOuter.push(dot);
-    app.stage.addChild(dot);
+    outerCircles.push(circle);
+    app.stage.addChild(circle);
   }
 
-  function createDot(color) {
+  function createCircle(color) {
     const g = new PIXI.Graphics();
     g.circle(0, 0, 30);
     g.fill({ color, alpha: 0.05 });
     g.circle(0, 0, 5);
     g.fill({ color });
-    g.eventMode = 'static';
+    g.eventMode = 'dynamic';
     g.cursor = 'pointer';
     g.offset = new PIXI.Point();
-    // listeners
-    g.on('pointerdown', (event) => {
-      g.alpha = 0.5;
-      g.offset.set(event.data.global.x - g.x, event.data.global.y - g.y);
-    });
-    g.on('pointerup', () => {
-      g.alpha = 1;
-    });
-    g.on('pointerupoutside', () => {
-      g.alpha = 1;
-    });
-    g.on('pointermove', (event) => {
-      if (g.alpha === 1) return;
-      g.position.set(
-        event.data.global.x - g.offset.x,
-        event.data.global.y - g.offset.y,
-      );
-      drawConvexHull();
-    });
     return g;
   }
 
+  // listen to pointer events
+  let dragging = null;
+  app.stage.eventMode = 'static';
+  app.stage.hitArea = app.screen;
+  app.stage.on('pointermove', (event) => {
+    if (dragging === null) return;
+
+    dragging.position.set(
+      event.data.global.x - dragging.offset.x,
+      event.data.global.y - dragging.offset.y,
+    );
+
+    drawConvexHull();
+  });
+
+  [...innerCircles, ...outerCircles].forEach((item) => {
+    item.on('pointerdown', (event) => {
+      dragging = item;
+      item.alpha = 0.5;
+      item.offset.set(
+        event.data.global.x - item.x,
+        event.data.global.y - item.y,
+      );
+    });
+    item.on('pointerup', () => {
+      dragging = null;
+      item.alpha = 1;
+    });
+    item.on('pointerupoutside', () => {
+      dragging = null;
+      item.alpha = 1;
+    });
+  });
+
   function drawConvexHull() {
     feedback.clear();
-    drawLine(dotsInner, color.pink);
-    drawLine(dotsOuter, color.white);
+    drawLine(innerCircles, color.pink);
+    drawLine(outerCircles, color.white);
   }
   drawConvexHull();
 

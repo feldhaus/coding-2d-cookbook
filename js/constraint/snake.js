@@ -24,7 +24,7 @@
   const angles = Array.from({ length: joints.length }, () => 0);
   const angleConstraint = Math.PI / 6;
 
-  // listen pointer move event
+  // listen to pointer events
   app.stage.eventMode = 'static';
   app.stage.hitArea = app.screen;
   app.stage.on('pointermove', (event) => {

@@ -17,13 +17,57 @@
   const graphics = new PIXI.Graphics();
   app.stage.addChild(graphics);
 
-  const dot1 = createDot();
-  app.stage.addChild(dot1);
-  dot1.position.set(100, 500);
+  const circle1 = createCircle();
+  app.stage.addChild(circle1);
+  circle1.position.set(100, 500);
 
-  const dot2 = createDot();
-  app.stage.addChild(dot2);
-  dot2.position.set(700, 100);
+  const circle2 = createCircle();
+  app.stage.addChild(circle2);
+  circle2.position.set(700, 100);
+
+  function createCircle() {
+    const g = new PIXI.Graphics();
+    g.circle(0, 0, 50);
+    g.fill({ color: color.pink, alpha: 0.05 });
+    g.circle(0, 0, 5);
+    g.fill({ color: color.pink });
+    g.eventMode = 'dynamic';
+    g.cursor = 'pointer';
+    g.offset = new PIXI.Point();
+    return g;
+  }
+
+  // listen to pointer events
+  let dragging = null;
+  app.stage.eventMode = 'static';
+  app.stage.hitArea = app.screen;
+  app.stage.on('pointermove', (event) => {
+    if (dragging === null) return;
+
+    dragging.position.set(
+      event.data.global.x - dragging.offset.x,
+      event.data.global.y - dragging.offset.y,
+    );
+  });
+
+  [circle1, circle2].forEach((item) => {
+    item.on('pointerdown', (event) => {
+      dragging = item;
+      item.alpha = 0.5;
+      item.offset.set(
+        event.data.global.x - item.x,
+        event.data.global.y - item.y,
+      );
+    });
+    item.on('pointerup', () => {
+      dragging = null;
+      item.alpha = 1;
+    });
+    item.on('pointerupoutside', () => {
+      dragging = null;
+      item.alpha = 1;
+    });
+  });
 
   // runs an update loop
   let elapsedTime = 0;
@@ -34,42 +78,12 @@
 
   function draw(threshold) {
     graphics.clear();
-    graphics.moveTo(dot1.x, dot1.y);
-    graphics.lineTo(dot2.x, dot2.y);
+    graphics.moveTo(circle1.x, circle1.y);
+    graphics.lineTo(circle2.x, circle2.y);
     graphics.stroke({ width: 2, color: color.white });
-    const interpolation = lineInterpolate(dot1, dot2, threshold);
+    const interpolation = lineInterpolate(circle1, circle2, threshold);
     graphics.circle(interpolation.x, interpolation.y, 5);
     graphics.fill({ color: color.white });
-  }
-
-  function createDot() {
-    const g = new PIXI.Graphics();
-    g.circle(0, 0, 50);
-    g.fill({ color: color.pink, alpha: 0.05 });
-    g.circle(0, 0, 5);
-    g.fill({ color: color.pink });
-    g.eventMode = 'static';
-    g.cursor = 'pointer';
-    g.offset = new PIXI.Point();
-    // listeners
-    g.on('pointerdown', (event) => {
-      g.alpha = 0.5;
-      g.offset.set(event.data.global.x - g.x, event.data.global.y - g.y);
-    });
-    g.on('pointerup', () => {
-      g.alpha = 1;
-    });
-    g.on('pointerupoutside', () => {
-      g.alpha = 1;
-    });
-    g.on('pointermove', (event) => {
-      if (g.alpha === 1) return;
-      g.position.set(
-        event.data.global.x - g.offset.x,
-        event.data.global.y - g.offset.y,
-      );
-    });
-    return g;
   }
 
   // translates a point by an angle in radians and distance

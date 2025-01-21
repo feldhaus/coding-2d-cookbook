@@ -16,54 +16,47 @@
     app.renderer.height * 0.5,
   );
   const gravity = 0.8;
-  const playerSpeed = 0.02;
   const jumpLimit = 2; // double jump
   const jumpMaxForce = 9;
+  const playerRadius = 20;
 
-  // variables
-  let radius1 = 150;
-  let radius2 = 20;
-  let currentRadians = 0;
-  let jumps = 0;
-  let jumpOffset = 0;
-  let jumpForce = 0;
+  // input - controls
+  const controlsData = Object.assign({}, window.parent.controlsData);
+  window.addEventListener('message', (event) => {
+    const { type, key, value } = event.data;
+    if (type !== 'sliderinput') return;
+    controlsData[key] = value;
 
-  // add circle 1
+    if (key === 'radius') {
+      circle1.clear();
+      circle1.circle(0, 0, value);
+      circle1.fill({ color: color.white });
+    }
+  });
+
+  // add graphics
   const circle1 = new PIXI.Graphics();
   app.stage.addChild(circle1);
-  circle1.circle(0, 0, radius1);
+  circle1.circle(0, 0, controlsData.radius);
   circle1.fill({ color: color.white });
   circle1.position.copyFrom(center);
 
-  // add circle 2
   const circle2 = new PIXI.Graphics();
   app.stage.addChild(circle2);
-  circle2.circle(0, 0, radius2);
+  circle2.circle(0, 0, playerRadius);
   circle2.fill({ color: color.pink });
 
-  // runs an update loop
-  app.ticker.add(update);
-
-  // listen pointer down event
+  // listen to pointer events
   app.stage.eventMode = 'static';
   app.stage.hitArea = app.screen;
   app.stage.on('pointerdown', jump);
 
-  // listen keydown event
-  document.onkeydown = function (event) {
-    if (event.key === 'ArrowLeft') {
-      radius1 = Math.min(radius1 + 1, 150);
-    } else if (event.key === 'ArrowRight') {
-      radius1 = Math.max(radius1 - 1, 80);
-    }
-    event.preventDefault();
-
-    circle1.clear();
-    circle1.circle(0, 0, radius1);
-    circle1.fill({ color: color.white });
-  };
-
-  function update({ deltaTime }) {
+  // runs an update loop
+  let currentRadians = 0;
+  let jumps = 0;
+  let jumpOffset = 0;
+  let jumpForce = 0;
+  app.ticker.add(({ deltaTime }) => {
     // is jumping?
     if (jumps > 0) {
       jumpOffset += jumpForce;
@@ -75,16 +68,18 @@
       }
     }
 
+    const { radius, speed } = controlsData;
+
     // update circle2 position
-    const distanceFromCenter = radius1 + radius2 + jumpOffset;
-    currentRadians += playerSpeed * deltaTime;
+    const distanceFromCenter = radius + playerRadius + jumpOffset;
+    currentRadians += speed * deltaTime;
     const translatePoint = pointTranslate(
       center,
       currentRadians,
       distanceFromCenter,
     );
     circle2.position.copyFrom(translatePoint);
-  }
+  });
 
   function jump() {
     if (jumps < jumpLimit) {

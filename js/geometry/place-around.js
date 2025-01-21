@@ -15,48 +15,28 @@
     app.renderer.width * 0.5,
     app.renderer.height * 0.5,
   );
+  const deg2rad = Math.PI / 180;
 
-  const properties = {
-    radius: 200,
-    items: 10,
-    segment: Math.PI,
-  };
+  // input - controls
+  const controlsData = Object.assign({}, window.parent.controlsData);
+  window.addEventListener('message', (event) => {
+    const { type, key, value } = event.data;
+    if (type !== 'sliderinput') return;
+    controlsData[key] = value;
+    draw();
+  });
 
   // add graphics
   const graphics = new PIXI.Graphics();
   app.stage.addChild(graphics);
 
-  // listen keyup event
-  document.onkeyup = function (event) {
-    if (event.code === 'ArrowLeft' || event.code === 'KeyA') {
-      properties.segment -= Math.PI / 8;
-      draw();
-    } else if (event.code === 'ArrowRight' || event.code === 'KeyD') {
-      properties.segment = Math.min(
-        Math.PI * 2,
-        properties.segment + Math.PI / 8,
-      );
-      draw();
-    }
-
-    if (event.code === 'ArrowUp' || event.code === 'KeyW') {
-      properties.items++;
-      draw();
-    } else if (event.code === 'ArrowDown' || event.code === 'KeyS') {
-      properties.items = Math.max(2, properties.items - 1);
-      draw();
-    }
-
-    event.preventDefault();
-  };
-
   function draw() {
     const data = getData(
-      properties.items,
+      controlsData.items,
       center.x,
       center.y,
-      properties.radius,
-      properties.segment,
+      controlsData.radius,
+      controlsData.segment * deg2rad,
     );
 
     graphics.clear();
@@ -69,7 +49,7 @@
     graphics.arc(
       center.x,
       center.y,
-      properties.radius,
+      controlsData.radius,
       data.startAngle,
       data.endAngle,
     );

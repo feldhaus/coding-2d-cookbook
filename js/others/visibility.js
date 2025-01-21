@@ -20,7 +20,6 @@
   const graphics = new PIXI.Graphics();
   app.stage.addChild(graphics);
 
-  // add shapes
   const shapes = [
     createShape(100, 100, [0, 0, 60, 0, 30, 50]),
     createShape(200, 400, [0, 0, 60, 0, 60, 60, 0, 60]),
@@ -39,37 +38,45 @@
     shape.stroke({ width: 1, color: color.white });
     shape.fill({ color: 0, alpha: 0.01 });
     shape.shapePath = [].concat(path);
-    shape.eventMode = 'static';
+    shape.eventMode = 'dynamic';
     shape.cursor = 'pointer';
-    shape.dragOffset = new PIXI.Point();
-    shape
-      .on('pointerdown', onDragStart)
-      .on('pointerup', onDragEnd)
-      .on('pointerupoutside', onDragEnd)
-      .on('pointermove', onDragMove);
+    shape.offset = new PIXI.Point();
     return shape;
   }
 
-  // drag functions
-  function onDragStart(event) {
-    this.dragging = true;
-    const position = event.data.getLocalPosition(this.parent);
-    this.dragOffset.set(position.x - this.x, position.y - this.y);
-  }
+  // listen to pointer events
+  let dragging = null;
+  app.stage.eventMode = 'static';
+  app.stage.hitArea = app.screen;
+  app.stage.on('pointermove', (event) => {
+    if (dragging === null) return;
 
-  function onDragEnd(event) {
-    this.dragging = false;
-  }
-
-  function onDragMove(event) {
-    if (!this.dragging) return;
-    const position = event.data.getLocalPosition(this.parent);
-    this.position.set(
-      position.x - this.dragOffset.x,
-      position.y - this.dragOffset.y,
+    dragging.position.set(
+      event.data.global.x - dragging.offset.x,
+      event.data.global.y - dragging.offset.y,
     );
+
     draw();
-  }
+  });
+
+  shapes.forEach((item) => {
+    item.on('pointerdown', (event) => {
+      dragging = item;
+      item.alpha = 0.5;
+      item.offset.set(
+        event.data.global.x - item.x,
+        event.data.global.y - item.y,
+      );
+    });
+    item.on('pointerup', () => {
+      dragging = null;
+      item.alpha = 1;
+    });
+    item.on('pointerupoutside', () => {
+      dragging = null;
+      item.alpha = 1;
+    });
+  });
 
   function draw() {
     // add viewport limits

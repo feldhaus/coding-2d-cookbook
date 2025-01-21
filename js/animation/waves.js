@@ -19,12 +19,11 @@
   const wavesLength = 300;
   const tau = Math.PI * 2; // alias for two pi
   const rate = 1 / (app.ticker.FPS * 5); // 5 seconds
+  const circle = new PIXI.Point(center.x - 200, center.y);
 
   // add graphics
   const graphics = new PIXI.Graphics();
   app.stage.addChild(graphics);
-
-  const circle = new PIXI.Point(center.x - 200, center.y);
 
   // runs an update loop
   let threshold = 0;

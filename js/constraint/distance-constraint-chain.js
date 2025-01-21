@@ -23,7 +23,7 @@
   const joints = Array.from({ length: 10 }, () => new PIXI.Point(0, 0));
   const distanceConstraint = 60;
 
-  // listen pointer move event
+  // listen to pointer events
   app.stage.eventMode = 'static';
   app.stage.hitArea = app.screen;
   app.stage.on('pointermove', (event) => {

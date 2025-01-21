@@ -21,13 +21,13 @@
   app.stage.addChild(graphics);
   graphics.position.copyFrom(center);
 
+  // runs an update loop
   let angle = 0;
   let x = 0;
   let y = 0;
   let w = 300;
   let h = 100;
 
-  // runs an update loop
   app.ticker.add(({ deltaTime }) => {
     graphics.clear();
 

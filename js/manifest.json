@@ -12,12 +12,12 @@
     },
     {
       "title": "Bezier-Curve",
-      "descr": "DRAG and DROP the dots to change the curve",
+      "descr": "DRAG and DROP the circles to change the curve",
       "entry": "bezier-curve.js"
     },
     {
       "title": "Bounding-Area",
-      "descr": "",
+      "descr": ". . .",
       "entry": "bounding-area.js"
     },
     {
@@ -27,33 +27,69 @@
     },
     {
       "title": "Circle-Line-Intersection",
-      "descr": "DRAG and DROP the dots",
+      "descr": "DRAG and DROP the circles",
       "entry": "circle-line-intersection.js"
     },
     {
       "title": "Circle",
-      "descr": "Use ARROWS (⇧ ⇩) to change the number of slices",
-      "entry": "circle.js"
+      "descr": ". . .",
+      "entry": "circle.js",
+      "controls": [
+        {
+          "type": "slider",
+          "key": "slices",
+          "min": 2,
+          "max": 36,
+          "value": 20,
+          "step": 1
+        }
+      ]
     },
     {
       "title": "Convex-Hull",
-      "descr": "DRAG and DROP the dots",
+      "descr": "DRAG and DROP the circles",
       "entry": "convex-hull.js"
     },
     {
       "title": "Line-Interpolate",
-      "descr": "DRAG and DROP the dots",
+      "descr": "DRAG and DROP the circles",
       "entry": "line-interpolate.js"
     },
     {
       "title": "Line-Intersection",
-      "descr": "DRAG and DROP the dots",
+      "descr": "DRAG and DROP the circles",
       "entry": "line-intersection.js"
     },
     {
       "title": "Place-Around",
-      "descr": "Use ARROWS to change segment (⇦ ⇨) and number of items (⇧ ⇩)",
-      "entry": "place-around.js"
+      "descr": ". . .",
+      "entry": "place-around.js",
+      "controls": [
+        {
+          "type": "slider",
+          "key": "segment",
+          "min": 0,
+          "max": 360,
+          "value": 180,
+          "step": 1
+        },
+        {
+          "type": "slider",
+          "key": "items",
+          "min": 2,
+          "max": 50,
+          "value": 10,
+          "step": 1
+        },
+        {
+          "type": "slider",
+          "key": "radius",
+          "min": 50,
+          "max": 200,
+          "value": 150,
+          "step": 1
+        }
+      ]
     },
     {
       "title": "Polygon-Contains",
@@ -67,7 +103,7 @@
     },
     {
       "title": "Polygon-Regular",
-      "descr": "",
+      "descr": ". . .",
       "entry": "polygon-regular.js"
     },
     {
@@ -82,7 +118,7 @@
     },
     {
       "title": "Raycast-Linear",
-      "descr": "Use ARROWS (⇧ ⇩⇦ ⇨) or WASD to move the rect and MOUSE to aim",
+      "descr": "Use ARROWS or WASD to move the rect and MOUSE to aim",
       "entry": "raycast-linear.js"
     },
     {
@@ -99,17 +135,17 @@
     },
     {
       "title": "Phyllotaxis",
-      "descr": "",
+      "descr": ". . .",
       "entry": "phyllotaxis.js"
     },
     {
       "title": "Sierpinski-Carpet",
-      "descr": "",
+      "descr": ". . .",
       "entry": "sierpinski-carpet.js"
     },
     {
       "title": "Tree",
-      "descr": "",
+      "descr": ". . .",
       "entry": "tree.js"
     }
   ],
@@ -127,19 +163,68 @@
   ],
   "animation": [
     {
+      "title": "Damped-Oscillators",
+      "descr": ". . .",
+      "entry": "damped-oscillators.js",
+      "controls": [
+        {
+          "type": "slider",
+          "key": "spring",
+          "min": 0,
+          "max": 1000,
+          "value": 500,
+          "step": 0.1
+        },
+        {
+          "type": "slider",
+          "key": "damp",
+          "min": 0,
+          "max": 50,
+          "value": 10,
+          "step": 0.1
+        },
+        {
+          "type": "slider",
+          "key": "velocity",
+          "min": 10,
+          "max": 100,
+          "value": 30,
+          "step": 1
+        }
+      ]
+    },
+    {
       "title": "Floating",
-      "descr": "",
+      "descr": ". . .",
       "entry": "floating.js"
     },
     {
       "title": "Waves",
-      "descr": "",
+      "descr": ". . .",
       "entry": "waves.js"
     },
     {
       "title": "Wiggle",
-      "descr": "",
-      "entry": "wiggle.js"
+      "descr": ". . .",
+      "entry": "wiggle.js",
+      "controls": [
+        {
+          "type": "slider",
+          "key": "amplitude",
+          "min": 10,
+          "max": 180,
+          "value": 45,
+          "step": 1
+        },
+        {
+          "type": "slider",
+          "key": "frequency",
+          "min": 1,
+          "max": 20,
+          "value": 10,
+          "step": 0.1
+        }
+      ]
     }
   ],
   "constraint": [
@@ -166,24 +251,55 @@
   ],
   "others": [
     {
-      "title": "Circular-Runner-Double-Jump",
-      "descr": "CLICK to jump (double) and use ARROWS (⇦ ⇨) to change the circle radius",
-      "entry": "circular-runner-double-jump.js"
+      "title": "Circular-Runner-Jumper",
+      "descr": "CLICK to jump (double)",
+      "entry": "circular-runner-jumper.js",
+      "controls": [
+        {
+          "type": "slider",
+          "key": "radius",
+          "min": 70,
+          "max": 170,
+          "value": 120,
+          "step": 1
+        },
+        {
+          "type": "slider",
+          "key": "speed",
+          "min": 0.01,
+          "max": 0.1,
+          "value": 0.02,
+          "step": 0.01
+        }
+      ]
     },
     {
       "title": "Dashed-Lines",
-      "descr": "Use ARROWS to change dash (⇦ ⇨) and gap (⇧ ⇩) size",
-      "entry": "dashed-lines.js"
+      "descr": ". . .",
+      "entry": "dashed-lines.js",
+      "controls": [
+        {
+          "type": "slider",
+          "key": "dash",
+          "min": 1,
+          "max": 50,
+          "value": 10,
+          "step": 1
+        },
+        {
+          "type": "slider",
+          "key": "gap",
+          "min": 1,
+          "max": 50,
+          "value": 18,
+          "step": 1
+        }
+      ]
     },
     {
       "title": "Moving-Around",
-      "descr": "Use ARROWS (⇧ ⇩⇦ ⇨) or WASD to move",
+      "descr": "Use ARROWS or WASD to move",
       "entry": "moving-around.js"
-    },
-    {
-      "title": "Scale-Mode",
-      "descr": "CLICK to switch the scale mode",
-      "entry": "scale-mode.js"
     },
     {
       "title": "Seeking-Target",

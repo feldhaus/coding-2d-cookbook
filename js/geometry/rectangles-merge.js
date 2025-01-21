@@ -20,7 +20,6 @@
   const graphics = new PIXI.Graphics();
   app.stage.addChild(graphics);
 
-  // add shapes
   const shapes = [
     createShape(100, 100, 100, 100),
     createShape(200, 100, 100, 100),
@@ -41,51 +40,55 @@
     const shape = new PIXI.Graphics();
     app.stage.addChild(shape);
     shape.position.set(x, y);
-
     shape.drawRect(0, 0, width, height);
     shape.stroke({ width: 1, color: color.white });
     shape.fill({ color: color.white, alpha: 0.05 });
-
     shape.closePath();
     shape.endFill();
-    shape.eventMode = 'static';
+    shape.eventMode = 'dynamic';
     shape.cursor = 'pointer';
-    shape.dragOffset = new PIXI.Point();
-    shape
-      .on('pointerdown', onDragStart)
-      .on('pointerup', onDragEnd)
-      .on('pointerupoutside', onDragEnd)
-      .on('pointermove', onDragMove);
-
+    shape.offset = new PIXI.Point();
     const x1 = shape.x;
     const y1 = shape.y;
     const x2 = shape.x + shape.width - 1;
     const y2 = shape.y + shape.height - 1;
     shape.shapePath = [].concat(x1, y1, x2, y1, x2, y2, x1, y2);
-
     return shape;
   }
 
-  // drag functions
-  function onDragStart(event) {
-    this.dragging = true;
-    const position = event.data.getLocalPosition(this.parent);
-    this.dragOffset.set(position.x - this.x, position.y - this.y);
-  }
+  // listen to pointer events
+  let dragging = null;
+  app.stage.eventMode = 'static';
+  app.stage.hitArea = app.screen;
+  app.stage.on('pointermove', (event) => {
+    if (dragging === null) return;
 
-  function onDragEnd(event) {
-    this.dragging = false;
-  }
-
-  function onDragMove(event) {
-    if (!this.dragging) return;
-    const position = event.data.getLocalPosition(this.parent);
-    this.position.set(
-      Math.round((position.x - this.dragOffset.x) / 10) * 10,
-      Math.round((position.y - this.dragOffset.y) / 10) * 10,
+    dragging.position.set(
+      Math.round((event.data.global.x - dragging.offset.x) / 10) * 10,
+      Math.round((event.data.global.y - dragging.offset.y) / 10) * 10,
     );
+
     draw();
-  }
+  });
+
+  shapes.forEach((item) => {
+    item.on('pointerdown', (event) => {
+      dragging = item;
+      item.alpha = 0.5;
+      item.offset.set(
+        event.data.global.x - item.x,
+        event.data.global.y - item.y,
+      );
+    });
+    item.on('pointerup', () => {
+      dragging = null;
+      item.alpha = 1;
+    });
+    item.on('pointerupoutside', () => {
+      dragging = null;
+      item.alpha = 1;
+    });
+  });
 
   function draw() {
     graphics.clear();

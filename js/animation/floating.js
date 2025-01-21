@@ -16,6 +16,7 @@
     app.renderer.height * 0.5,
   );
 
+  // add graphics
   const circle1 = new PIXI.Graphics();
   app.stage.addChild(circle1);
   circle1.circle(0, 0, 50);

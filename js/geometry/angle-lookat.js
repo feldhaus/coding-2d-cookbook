@@ -23,7 +23,7 @@
   graphics.poly([50, 0, -50, -40, -30, 0, -50, 40]);
   graphics.fill(color.pink);
 
-  // listen pointer move event
+  // listen to pointer events
   app.stage.eventMode = 'static';
   app.stage.hitArea = app.screen;
   app.stage.on('pointermove', (event) => {

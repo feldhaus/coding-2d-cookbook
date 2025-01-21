@@ -29,7 +29,7 @@
   const distanceConstraint = 80;
   const ballRadius = 20;
 
-  // listen pointer move event
+  // listen to pointer events
   app.stage.eventMode = 'static';
   app.stage.hitArea = app.screen;
   app.stage.on('pointermove', (event) => {

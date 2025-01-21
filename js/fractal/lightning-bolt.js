@@ -12,12 +12,11 @@
   // constants
   const color = { pink: 0xec407a, white: 0xf2f5ea };
 
-  // add tree graphics
+  // add graphics
   const graphics = new PIXI.Graphics();
   app.stage.addChild(graphics);
-  // graphics.lineStyle(2, color.white);
 
-  // listen pointer down event
+  // listen to pointer events
   app.stage.eventMode = 'static';
   app.stage.hitArea = app.screen;
   app.stage.on('pointerdown', lightning);

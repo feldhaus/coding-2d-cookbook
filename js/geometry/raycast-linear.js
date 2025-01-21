@@ -17,14 +17,6 @@
     .then((res) => res.json())
     .then((data) => drawMap(data));
 
-  // listen pointer move event
-  let pointer = { x: 0, y: 0 };
-  app.stage.eventMode = 'static';
-  app.stage.hitArea = app.screen;
-  app.stage.on('pointermove', (event) => {
-    pointer = event.data.global;
-  });
-
   // add graphics
   const graphics = new PIXI.Graphics();
   app.stage.addChild(graphics);
@@ -38,7 +30,6 @@
     graphics.fill({ color: color.white, alpha: 0.05 });
   }
 
-  // add player
   const player = new PIXI.Sprite({ texture: PIXI.Texture.WHITE });
   app.stage.addChild(player);
   player.tint = color.pink;
@@ -47,14 +38,17 @@
   player.position.set(50, 300);
   player.direction = new PIXI.Point(0, 0);
 
-  // add feedback graphics (to draw the raycast)
   const feedback = new PIXI.Graphics();
   app.stage.addChild(feedback);
 
-  // runs an update loop
-  app.ticker.add(update);
+  // listen to pointer and key events
+  let pointer = { x: 0, y: 0 };
+  app.stage.eventMode = 'static';
+  app.stage.hitArea = app.screen;
+  app.stage.on('pointermove', (event) => {
+    pointer = event.data.global;
+  });
 
-  // listen keydown event
   document.onkeydown = function (event) {
     if (event.code === 'ArrowLeft' || event.code === 'KeyA') {
       player.direction.x = -1;
@@ -71,7 +65,6 @@
     event.preventDefault();
   };
 
-  // listen keyup event
   document.onkeyup = function (event) {
     if (event.code === 'ArrowLeft' || event.code === 'KeyA') {
       player.direction.x = 0;
@@ -88,11 +81,12 @@
     event.preventDefault();
   };
 
-  function update({ deltaTime }) {
+  // runs an update loop
+  app.ticker.add(({ deltaTime }) => {
     player.x += player.direction.x * 1.5 * deltaTime;
     player.y += player.direction.y * 1.5 * deltaTime;
     raycastLinear();
-  }
+  });
 
   function raycastLinear() {
     // find closest intersection

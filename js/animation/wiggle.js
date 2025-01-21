@@ -15,9 +15,21 @@
     app.renderer.width * 0.5,
     app.renderer.height * 0.5,
   );
+  const deg2rad = Math.PI / 180;
   const rate = 1 / (app.ticker.FPS * 5); // 5 seconds
-  const amplitude = Math.PI / 2;
-  const frequency = 10;
+
+  // input - controls
+  const controlsData = Object.assign({}, window.parent.controlsData);
+  window.addEventListener('message', (event) => {
+    const { type, key, value } = event.data;
+    if (type !== 'sliderchange') return;
+
+    if (key === 'amplitude') {
+      controlsData[key] = value * deg2rad;
+    } else {
+      controlsData[key] = value;
+    }
+  });
 
   // add graphics
   const graphics = new PIXI.Graphics();
@@ -27,9 +39,9 @@
   graphics.position.copyFrom(center);
 
   // runs an update loop
-  let threshold = 0;
   app.ticker.add(({ deltaTime }) => {
     threshold = (threshold + deltaTime * rate) % 1;
+    const { amplitude, frequency } = controlsData;
     graphics.rotation =
       amplitude *
       Math.sin(threshold * Math.PI * frequency) *

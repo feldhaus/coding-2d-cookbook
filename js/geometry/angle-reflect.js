@@ -21,69 +21,78 @@
   const graphics = new PIXI.Graphics();
   app.stage.addChild(graphics);
 
-  // add interactive dots
-  const dot1 = createDot();
-  app.stage.addChild(dot1);
-  dot1.position.set(center.x - 200, center.y);
-  dot1.on('pointermove', function (event) {
-    if (this.alpha === 1) return;
-    const angle = angleBetween(center, this.position);
-    const translatePoint = pointTranslate(center, angle, surfaceLength * 0.5);
-    this.position.copyFrom(translatePoint);
-    draw();
-  });
+  const circle1 = createCircle();
+  app.stage.addChild(circle1);
+  circle1.position.set(center.x - 200, center.y);
 
-  const dot2 = createDot();
-  app.stage.addChild(dot2);
-  dot2.position.set(center.x - 150, center.y - 200);
+  const circle2 = createCircle();
+  app.stage.addChild(circle2);
+  circle2.position.set(center.x - 150, center.y - 200);
 
-  function createDot() {
+  function createCircle() {
     const g = new PIXI.Graphics();
     g.circle(0, 0, 50);
     g.fill({ color: color.pink, alpha: 0.05 });
     g.circle(0, 0, 5);
     g.fill(color.pink);
-    g.eventMode = 'static';
+    g.eventMode = 'dynamic';
     g.cursor = 'pointer';
     g.offset = new PIXI.Point();
-    // listeners
-    g.on('pointerdown', (event) => {
-      g.alpha = 0.5;
-      g.offset.set(event.data.global.x - g.x, event.data.global.y - g.y);
-    });
-    g.on('pointerup', (event) => {
-      g.alpha = 1;
-    });
-    g.on('pointerupoutside', () => {
-      g.alpha = 1;
-    });
-    g.on('pointermove', (event) => {
-      if (g.alpha === 1) return;
-      g.position.set(
-        event.data.global.x - g.offset.x,
-        event.data.global.y - g.offset.y,
-      );
-      draw();
-    });
     return g;
   }
+
+  // listen to pointer events
+  let dragging = null;
+  app.stage.eventMode = 'static';
+  app.stage.hitArea = app.screen;
+  app.stage.on('pointermove', (event) => {
+    if (dragging === null) return;
+
+    dragging.position.set(
+      event.data.global.x - dragging.offset.x,
+      event.data.global.y - dragging.offset.y,
+    );
+
+    const angle = angleBetween(center, dragging.position);
+    const translatePoint = pointTranslate(center, angle, surfaceLength * 0.5);
+    dragging.position.copyFrom(translatePoint);
+    draw();
+  });
+
+  [circle1, circle2].forEach((item) => {
+    item.on('pointerdown', (event) => {
+      dragging = item;
+      item.alpha = 0.5;
+      item.offset.set(
+        event.data.global.x - item.x,
+        event.data.global.y - item.y,
+      );
+    });
+    item.on('pointerup', () => {
+      dragging = null;
+      item.alpha = 1;
+    });
+    item.on('pointerupoutside', () => {
+      dragging = null;
+      item.alpha = 1;
+    });
+  });
 
   function draw() {
     graphics.clear();
 
     // get all required values to draw
-    const incidenceAngle = angleBetween(dot2, center);
-    const incidenceLength = distanceBetween(dot2, center);
-    const surfaceAngle = angleBetween(dot1, center);
-    const surfacePoint = pointTranslate(dot1, surfaceAngle, surfaceLength);
+    const incidenceAngle = angleBetween(circle2, center);
+    const incidenceLength = distanceBetween(circle2, center);
+    const surfaceAngle = angleBetween(circle1, center);
+    const surfacePoint = pointTranslate(circle1, surfaceAngle, surfaceLength);
     const reflectAngle = angleReflect(incidenceAngle, surfaceAngle);
     const reflectPoint = pointTranslate(center, reflectAngle, incidenceLength);
 
     // draw incidence and surface lines
-
-    graphics.moveTo(dot1.x, dot1.y);
+    graphics.moveTo(circle1.x, circle1.y);
     graphics.lineTo(surfacePoint.x, surfacePoint.y);
-    graphics.moveTo(dot2.x, dot2.y);
+    graphics.moveTo(circle2.x, circle2.y);
     graphics.lineTo(center.x, center.y);
     graphics.stroke({ width: 2, color: color.white });
 

@@ -18,11 +18,16 @@
   const tau = Math.PI * 2; // alias for two pi
   const radius = 150;
 
-  // variables
-  let slices = 20;
-  let elapsedTime = 0;
+  // input - controls
+  const controlsData = Object.assign({}, window.parent.controlsData);
+  window.addEventListener('message', (event) => {
+    const { type, key, value } = event.data;
+    if (type !== 'sliderinput') return;
+    controlsData[key] = value;
+    updateMainCircle({ x: 0, y: 0 });
+  });
 
-  // add circles
+  // add graphics
   const circle = new PIXI.Graphics();
   app.stage.addChild(circle);
   circle.position.copyFrom(center);
@@ -35,7 +40,6 @@
   app.stage.addChild(circle2);
   circle2.position.set(app.renderer.width - 100, 100);
 
-  // add labels
   addText(
     '0, 2π',
     { x: circle.x + radius + 10, y: circle.y },
@@ -53,30 +57,20 @@
     { x: 0.5, y: 1.0 },
   );
 
-  // runs an update loop
-  app.ticker.add(({ deltaTime }) => {
-    updateRunningCircle(circle1, 50, 1, 0.1);
-    updateRunningCircle(circle2, 30, -1, 0.3);
-    elapsedTime += deltaTime;
-  });
-
-  // listen pointer move event
+  // listen to pointer events
   app.stage.eventMode = 'static';
   app.stage.hitArea = app.screen;
   app.stage.on('pointermove', (event) => {
     updateMainCircle(event.data.global);
   });
 
-  // listen keyboard event
-  document.onkeydown = function (event) {
-    if (event.code === 'ArrowUp' || event.code === 'KeyW') {
-      slices = Math.min(slices + 1, 36);
-    } else if (event.code === 'ArrowDown' || event.code === 'KeyS') {
-      slices = Math.max(slices - 1, 2);
-    }
-    updateMainCircle({ x: 0, y: 0 });
-    event.preventDefault();
-  };
+  // runs an update loop
+  let elapsedTime = 0;
+  app.ticker.add(({ deltaTime }) => {
+    updateRunningCircle(circle1, 50, 1, 0.1);
+    updateRunningCircle(circle2, 30, -1, 0.3);
+    elapsedTime += deltaTime;
+  });
 
   updateMainCircle({ x: 0, y: 0 });
 
@@ -98,8 +92,9 @@
       angle += tau;
     }
 
+    const { slices } = controlsData;
     const sliceCirc = tau / slices;
-    const temp = angle / sliceCirc;
+    const sliceIndex = angle / sliceCirc;
 
     circle.clear();
 
@@ -107,7 +102,7 @@
       circle.moveTo(0, 0);
       circle.arc(0, 0, radius, sliceCirc * i, sliceCirc * (i + 1));
       circle.lineTo(0, 0);
-      if (temp > i && radius > hypot) {
+      if (sliceIndex > i && radius > hypot) {
         circle.fill({ color: color.white, alpha: 0.2 });
       }
       circle.stroke({ width: 3, color: color.white });

@@ -11,15 +11,17 @@
 
   // constants
   const color = { pink: 0xec407a, white: 0xf2f5ea };
+  const offsetY = 50;
 
   // add graphics
   const map = new PIXI.Graphics();
   app.stage.addChild(map);
+  map.y = offsetY;
 
   const feedback = new PIXI.Graphics();
   app.stage.addChild(feedback);
+  feedback.y = offsetY;
 
-  // add state name
   const stateName = new PIXI.Text('', {
     fill: color.pink,
     fontSize: 24,
@@ -45,18 +47,16 @@
     map.fill({ color: color.white, alpha: 0.05 });
   }
 
-  // listen pointer move event
+  // listen to pointer events
   app.stage.eventMode = 'static';
   app.stage.hitArea = app.screen;
-  app.stage.on('pointermove', onPointerMove);
-
-  function onPointerMove(event) {
+  app.stage.on('pointermove', (event) => {
     // search if mouse position is over some state polygon
     let overState;
     Object.keys(mapData).forEach((state) => {
       if (
         mapData[state].some((path) =>
-          contains(event.data.global.x, event.data.global.y, path),
+          contains(event.data.global.x, event.data.global.y - offsetY, path),
         )
       ) {
         overState = state;
@@ -76,7 +76,7 @@
     } else {
       stateName.text = '';
     }
-  }
+  });
 
   function contains(x, y, polygon) {
     let inside = false;

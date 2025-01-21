@@ -16,15 +16,13 @@
     app.renderer.height * 0.5,
   );
   const tau = Math.PI * 2; // alias for two pi
+  const points = [];
 
-  // add the graphics
+  // add graphics
   const graphics = new PIXI.Graphics();
   app.stage.addChild(graphics);
 
-  // store clicked points
-  const points = [];
-
-  // listen pointer move event
+  // listen to pointer events
   app.stage.eventMode = 'static';
   app.stage.hitArea = app.screen;
   app.stage.on('pointerdown', addPoint);

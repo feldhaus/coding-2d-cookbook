@@ -17,12 +17,14 @@
   );
   const maxSpeed = 5;
   const maxForce = 0.2;
+  const pointer = { x: center.x, y: center.y };
 
-  let pointer = { x: center.x, y: center.y };
+  // listen to pointer events
   app.stage.eventMode = 'static';
   app.stage.hitArea = app.screen;
   app.stage.on('pointermove', (event) => {
-    pointer = event.data.global;
+    pointer.x = event.data.global.x;
+    pointer.y = event.data.global.y;
   });
 
   // runs an update loop

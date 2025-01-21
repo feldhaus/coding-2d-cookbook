@@ -27,14 +27,13 @@ jQuery(document).ready(function ($) {
         let items = data[sections[i]];
 
         for (let j = 0; j < items.length; j++) {
-          // const plugins = typeof items[j].plugins !== 'undefined' ? items[j].plugins.join(',') : '';
-          // const validVersions = typeof items[j].validVersions !== 'undefined' ? items[j].validVersions.join(',') : '';
-          // html += '<li data-src="' + items[j].entry + '" data-plugins="' + plugins  + '" data-validVersions="' + validVersions + '">' + items[j].title + '</li>';
           html +=
             '<li data-src="' +
             items[j].entry +
             '" data-descr="' +
             items[j].descr +
+            '" data-controls="' +
+            JSON.stringify(items[j].controls || '').replace(/"/g, "'") +
             '">' +
             items[j].title +
             '</li>';
@@ -68,6 +67,8 @@ jQuery(document).ready(function ($) {
 
         $('.main-content h1').text($(this).text());
         $('.main-content h2').text($(this).attr('data-descr'));
+
+        addControls($(this).attr('data-controls'));
 
         $.ajax({
           url:
@@ -116,6 +117,61 @@ jQuery(document).ready(function ($) {
       const sourceCode = editor.getValue();
       generateIFrameContent(sourceCode);
     });
+  };
+
+  const addControls = function (data) {
+    $('.slider-container').remove();
+    window.controlsData = {};
+
+    const controls = JSON.parse(data.replace(/'/g, '"'));
+    if (!controls) return;
+
+    const sliderContainer = $('<div class="slider-container"></div>');
+
+    controls.forEach(({ key, min, max, value, step }, index) => {
+      const sliderLabel = $(`<label for="slider-${index}">${key}: </label>`);
+      const sliderInput = $(
+        `<input type="range" id="slider-${index}" min="${min}" max="${max}" step="${step}" value="${value}">`,
+      );
+      const sliderValue = $(`<span id="slider-value-${index}">${value}</span>`);
+
+      // Update the value as the slider is moved
+      sliderInput.on('input', function () {
+        const value = Number(sliderInput.val());
+        sliderValue.text(value);
+
+        const percentage = ((value - min) / (max - min)) * 100;
+        sliderInput.css(
+          'background',
+          `linear-gradient(to right, #ec407a ${percentage}%, #ddd ${percentage}%)`,
+        );
+
+        window.controlsData[key] = value;
+
+        // Send the slider value to the iframe
+        const iframe = document.getElementById('preview');
+        const iframeWindow = iframe.contentWindow;
+        iframeWindow.postMessage({ type: 'sliderinput', key, value }, '*');
+      });
+      sliderInput.trigger('input');
+
+      sliderInput.on('change', function () {
+        const value = Number(sliderInput.val());
+
+        // Send the slider value to the iframe
+        const iframe = document.getElementById('preview');
+        const iframeWindow = iframe.contentWindow;
+        iframeWindow.postMessage({ type: 'sliderchange', key, value }, '*');
+      });
+
+      // Append the elements to the container
+      const sliderRow = $('<div class="slider-row"></div>');
+      sliderRow.append(sliderLabel).append(sliderInput).append(sliderValue);
+      sliderContainer.append(sliderRow);
+    });
+
+    // Insert the slider as a sibling of #example
+    $('#example').parent().append(sliderContainer);
   };
 
   const generateIFrameContent = function (sourceCode) {

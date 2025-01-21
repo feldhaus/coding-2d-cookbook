@@ -16,21 +16,18 @@
     app.renderer.height * 0.5,
   );
   const deg2rad = Math.PI / 180;
+  const goldenAngle = 137.5 * deg2rad; // convert the golden angle to radians
+  const c = 8; // scaling parameter
 
   // add graphics
   const graphics = new PIXI.Graphics();
   app.stage.addChild(graphics);
   graphics.position.copyFrom(center);
 
-  // convert the golden angle to radians
-  const goldenAngle = 137.5 * deg2rad;
-
-  // scaling parameter
-  const c = 8;
-
   // is the ordering number of a floret, counting outward from the center
   let n = 0;
 
+  // runs an update loop
   app.ticker.add(() => {
     // is the angle between a reference direction and the position
     // vector of the nth floret in a polar coordinate system originating
