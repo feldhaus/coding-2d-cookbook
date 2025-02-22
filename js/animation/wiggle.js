@@ -20,6 +20,7 @@
 
   // input - controls
   const controlsData = Object.assign({}, window.parent.controlsData);
+  controlsData.amplitude *= deg2rad;
   window.addEventListener('message', (event) => {
     const { type, key, value } = event.data;
     if (type !== 'sliderchange') return;
@@ -39,6 +40,7 @@
   graphics.position.copyFrom(center);
 
   // runs an update loop
+  let threshold = 0;
   app.ticker.add(({ deltaTime }) => {
     threshold = (threshold + deltaTime * rate) % 1;
     const { amplitude, frequency } = controlsData;

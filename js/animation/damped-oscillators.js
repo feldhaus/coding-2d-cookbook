@@ -59,7 +59,7 @@
   });
 
   // runs an update loop
-  app.ticker.add(({ elapsedMS, deltaTime }) => {
+  app.ticker.add(({ elapsedMS }) => {
     const force = -spring * displacement - damp * velocity;
     velocity += force * elapsedMS * 0.001;
     displacement += velocity * elapsedMS * 0.001;
