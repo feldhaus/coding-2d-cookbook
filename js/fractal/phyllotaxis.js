@@ -15,8 +15,7 @@
     app.renderer.width * 0.5,
     app.renderer.height * 0.5,
   );
-  const deg2rad = Math.PI / 180;
-  const goldenAngle = 137.5 * deg2rad; // convert the golden angle to radians
+  const goldenAngle = 137.5 * FMath.DEG2RAD; // convert the golden angle to radians
   const c = 8; // scaling parameter
 
   // add graphics

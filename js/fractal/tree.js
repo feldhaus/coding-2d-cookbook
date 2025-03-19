@@ -15,7 +15,6 @@
     app.renderer.width * 0.5,
     app.renderer.height * 0.5,
   );
-  const deg2rad = Math.PI / 180;
   const duration = 100;
   const branches = 10;
 
@@ -37,8 +36,8 @@
 
   function drawTree(x1, y1, angle, depth) {
     if (depth > 0) {
-      const x2 = x1 + Math.cos(angle * deg2rad) * depth * 10;
-      const y2 = y1 + Math.sin(angle * deg2rad) * depth * 10;
+      const x2 = x1 + Math.cos(angle * FMath.DEG2RAD) * depth * 10;
+      const y2 = y1 + Math.sin(angle * FMath.DEG2RAD) * depth * 10;
 
       const p1 = new PIXI.Point(x1, y1);
       const p2 = new PIXI.Point(x2, y2);
@@ -69,7 +68,8 @@
           const p2 = array[i][j].p2;
           if (i === ix) {
             animation.moveTo(p1.x, p1.y);
-            animation.lineTo(lerp(p1.x, p2.x, t), lerp(p1.y, p2.y, t));
+            const vector = FVector.lerp(p1, p2, t);
+            animation.lineTo(vector.x, vector.y);
           } else {
             animation.moveTo(p1.x, p1.y);
             animation.lineTo(p2.x, p2.y);
@@ -79,9 +79,5 @@
       }
       animation.stroke({ width: 2, color: color.pink });
     }
-  }
-
-  function lerp(start, end, threshold) {
-    return start + (end - start) * threshold;
   }
 })();

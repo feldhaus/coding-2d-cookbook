@@ -15,7 +15,6 @@
     app.renderer.width * 0.5,
     app.renderer.height * 0.5,
   );
-  const tau = Math.PI * 2; // alias for two pi
   const radius = 150;
 
   // input - controls
@@ -89,11 +88,11 @@
     let angle = Math.atan2(position.y - circle.y, position.x - circle.x);
     let hypot = Math.hypot(position.x - circle.x, position.y - circle.y);
     if (angle < 0) {
-      angle += tau;
+      angle += FMath.TAU;
     }
 
     const { slices } = controlsData;
-    const sliceCirc = tau / slices;
+    const sliceCirc = FMath.TAU / slices;
     const sliceIndex = angle / sliceCirc;
 
     circle.clear();
@@ -111,13 +110,13 @@
 
   function updateRunningCircle(shape, radius, direction, speed) {
     const circum = elapsedTime * speed;
-    const invert = Math.floor(circum / tau) % 2 === 0;
+    const invert = Math.floor(circum / FMath.TAU) % 2 === 0;
 
     shape.clear();
     if (invert) {
-      shape.arc(0, 0, radius, 0, (circum % tau) * direction);
+      shape.arc(0, 0, radius, 0, (circum % FMath.TAU) * direction);
     } else {
-      shape.arc(0, 0, radius, (circum % tau) * direction, 0);
+      shape.arc(0, 0, radius, (circum % FMath.TAU) * direction, 0);
     }
     shape.stroke({ width: 20, color: color.white });
   }

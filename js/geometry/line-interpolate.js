@@ -86,35 +86,10 @@
     graphics.fill({ color: color.white });
   }
 
-  // translates a point by an angle in radians and distance
-  function pointTranslate(point, angle, distance) {
-    return new PIXI.Point(
-      point.x + distance * Math.cos(angle),
-      point.y + distance * Math.sin(angle),
-    );
-  }
-
-  // returns the length of a vector
-  function magnitude(vector) {
-    return Math.sqrt(vector.x * vector.x + vector.y * vector.y);
-  }
-
-  // returns the distance between 2 points
-  function distanceBetween(p0, p1) {
-    return magnitude({ x: p1.x - p0.x, y: p1.y - p0.y });
-  }
-
-  // returns the angle between 2 points, in radians
-  function angleBetween(p0, p1) {
-    return Math.atan2(p1.y - p0.y, p1.x - p0.x);
-  }
-
   // returns the interpolation from start to end along the a segment
   function lineInterpolate(p0, p1, threshold) {
-    return pointTranslate(
-      p0,
-      angleBetween(p0, p1),
-      distanceBetween(p0, p1) * threshold,
-    );
+    const angle = FVector.angleBetween(p0, p1);
+    const distance = FVector.distanceBetween(p0, p1) * threshold;
+    return FVector.add(p0, FVector.mult(FVector.fromAngle(angle), distance));
   }
 })();

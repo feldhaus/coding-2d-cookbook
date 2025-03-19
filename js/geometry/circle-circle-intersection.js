@@ -94,7 +94,7 @@
 
     const dx = x2 - x1;
     const dy = y2 - y1;
-    const distance = distanceBetween(circle1, circle2);
+    const distance = FVector.distanceBetween(circle1, circle2);
 
     if (distance > r1 + r2) {
       // no intersect
@@ -125,14 +125,4 @@
     }
   }
   circleIntersection();
-
-  // returns the length of a vector
-  function magnitude(vector) {
-    return Math.sqrt(vector.x * vector.x + vector.y * vector.y);
-  }
-
-  // returns the distance between 2 points
-  function distanceBetween(p0, p1) {
-    return magnitude({ x: p1.x - p0.x, y: p1.y - p0.y });
-  }
 })();

@@ -140,10 +140,10 @@
 
   // returns an intersect between raycast and a segment
   function getIntersection(ray, seg) {
-    const u = new PIXI.Point(ray.b.x - ray.a.x, ray.b.y - ray.a.y);
-    const v = new PIXI.Point(seg.b.x - seg.a.x, seg.b.y - seg.a.y);
-    const w = new PIXI.Point(ray.a.x - seg.a.x, ray.a.y - seg.a.y);
-    const s = new PIXI.Point(seg.a.x - ray.a.x, seg.a.y - ray.a.y);
+    const u = FVector.sub(ray.b, ray.a);
+    const v = FVector.sub(seg.b, seg.a);
+    const w = FVector.sub(ray.a, seg.a);
+    const s = FVector.sub(seg.a, ray.a);
 
     const d1 = (u.x * s.y + u.y * w.x) / (v.x * u.y - v.y * u.x);
     const d2 = (seg.a.x + v.x * d1 - ray.a.x) / u.x;

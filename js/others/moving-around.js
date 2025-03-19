@@ -62,8 +62,8 @@
     vehicle.rotation += handling * vehicle.direction.x * deltaTime;
     vehicle.x += vehicle.direction.y * Math.cos(vehicle.rotation) * deltaTime;
     vehicle.y += vehicle.direction.y * Math.sin(vehicle.rotation) * deltaTime;
-    vehicle.x = clamp(vehicle.x, radius, 800 - radius);
-    vehicle.y = clamp(vehicle.y, radius, 600 - radius);
+    vehicle.x = FMath.clamp(vehicle.x, radius, 800 - radius);
+    vehicle.y = FMath.clamp(vehicle.y, radius, 600 - radius);
 
     compass.rotation += (vehicle.rotation - compass.rotation) * 0.1;
     compass.position = pointTranslate(
@@ -73,16 +73,8 @@
     );
   });
 
-  // restrict a value to a given range
-  function clamp(value, min, max) {
-    return Math.min(Math.max(value, min), max);
-  }
-
   // translates a point by an angle in radians and distance
   function pointTranslate(point, angle, distance) {
-    return new PIXI.Point(
-      point.x + distance * Math.cos(angle),
-      point.y + distance * Math.sin(angle),
-    );
+    return FVector.add(point, FVector.mult(FVector.fromAngle(angle), distance));
   }
 })();

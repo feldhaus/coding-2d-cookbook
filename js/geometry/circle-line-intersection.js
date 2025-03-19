@@ -107,18 +107,18 @@
   function circleLineIntersection(circle, segment, result1, result2) {
     const p0 = segment.start;
     const p1 = segment.end;
-    const d = normalize({ x: p1.x - p0.x, y: p1.y - p0.y });
+    const d = FVector.normalize({ x: p1.x - p0.x, y: p1.y - p0.y });
 
     const t = d.x * (circle.x - p0.x) + d.y * (circle.y - p0.y);
 
     const ex = t * d.x + p0.x;
     const ey = t * d.y + p0.y;
 
-    const lec = magnitude({ x: ex - circle.x, y: ey - circle.y });
+    const lec = FVector.mag({ x: ex - circle.x, y: ey - circle.y });
 
     if (lec < circle.radius) {
       const dt = Math.sqrt(circle.radius ** 2 - lec ** 2);
-      const te = distanceBetween(p0, p1);
+      const te = FVector.distanceBetween(p0, p1);
 
       if (segment) {
         if ((t - dt < 0 || t - dt > te) && (t + dt < 0 || t + dt > te)) {
@@ -155,25 +155,5 @@
 
     // no intersetion
     return;
-  }
-
-  // returns the length of a vector
-  function magnitude(vector) {
-    return Math.sqrt(vector.x * vector.x + vector.y * vector.y);
-  }
-
-  // returns the distance between 2 points
-  function distanceBetween(p0, p1) {
-    return magnitude({ x: p1.x - p0.x, y: p1.y - p0.y });
-  }
-
-  // returns a normalized vector
-  function normalize(vector) {
-    const mag = magnitude(vector);
-    if (mag > 0) {
-      vector.x /= mag;
-      vector.y /= mag;
-    }
-    return vector;
   }
 })();

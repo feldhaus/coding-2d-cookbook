@@ -45,15 +45,13 @@
 
   function seek() {
     // a desired point from the position to the target
-    let desired = new PIXI.Point(pointer.x - vehicle.x, pointer.y - vehicle.y);
+    let desired = FVector.sub(pointer, vehicle);
 
     // scale to maximum speed
-    desired = normalize(desired);
-    desired.x *= maxSpeed;
-    desired.y *= maxSpeed;
+    desired = FVector.mult(FVector.normalize(desired), maxSpeed);
 
     // steering = desired minus velocity
-    let steer = new PIXI.Point(desired.x - velocity.x, desired.y - velocity.y);
+    let steer = FVector.sub(desired, velocity);
 
     // limit to maximum steering force
     steer = limit(steer, maxForce);
@@ -76,28 +74,9 @@
     acceleration.y = 0;
   }
 
-  function magnitude(vector) {
-    return Math.sqrt(vector.x * vector.x + vector.y * vector.y);
-  }
-
-  function magnitudeSqr(vector) {
-    return vector.x * vector.x + vector.y * vector.y;
-  }
-
-  function normalize(vector) {
-    let mag = magnitude(vector);
-    if (mag > 0) {
-      vector.x /= mag;
-      vector.y /= mag;
-    }
-    return vector;
-  }
-
   function limit(vector, max) {
-    if (magnitudeSqr(vector) > max * max) {
-      vector = normalize(vector);
-      vector.x *= max;
-      vector.y *= max;
+    if (FVector.magSqr(vector) > max * max) {
+      return FVector.mult(FVector.normalize(vector), max);
     }
     return vector;
   }

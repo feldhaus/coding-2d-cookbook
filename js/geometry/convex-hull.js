@@ -138,8 +138,8 @@
 
     // calculate angle and distance from the lowest point
     for (let i = 0; i < len; i++) {
-      points[i].distance = distanceBetween(points[0], points[i]);
-      points[i].angle = angleBetween(points[0], points[i]);
+      points[i].distance = FVector.distanceBetween(points[0], points[i]);
+      points[i].angle = FVector.angleBetween(points[0], points[i]);
       if (points[i].angle < 0) {
         points[i].angle += Math.PI;
       }
@@ -163,21 +163,6 @@
     }
 
     return stack;
-  }
-
-  // returns the length of a vector
-  function magnitude(vector) {
-    return Math.sqrt(vector.x * vector.x + vector.y * vector.y);
-  }
-
-  // returns the distance between 2 points
-  function distanceBetween(p0, p1) {
-    return magnitude({ x: p1.x - p0.x, y: p1.y - p0.y });
-  }
-
-  // returns the angle between 2 points, in radians
-  function angleBetween(p0, p1) {
-    return Math.atan2(p1.y - p0.y, p1.x - p0.x);
   }
 
   // three points are a counter-clockwise turn if ccw > 0, clockwise if

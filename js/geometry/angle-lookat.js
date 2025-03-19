@@ -27,11 +27,6 @@
   app.stage.eventMode = 'static';
   app.stage.hitArea = app.screen;
   app.stage.on('pointermove', (event) => {
-    graphics.rotation = angleBetween(graphics, event.data.global);
+    graphics.rotation = FVector.angleBetween(graphics, event.data.global);
   });
-
-  // calculates the angle between 2 points, in radians
-  function angleBetween(p0, p1) {
-    return Math.atan2(p1.y - p0.y, p1.x - p0.x);
-  }
 })();

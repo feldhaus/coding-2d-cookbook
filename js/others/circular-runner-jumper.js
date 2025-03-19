@@ -90,9 +90,6 @@
 
   // translates a point by an angle in radians and distance
   function pointTranslate(point, angle, distance) {
-    return new PIXI.Point(
-      point.x + distance * Math.cos(angle),
-      point.y + distance * Math.sin(angle),
-    );
+    return FVector.add(point, FVector.mult(FVector.fromAngle(angle), distance));
   }
 })();

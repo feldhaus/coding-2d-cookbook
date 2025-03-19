@@ -28,14 +28,14 @@
   app.stage.eventMode = 'static';
   app.stage.hitArea = app.screen;
   app.stage.on('pointermove', (event) => {
-    angles[0] = angleBetween(joints[1], joints[0]);
+    angles[0] = FVector.angleBetween(joints[1], joints[0]);
     joints[0].copyFrom(event.data.global);
 
     for (let i = 1; i < joints.length; i++) {
-      const currentAngle = angleBetween(joints[i], joints[i - 1]);
+      const currentAngle = FVector.angleBetween(joints[i], joints[i - 1]);
       angles[i] = constrainAngle(currentAngle, angles[i - 1], angleConstraint);
 
-      const fangle = angleToVector(angles[i]);
+      const fangle = FVector.fromAngle(angles[i]);
       fangle.x *= bodyWidth(i);
       fangle.y *= bodyWidth(i);
       const vector = {
@@ -70,32 +70,32 @@
 
     const array = [];
     for (let i = 0; i < joints.length; i++) {
-      array.push(...getPosition(i, Math.PI / 2, 0));
+      array.push(...getPosition(i, FMath.HALF_PI, 0));
     }
 
     // tail
     for (let a = 90; a < 270; a += 20) {
-      array.push(...getPosition(joints.length - 1, a * (Math.PI / 180), 0));
+      array.push(...getPosition(joints.length - 1, a * FMath.DEG2RAD, 0));
     }
 
     for (let i = joints.length - 1; i >= 0; i--) {
-      array.push(...getPosition(i, -Math.PI / 2, 0));
+      array.push(...getPosition(i, -FMath.HALF_PI, 0));
     }
 
     // head
     for (let a = -90; a < 90; a += 10) {
-      array.push(...getPosition(0, a * (Math.PI / 180), 0));
+      array.push(...getPosition(0, a * FMath.DEG2RAD, 0));
     }
 
     graphics.poly(array, true);
     graphics.stroke({ width: 2, color: color.pink });
 
     // eyes
-    const eye1 = getPosition(0, Math.PI / 2, -20);
+    const eye1 = getPosition(0, FMath.HALF_PI, -20);
     graphics.circle(eye1[0], eye1[1], 10);
     graphics.fill({ color: color.pink });
 
-    const eye2 = getPosition(0, -Math.PI / 2, -20);
+    const eye2 = getPosition(0, -FMath.HALF_PI, -20);
     graphics.circle(eye2[0], eye2[1], 10);
     graphics.fill({ color: color.pink });
   }
@@ -111,20 +111,16 @@
     ];
   }
 
-  function angleBetween(p0, p1) {
-    return Math.atan2(p1.y - p0.y, p1.x - p0.x);
-  }
-
   function constrainAngle(angle, anchor, constraint) {
     if (Math.abs(relativeAngleDiff(angle, anchor)) <= constraint) {
-      return simplifyAngle(angle);
+      return FMath.normalizeAngle(angle);
     }
 
     if (relativeAngleDiff(angle, anchor) > constraint) {
-      return simplifyAngle(anchor - constraint);
+      return FMath.normalizeAngle(anchor - constraint);
     }
 
-    return simplifyAngle(anchor + constraint);
+    return FMath.normalizeAngle(anchor + constraint);
   }
 
   // i.e. How many radians do you need to turn the angle to match the anchor?
@@ -132,31 +128,7 @@
     // Since angles are represented by values in [0, 2pi), it's helpful to rotate
     // the coordinate space such that PI is at the anchor. That way we don't have
     // to worry about the "seam" between 0 and 2pi.
-    angle = simplifyAngle(angle + Math.PI - anchor);
-    anchor = Math.PI;
-
-    return anchor - angle;
-  }
-
-  // Simplify the angle to be in the range [0, 2pi)
-  const TWO_PI = Math.PI * 2;
-  function simplifyAngle(angle) {
-    while (angle >= TWO_PI) {
-      angle -= TWO_PI;
-    }
-
-    while (angle < 0) {
-      angle += TWO_PI;
-    }
-
-    return angle;
-  }
-
-  function angleToVector(angle) {
-    return {
-      x: Math.cos(angle),
-      y: Math.sin(angle),
-    };
+    return Math.PI - FMath.normalizeAngle(angle + Math.PI - anchor);
   }
 
   function bodyWidth(i) {

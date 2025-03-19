@@ -17,7 +17,6 @@
   );
   const radius = 100;
   const wavesLength = 300;
-  const tau = Math.PI * 2; // alias for two pi
   const rate = 1 / (app.ticker.FPS * 5); // 5 seconds
   const circle = new PIXI.Point(center.x - 200, center.y);
 
@@ -31,15 +30,15 @@
     threshold += deltaTime * rate;
     threshold %= 1;
 
-    const angle = (threshold * tau) % tau;
+    const angle = FMath.normalizeAngle(threshold * FMath.TAU);
 
     graphics.clear();
     graphics.circle(circle.x, circle.y, radius);
 
     const p0 = pointTranslate(circle, 0, radius);
-    const p1 = pointTranslate(circle, angle, radius);
+    const p1 = pointTranslate(circle, -angle, radius);
     const p2 = new PIXI.Point(center.x.x, p1.y);
-    const p3 = pointTranslate(circle, angle, 50);
+    const p3 = pointTranslate(circle, -angle, 50);
 
     graphics.moveTo(circle.x, circle.y);
     graphics.lineTo(p0.x, p0.y);
@@ -60,7 +59,7 @@
       const t = i / wavesLength;
       graphics.lineTo(
         center.x + t * wavesLength,
-        circle.y - Math.sin(t * tau) * radius,
+        circle.y - Math.sin(t * FMath.TAU) * radius,
       );
       if (t < threshold) {
         graphics.stroke({ width: 10, color: color.pink });
@@ -72,9 +71,6 @@
 
   // translates a point by an angle in radians and distance
   function pointTranslate(point, angle, distance) {
-    return new PIXI.Point(
-      point.x + distance * Math.cos(angle),
-      point.y - distance * Math.sin(angle),
-    );
+    return FVector.add(point, FVector.mult(FVector.fromAngle(angle), distance));
   }
 })();

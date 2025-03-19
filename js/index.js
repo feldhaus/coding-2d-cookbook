@@ -186,13 +186,16 @@ jQuery(document).ready(function ($) {
     $('.main-content #code').html(sourceCode);
 
     // Generate HTML and insert into iFrame
-    // const pixiUrl = 'https://d157l7jdn8e5sf.cloudfront.net/release/pixi.js';
     const pixiUrl = 'https://cdn.jsdelivr.net/npm/pixi.js@8.x/dist/pixi.min.js';
 
     let html =
       '<!DOCTYPE html><html><head><style>body,html{margin:0px;height:100%;overflow:hidden;}canvas{width:100%;height:100%;}</style></head><body>';
     html +=
       '<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>';
+    html +=
+      '<script src="https://cdn.jsdelivr.net/npm/@feldhaus/math@1.1.1/dist/index.umd.min.js"></script>';
+    html +=
+      '<script src="https://cdn.jsdelivr.net/npm/@feldhaus/vector@1.1.2/dist/index.umd.min.js"></script>';
     html += '<script src="' + pixiUrl + '"></script>';
 
     html +=

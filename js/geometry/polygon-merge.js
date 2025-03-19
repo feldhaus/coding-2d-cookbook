@@ -173,7 +173,7 @@
       if (intersections.length > 0) {
         const v = { x: polygon1[i], y: polygon1[i + 1] };
         intersections.sort((a, b) => {
-          return distanceBetween(v, a) - distanceBetween(v, b);
+          return FVector.distanceBetween(v, a) - FVector.distanceBetween(v, b);
         });
 
         intersections.forEach((p) => {
@@ -295,14 +295,6 @@
 
   function ccw(p1, p2, p3) {
     return (p2.x - p1.x) * (p3.y - p1.y) - (p2.y - p1.y) * (p3.x - p1.x);
-  }
-
-  function magnitude(vector) {
-    return Math.sqrt(vector.x * vector.x + vector.y * vector.y);
-  }
-
-  function distanceBetween(p0, p1) {
-    return magnitude({ x: p1.x - p0.x, y: p1.y - p0.y });
   }
 
   function lineIntersection(line1Start, line1End, line2Start, line2End) {

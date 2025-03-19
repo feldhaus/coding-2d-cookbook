@@ -88,8 +88,8 @@
       const mi0 = a0.y / a0.x;
       const mi1 = a1.y / a1.x;
 
-      const li0 = magnitude(a0);
-      const li1 = magnitude(a1);
+      const li0 = FVector.mag(a0);
+      const li1 = FVector.mag(a1);
 
       const ri0 = p0.x + (spacing * a0.y) / li0;
       const ri1 = p1.x + (spacing * a1.y) / li1;
@@ -127,10 +127,5 @@
       signedArea += p0.x * p1.y - p1.x * p0.y;
     }
     return signedArea;
-  }
-
-  // returns the length of a vector
-  function magnitude(vector) {
-    return Math.sqrt(vector.x * vector.x + vector.y * vector.y);
   }
 })();

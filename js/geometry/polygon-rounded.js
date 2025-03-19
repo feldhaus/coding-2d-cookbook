@@ -15,7 +15,6 @@
     app.renderer.width * 0.5,
     app.renderer.height * 0.5,
   );
-  const tau = Math.PI * 2; // alias for two pi
   const points = [];
 
   // add graphics
@@ -73,18 +72,19 @@
       const p1 = path[(i + 1) % len];
       const p2 = path[(i + 2) % len];
 
-      const v0 = new PIXI.Point(p1.x - p0.x, p1.y - p0.y);
-      const v1 = new PIXI.Point(p1.x - p2.x, p1.y - p2.y);
+      const v0 = FVector.sub(p1, p0);
+      const v1 = FVector.sub(p1, p2);
 
       // the length of segment between angular point and the
       // points of intersection with the circle of a given radius
-      const angle = (angleBetween(p0, p1) - angleBetween(p2, p1)) / 2;
+      const angle =
+        (FVector.angleBetween(p0, p1) - FVector.angleBetween(p2, p1)) / 2;
       const tan = Math.abs(Math.tan(angle));
       const seg0 = radius / tan;
 
       // check the segment
-      const len0 = distanceBetween(p0, p1);
-      const len1 = distanceBetween(p2, p1);
+      const len0 = FVector.distanceBetween(p0, p1);
+      const len1 = FVector.distanceBetween(p2, p1);
 
       // points of intersection are calculated by the proportion between the
       // coordinates of the vector, length of vector and the length of the segment
@@ -98,22 +98,22 @@
         p1.y * 2 - cross0.y - cross1.y,
       );
 
-      const len2 = magnitude(cross);
-      const seg1 = magnitude({ x: seg0, y: radius });
+      const len2 = FVector.mag(cross);
+      const seg1 = FVector.mag({ x: seg0, y: radius });
 
       // center radius
       const centerCircle = getProportionPoint(p1, cross, seg1, len2);
 
       // start and end angle of arc
-      const startAngle = angleBetween(centerCircle, cross0);
-      const endAngle = angleBetween(centerCircle, cross1);
+      const startAngle = FVector.angleBetween(centerCircle, cross0);
+      const endAngle = FVector.angleBetween(centerCircle, cross1);
 
       // get clock wise direction to draw the arc
       let sweepAngle = endAngle - startAngle;
       if (sweepAngle < -Math.PI) {
-        sweepAngle = tau + sweepAngle;
+        sweepAngle = FMath.TAU + sweepAngle;
       } else if (sweepAngle > Math.PI) {
-        sweepAngle = sweepAngle - tau;
+        sweepAngle = sweepAngle - FMath.TAU;
       }
       const anticlockwise = sweepAngle < 0 || sweepAngle > Math.PI;
 
@@ -141,20 +141,5 @@
   function getProportionPoint(p0, p1, segment, length) {
     const factor = segment / length;
     return new PIXI.Point(p0.x - p1.x * factor, p0.y - p1.y * factor);
-  }
-
-  // returns the length of a vector
-  function magnitude(vector) {
-    return Math.sqrt(vector.x * vector.x + vector.y * vector.y);
-  }
-
-  // returns the angle between 2 points, in radians
-  function angleBetween(p0, p1) {
-    return Math.atan2(p1.y - p0.y, p1.x - p0.x);
-  }
-
-  // returns the distance between 2 points
-  function distanceBetween(p0, p1) {
-    return magnitude({ x: p1.x - p0.x, y: p1.y - p0.y });
   }
 })();

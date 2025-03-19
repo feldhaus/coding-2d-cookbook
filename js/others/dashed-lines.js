@@ -11,7 +11,6 @@
 
   // constants
   const color = { pink: 0xec407a, white: 0xf2f5ea };
-  const tau = Math.PI * 2; // alias for two pi
   const starPolygon = [
     { x: 0, y: -150 },
     { x: -38, y: -52 },
@@ -62,23 +61,22 @@
   });
 
   function drawDashedCircle(graphics, radius, dash, gap, offset) {
-    const circum = radius * tau;
+    const circum = radius * FMath.TAU;
     const stepSize = dash + gap;
     const chunks = Math.ceil(circum / stepSize);
-    const chunkAngle = tau / chunks;
+    const chunkAngle = FMath.TAU / chunks;
     const dashAngle = (dash / stepSize) * chunkAngle;
     const offsetAngle = offset * chunkAngle;
 
     let theta = offsetAngle;
+    let vector = FVector.VECTOR_ZERO;
 
     graphics.moveTo(radius * Math.cos(theta), radius * Math.sin(theta));
     for (let i = 0; i < chunks; i++) {
       theta = chunkAngle * i + offsetAngle;
       graphics.arc(0, 0, radius, theta, theta + dashAngle);
-      graphics.moveTo(
-        radius * Math.cos(theta + chunkAngle),
-        radius * Math.sin(theta + chunkAngle),
-      );
+      vector = FVector.mult(FVector.fromAngle(theta + chunkAngle), radius);
+      graphics.moveTo(vector.x, vector.y);
       graphics.closePath();
     }
   }

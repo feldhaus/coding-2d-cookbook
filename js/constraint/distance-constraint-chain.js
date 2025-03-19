@@ -59,31 +59,12 @@
   }
 
   function constrainDistance(point, anchor, distance) {
-    if (distanceBetween(point, anchor) < distance) return point;
+    if (FVector.distanceBetween(point, anchor) < distance) return point;
 
-    const vector = normalize({ x: point.x - anchor.x, y: point.y - anchor.y });
-    vector.x *= distance;
-    vector.y *= distance;
-    vector.x += anchor.x;
-    vector.y += anchor.y;
-
-    return vector;
-  }
-
-  function magnitude(vector) {
-    return Math.sqrt(vector.x * vector.x + vector.y * vector.y);
-  }
-
-  function distanceBetween(p0, p1) {
-    return magnitude({ x: p1.x - p0.x, y: p1.y - p0.y });
-  }
-
-  function normalize(vector) {
-    const mag = magnitude(vector);
-    if (mag > 0) {
-      vector.x /= mag;
-      vector.y /= mag;
-    }
-    return vector;
+    const vector = FVector.sub(point, anchor);
+    return FVector.add(
+      FVector.mult(FVector.normalize(vector), distance),
+      anchor,
+    );
   }
 })();

@@ -2,6 +2,13 @@
 
 A collection of small, self-contained programs designed to demonstrate specific programming concepts. Each example leverages **PixiJS** for rendering and drawing, ensuring a focus on the concepts rather than boilerplate code.
 
+## Additional Libraries
+
+This project also showcases the use of the following libraries created by me:
+
+- [@feldhaus/math](https://github.com/feldhaus/math)
+- [@feldhaus/vector](https://github.com/feldhaus/vector)
+
 ## Why This Exists
 
 This project serves multiple purposes:
@@ -10,7 +17,7 @@ This project serves multiple purposes:
 - **Personal Growth:** Explore topics that interest me and learn by doing.
 - **Incremental Learning:** Build a solid knowledge base step by step.
 - **Quick Reference:** Create a personal library for faster solutions, avoiding long searches through documentation or forums.
-- **Experimentation:** Explore new programming concepts in a structured way.
+- **Experimentation:** Dive into new programming concepts with a hands-on approach.
 
 ## Features
 

@@ -15,18 +15,17 @@
     app.renderer.width * 0.5,
     app.renderer.height * 0.5,
   );
-  const deg2rad = Math.PI / 180;
   const rate = 1 / (app.ticker.FPS * 5); // 5 seconds
 
   // input - controls
   const controlsData = Object.assign({}, window.parent.controlsData);
-  controlsData.amplitude *= deg2rad;
+  controlsData.amplitude *= FMath.DEG2RAD;
   window.addEventListener('message', (event) => {
     const { type, key, value } = event.data;
     if (type !== 'sliderchange') return;
 
     if (key === 'amplitude') {
-      controlsData[key] = value * deg2rad;
+      controlsData[key] = value * FMath.DEG2RAD;
     } else {
       controlsData[key] = value;
     }

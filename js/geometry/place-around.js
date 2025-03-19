@@ -15,7 +15,6 @@
     app.renderer.width * 0.5,
     app.renderer.height * 0.5,
   );
-  const deg2rad = Math.PI / 180;
 
   // input - controls
   const controlsData = Object.assign({}, window.parent.controlsData);
@@ -36,7 +35,7 @@
       center.x,
       center.y,
       controlsData.radius,
-      controlsData.segment * deg2rad,
+      controlsData.segment * FMath.DEG2RAD,
     );
 
     graphics.clear();
@@ -66,16 +65,18 @@
     const theta = segment / (items - 1);
 
     const data = {
-      startAngle: -Math.PI / 2 - segment / 2,
-      endAngle: -Math.PI / 2 - segment / 2 + segment,
+      startAngle: -FMath.HALF_PI - segment / 2,
+      endAngle: -FMath.HALF_PI - segment / 2 + segment,
       items: [],
     };
 
     for (let i = 0; i < items; i++) {
-      data.items.push({
-        x: x + radius * Math.cos(data.startAngle + theta * i),
-        y: y + radius * Math.sin(data.startAngle + theta * i),
-      });
+      data.items.push(
+        FVector.add(
+          { x, y },
+          FVector.mult(FVector.fromAngle(data.startAngle + theta * i), radius),
+        ),
+      );
     }
 
     return data;

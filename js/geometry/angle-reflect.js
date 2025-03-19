@@ -53,7 +53,7 @@
       event.data.global.y - dragging.offset.y,
     );
 
-    const angle = angleBetween(center, dragging.position);
+    const angle = FVector.angleBetween(center, dragging.position);
     const translatePoint = pointTranslate(center, angle, surfaceLength * 0.5);
     dragging.position.copyFrom(translatePoint);
     draw();
@@ -82,9 +82,9 @@
     graphics.clear();
 
     // get all required values to draw
-    const incidenceAngle = angleBetween(circle2, center);
-    const incidenceLength = distanceBetween(circle2, center);
-    const surfaceAngle = angleBetween(circle1, center);
+    const incidenceAngle = FVector.angleBetween(circle2, center);
+    const incidenceLength = FVector.distanceBetween(circle2, center);
+    const surfaceAngle = FVector.angleBetween(circle1, center);
     const surfacePoint = pointTranslate(circle1, surfaceAngle, surfaceLength);
     const reflectAngle = angleReflect(incidenceAngle, surfaceAngle);
     const reflectPoint = pointTranslate(center, reflectAngle, incidenceLength);
@@ -104,25 +104,7 @@
 
   // translates a point by an angle in radians and distance
   function pointTranslate(point, angle, distance) {
-    return new PIXI.Point(
-      point.x + distance * Math.cos(angle),
-      point.y + distance * Math.sin(angle),
-    );
-  }
-
-  // returns the length of a vector
-  function magnitude(vector) {
-    return Math.sqrt(vector.x * vector.x + vector.y * vector.y);
-  }
-
-  // returns the angle between 2 points, in radians
-  function angleBetween(p0, p1) {
-    return Math.atan2(p1.y - p0.y, p1.x - p0.x);
-  }
-
-  // returns the distance between 2 points
-  function distanceBetween(p0, p1) {
-    return magnitude({ x: p1.x - p0.x, y: p1.y - p0.y });
+    return FVector.add(point, FVector.mult(FVector.fromAngle(angle), distance));
   }
 
   // returns the angle of reflection

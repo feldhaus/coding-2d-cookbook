@@ -15,6 +15,10 @@
     app.renderer.width * 0.5,
     app.renderer.height * 0.5,
   );
+  const width = 300;
+  const height = 100;
+  const halfWidth = width * 0.5;
+  const halfHeight = height * 0.5;
 
   // add graphics
   const graphics = new PIXI.Graphics();
@@ -23,22 +27,19 @@
 
   // runs an update loop
   let angle = 0;
-  let x = 0;
-  let y = 0;
-  let w = 300;
-  let h = 100;
-
   app.ticker.add(({ deltaTime }) => {
     graphics.clear();
 
-    const x1 = (x - w / 2) * Math.cos(angle) - (y - h / 2) * Math.sin(angle);
-    const y1 = (x - w / 2) * Math.sin(angle) + (y - h / 2) * Math.cos(angle);
-    const x2 = (x + w / 2) * Math.cos(angle) - (y - h / 2) * Math.sin(angle);
-    const y2 = (x + w / 2) * Math.sin(angle) + (y - h / 2) * Math.cos(angle);
-    const x3 = (x + w / 2) * Math.cos(angle) - (y + h / 2) * Math.sin(angle);
-    const y3 = (x + w / 2) * Math.sin(angle) + (y + h / 2) * Math.cos(angle);
-    const x4 = (x - w / 2) * Math.cos(angle) - (y + h / 2) * Math.sin(angle);
-    const y4 = (x - w / 2) * Math.sin(angle) + (y + h / 2) * Math.cos(angle);
+    const direction = FVector.fromAngle(angle);
+
+    const x1 = -halfWidth * direction.x - -halfHeight * direction.y;
+    const y1 = -halfWidth * direction.y + -halfHeight * direction.x;
+    const x2 = +halfWidth * direction.x - -halfHeight * direction.y;
+    const y2 = +halfWidth * direction.y + -halfHeight * direction.x;
+    const x3 = +halfWidth * direction.x - +halfHeight * direction.y;
+    const y3 = +halfWidth * direction.y + +halfHeight * direction.x;
+    const x4 = -halfWidth * direction.x - +halfHeight * direction.y;
+    const y4 = -halfWidth * direction.y + +halfHeight * direction.x;
 
     const l = Math.min(x1, x2, x3, x4);
     const r = Math.max(x1, x2, x3, x4);
